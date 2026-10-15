@@ -1,0 +1,20 @@
+== hostcheck — host-aware flight check ==
+HARD RULE: this tool NEVER installs, removes, or enables anything — report and proposals only; YOU approve and run every change yourself.
+-- host inventory --
+  default harness (config fallback (harness CLI unavailable or listing skipped)): host-side servers: exa [user scope], agent-browser [user scope], zai-mcp-server [user scope], playwright [user scope], netcatty-external [user scope], context7 [user scope], node_repl [user scope], chrome-devtools [user scope], serena [user scope]
+  host-only servers (no overlap with this plugin — untouched, listed for completeness): agent-browser (default harness user scope), chrome-devtools (default harness user scope), context7 (default harness user scope), exa (default harness user scope), netcatty-external (default harness user scope), node_repl (default harness user scope), playwright (default harness user scope), serena (default harness user scope), zai-mcp-server (default harness user scope)
+-- what enabling this plugin brings --
+  own servers (.mcp.json): (this plugin ships no .mcp.json)
+  server rows NOT bundled (registered separately when their stack is selected): (none)
+  non-server rows (cli/skill/config) are preflight territory — probed per verb with FIX lines, never host-inventory items: analytics-product, analytics-web, design-tool, docs-workspace, eng-registry, eng-seam-check, issue-tracker, python3, repo-state, session-replay, shasum
+-- verdicts (equivalents honoured: none declared) --
+  (none — this plugin declares no tool servers, so nothing of its own can duplicate)
+-- named limits of this inventory (what it could NOT see) --
+  · no extra harnesses declared in ${local:harness_configs} — only the default harness was inventoried (set the key if you run others)
+-- PLAN (proposals only — nothing was or will be executed by this tool) --
+VERDICT: CLEAN — no duplicates, nothing missing. (exit 0; nothing this package owns was changed; where the harness CLI was called it may have written its own config)
+HARD RULE: this tool NEVER installs, removes, or enables anything — report and proposals only; YOU approve and run every change yourself.
+== preflight (verb=pm-requirements-v1 · stack=∅ required-only) ==
+  OK   python3 [cli] — probe passed
+  OK   shasum [cli] — probe passed
+== PREFLIGHT OK: 2 capability row(s) satisfied for pm-requirements-v1 ==

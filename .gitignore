@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.DS_Store
+.vercel/
+
+# 本地调试产物：CDP 验证脚本、截图与临时工作簿，不入库
+.scratch/
+
+# 验证截图，不入库（output/pdf 下的交付文档仍需跟踪）
+output/rules-view.png

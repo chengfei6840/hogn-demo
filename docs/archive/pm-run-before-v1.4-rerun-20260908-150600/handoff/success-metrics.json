@@ -1,0 +1,27 @@
+{
+  "metric_id": "M-01",
+  "name": "关键业务场景可验收覆盖率",
+  "tool": "python3",
+  "argv": [
+    "-c",
+    "import json,pathlib,sys; p=pathlib.Path(sys.argv[1]); x=json.loads((p/'coverage-review.json').read_text()); s=json.loads((p/'acceptance-scenarios.json').read_text()); groups={a['group'] for a in s}; rows={a['id']:a for a in x['groups']}; assert groups==set(rows) and len(groups)==37; passed=sum(rows[g]['verdict']=='PASS' and set(rows[g]['reviewed_branch_ids'])=={a['id'] for a in s if a['group']==g} for g in groups); print(json.dumps({'qualified_groups':passed,'total_groups':len(groups),'definition_coverage_percent':passed/len(groups)*100,'review_status':x['review_status'],'execution_status':'not_run'},ensure_ascii=False))",
+    "."
+  ],
+  "working_directory": "handoff",
+  "data_files": [
+    "acceptance-scenarios.json",
+    "coverage-review.json"
+  ],
+  "window": "本轮Gate 1锁定范围至Gate 2独立审查结果",
+  "evaluation_dates": {
+    "gate_2": "每次提交Gate 2时执行",
+    "week_1": null,
+    "month_1": null,
+    "quarter_1": null,
+    "reason": "本轮为文档评审，未定义上线日期及生产监控；不虚构相对发布日期"
+  },
+  "success_threshold_percent": 100,
+  "stretch_threshold_percent": 100,
+  "north_star_link": "本轮采用指标本身",
+  "limitations": "未评审为不可判定；PENDING条目未计入分子，不代表该场景缺失或运行失败；不计算生产成功率"
+}

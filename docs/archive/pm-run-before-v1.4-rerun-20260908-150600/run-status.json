@@ -1,0 +1,52 @@
+{
+  "workflow": "pm-start → pm-requirements-v1",
+  "mode": "standalone",
+  "pack": "none",
+  "context_confirmed": true,
+  "metric_confirmed": true,
+  "metric": "关键业务场景可验收覆盖率",
+  "owner_role": "本轮产品确认人（当前用户）",
+  "proposed_scenario_groups": 37,
+  "target_coverage_percent": {
+    "value": 100,
+    "status": "confirmed_gate_1"
+  },
+  "phase": "complete",
+  "source_review": "REVISE",
+  "gate_1": {
+    "status": "approved",
+    "independent_review": "PASS",
+    "review_file": "review-gate-1.md",
+    "decision": "approve",
+    "confirmer": "本轮产品确认人",
+    "source": "本任务用户原话：以上五项通过"
+  },
+  "gate_2": {
+    "status": "approved",
+    "independent_review": "PASS",
+    "review_file": "handoff/review-gate-2.md",
+    "requirement_count": 40,
+    "scenario_branch_count": 112,
+    "qualified_groups": 37,
+    "definition_coverage_percent": 100,
+    "decision": "approve",
+    "confirmer": "本轮产品确认人",
+    "at": "2026-09-08T12:20:04.677934+08:00",
+    "source": "本任务用户在Gate 2五项确认后回复：以上五项通过"
+  },
+  "gate_3": {
+    "status": "approved",
+    "independent_review": "PASS",
+    "approved": true,
+    "sealed_files": 32,
+    "manifest_sha256": "ffb8faa41d1662ef3660fdf390e803132a4b25998605dde794fa7a51f5960ebf",
+    "review_file": "review-final-seal.md",
+    "decision": "approve",
+    "confirmer": "本轮产品确认人",
+    "at": "2026-09-08T12:33:16.755488+08:00",
+    "source": "本任务用户原话：确认最终交付"
+  },
+  "business_code_modified": false,
+  "prd_v1_modified": false,
+  "closed_at": "2026-09-08T12:33:16.755488+08:00"
+}

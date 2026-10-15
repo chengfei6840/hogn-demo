@@ -1,0 +1,20 @@
+{
+  "content_review": "PASS",
+  "definition_coverage": {
+    "qualified_groups": 39,
+    "groups": 39,
+    "percent": 100,
+    "branches": 124
+  },
+  "production_execution_pass_rate": null,
+  "open_items": 17,
+  "open_status": "accepted-open",
+  "source_drift": [],
+  "seal_files": 35,
+  "seal_integrity": "PASS",
+  "manifest_sha256": "f2730a967f708ab6088dfcff4447106ed12cb4a991edc9f26172e0140dc6e357",
+  "gate3_approved": true,
+  "scope": "文档与封存检查，未运行原型代码测试或ZIP工程检查",
+  "approval_record": "handoff/design-gate.json",
+  "post_approval_seal_integrity": "PASS"
+}

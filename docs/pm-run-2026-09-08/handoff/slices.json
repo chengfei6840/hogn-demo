@@ -1,0 +1,207 @@
+{
+  "mode": "FIXTURE, no downstream configured",
+  "slices": [
+    {
+      "id": "SL-01",
+      "depends_on": [],
+      "surfaces": [
+        "规则与字典",
+        "角色与项目授权"
+      ],
+      "surface_verification": "unverified_against_registry",
+      "invariant": "角色和字段数据范围、字典及主库版本稳定；管理员不自带审批权",
+      "phase": 1,
+      "requirements": [
+        "FR-UM-01",
+        "FR-MD-01",
+        "FR-MD-02",
+        "FR-MD-03"
+      ],
+      "release_condition": "该单元对应验收场景有执行证据且依赖已满足；此处未声明已经实现",
+      "scope_note": "独立可评审和交付单元，不代表依赖未满足时可单独生产上线"
+    },
+    {
+      "id": "SL-02",
+      "depends_on": [
+        "SL-01"
+      ],
+      "surfaces": [
+        "资料与解析"
+      ],
+      "surface_verification": "unverified_against_registry",
+      "invariant": "保留文件、来源和原始项；部分失败或重试不能丢项和重复造项",
+      "phase": 1,
+      "requirements": [
+        "FR-IN-01",
+        "FR-IN-02",
+        "FR-IN-03",
+        "FR-IN-04"
+      ],
+      "release_condition": "该单元对应验收场景有执行证据且依赖已满足；此处未声明已经实现",
+      "scope_note": "独立可评审和交付单元，不代表依赖未满足时可单独生产上线"
+    },
+    {
+      "id": "SL-03",
+      "depends_on": [
+        "SL-01",
+        "SL-02"
+      ],
+      "surfaces": [
+        "询价协作",
+        "工作台"
+      ],
+      "surface_verification": "unverified_against_registry",
+      "invariant": "问题分配不解除阻断；销售技术确认必须对应当前版本",
+      "phase": 1,
+      "requirements": [
+        "FR-SC-01",
+        "FR-RK-01",
+        "FR-RK-02",
+        "FR-WF-01",
+        "FR-WF-02"
+      ],
+      "release_condition": "该单元对应验收场景有执行证据且依赖已满足；此处未声明已经实现",
+      "scope_note": "独立可评审和交付单元，不代表依赖未满足时可单独生产上线"
+    },
+    {
+      "id": "SL-04",
+      "depends_on": [
+        "SL-01",
+        "SL-02",
+        "SL-03"
+      ],
+      "surfaces": [
+        "串型检索",
+        "子件明细"
+      ],
+      "surface_verification": "unverified_against_registry",
+      "invariant": "四路径召回不等于确认；导地线/电压/类别与图册条件核对，BOM空值不猜填",
+      "phase": 1,
+      "requirements": [
+        "FR-SR-01",
+        "FR-SR-02",
+        "FR-SR-03",
+        "FR-SR-04",
+        "FR-SR-05",
+        "FR-BM-01",
+        "FR-BM-02"
+      ],
+      "release_condition": "该单元对应验收场景有执行证据且依赖已满足；此处未声明已经实现",
+      "scope_note": "独立可评审和交付单元，不代表依赖未满足时可单独生产上线"
+    },
+    {
+      "id": "SL-05",
+      "depends_on": [
+        "SL-03",
+        "SL-04"
+      ],
+      "surfaces": [
+        "核价与审批"
+      ],
+      "surface_verification": "unverified_against_registry",
+      "invariant": "有效技术结果才能核价，定价可复算；金额审批不解除技术阻断",
+      "phase": 1,
+      "requirements": [
+        "FR-PR-02",
+        "FR-AP-02",
+        "FR-PR-01",
+        "FR-AP-01",
+        "FR-AP-03"
+      ],
+      "release_condition": "该单元对应验收场景有执行证据且依赖已满足；此处未声明已经实现",
+      "scope_note": "独立可评审和交付单元，不代表依赖未满足时可单独生产上线"
+    },
+    {
+      "id": "SL-06",
+      "depends_on": [
+        "SL-05"
+      ],
+      "surfaces": [
+        "报价档案",
+        "模板导出"
+      ],
+      "surface_verification": "unverified_against_registry",
+      "invariant": "仅有效审核版本可出具；旧快照不覆盖，对外字段不含成本利润",
+      "phase": 1,
+      "requirements": [
+        "FR-QT-01",
+        "FR-QT-02",
+        "FR-QT-03"
+      ],
+      "release_condition": "该单元对应验收场景有执行证据且依赖已满足；此处未声明已经实现",
+      "scope_note": "独立可评审和交付单元，不代表依赖未满足时可单独生产上线"
+    },
+    {
+      "id": "SL-07",
+      "depends_on": [
+        "SL-01",
+        "SL-02",
+        "SL-03",
+        "SL-04",
+        "SL-05",
+        "SL-06"
+      ],
+      "surfaces": [
+        "内网部署",
+        "U9只读",
+        "验收移交"
+      ],
+      "surface_verification": "unverified_against_registry",
+      "invariant": "只读、权限、备份、并发和幂等证据齐备才能完成对应正式验收",
+      "phase": "跨阶段",
+      "requirements": [
+        "NFR-01",
+        "NFR-02",
+        "NFR-03",
+        "NFR-04",
+        "NFR-05",
+        "NFR-06",
+        "NFR-07",
+        "NFR-08",
+        "FR-P3-03"
+      ],
+      "release_condition": "该单元对应验收场景有执行证据且依赖已满足；此处未声明已经实现",
+      "scope_note": "独立可评审和交付单元，不代表依赖未满足时可单独生产上线"
+    },
+    {
+      "id": "SL-08",
+      "depends_on": [
+        "SL-05",
+        "SL-07"
+      ],
+      "surfaces": [
+        "成本库与集成"
+      ],
+      "surface_verification": "unverified_against_registry",
+      "invariant": "成本、材料价与报价比对口径和来源可追踪，两个覆盖率与命中率不混同",
+      "phase": 2,
+      "requirements": [
+        "FR-P2-01",
+        "FR-P2-02",
+        "FR-P2-03"
+      ],
+      "release_condition": "该单元对应验收场景有执行证据且依赖已满足；此处未声明已经实现",
+      "scope_note": "独立可评审和交付单元，不代表依赖未满足时可单独生产上线"
+    },
+    {
+      "id": "SL-09",
+      "depends_on": [
+        "SL-04",
+        "SL-07"
+      ],
+      "surfaces": [
+        "报告与出图"
+      ],
+      "surface_verification": "unverified_against_registry",
+      "invariant": "POC书面通过后才启动正式出图，全自动计分与人工复核分开",
+      "phase": 3,
+      "requirements": [
+        "FR-P3-01",
+        "FR-P3-02"
+      ],
+      "release_condition": "该单元对应验收场景有执行证据且依赖已满足；此处未声明已经实现",
+      "scope_note": "独立可评审和交付单元，不代表依赖未满足时可单独生产上线"
+    }
+  ],
+  "derivation": "本轮整合PRD第12章及requirements.json；历史仅复用JSON结构，未继承验证或批准"
+}

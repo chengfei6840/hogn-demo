@@ -1,0 +1,222 @@
+[
+  {
+    "id": "F01",
+    "tag": "FOUND",
+    "statement": "国网金具串为本轮业务范围，固定模块按合同分期。",
+    "source": "D04；合同第47至68段",
+    "level": "L0/L2",
+    "frequency": "用户指令与一份合同",
+    "impact": "限制独立物资、成本、出图扩范围",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F02",
+    "tag": "FOUND",
+    "statement": "客户确认PDF列三条主路径和一条补充路径；单串号不决定匹配。",
+    "source": "S02第2页“前3种为主要检索路径”及D04",
+    "level": "L0/L2",
+    "frequency": "本轮完整读取3页",
+    "impact": "检索保留候选、差异和人工确认",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F03",
+    "tag": "FOUND",
+    "statement": "PDF保留原始值/规范值/查找结果/确认值；缺U9等不按相似记录补齐。",
+    "source": "S02第3页“出现多条结果时不自动选择第一条”",
+    "level": "L2",
+    "frequency": "一份确认稿",
+    "impact": "字段与风险规格必须保存来源和空值",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F04",
+    "tag": "FOUND",
+    "statement": "财务签发、销售提供，董事长角色与单项调价为用户已确认决定。",
+    "source": "D05/D07；S13第3.5节“财务加系数后人工签发”",
+    "level": "L0/L2",
+    "frequency": "用户裁决及方案原文",
+    "impact": "P3统一签发/审批/下载措辞",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F05",
+    "tag": "FOUND",
+    "statement": "多文件混析完成；ZIP处理仍未完成且本轮不检查。",
+    "source": "evidence/user-decisions.md D03原话",
+    "level": "L0",
+    "frequency": "用户最新确认",
+    "impact": "更新旧单文件现状表述，保留ZIP待完成",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F06",
+    "tag": "FOUND",
+    "statement": "源码注册/v1/parse/batch、batch/stream及关联审查入口；REST可传batchRelations策略。",
+    "source": "S26 v1_batch/_response/review_batch；S05末尾include_router",
+    "level": "L2",
+    "frequency": "当前源码静态读取，未调用接口",
+    "impact": "接口清单需要加入批次入口，生产联调另验",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F07",
+    "tag": "FOUND",
+    "statement": "原型仍只登记上传文件名并使用预置货物项，没有调用真实解析服务。",
+    "source": "S11 start/files命令；SourcesView.vue parse",
+    "level": "L2",
+    "frequency": "当前原型源码",
+    "impact": "不能把服务完成等同原型已接入",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F08",
+    "tag": "FOUND",
+    "statement": "行业插件以Schema生成字段字典，同义词和风险规则库显示not_configured。",
+    "source": "S07 buildFieldSchemaIndustryPlugin；S15 industryPlugin",
+    "level": "L2",
+    "frequency": "本轮读取适配器",
+    "impact": "保留拟建治理需求而非说正式规则库已发布",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F09",
+    "tag": "FOUND",
+    "statement": "客户BOM主表23列，平行挂板9列；两个数量列分别用于串采购和子件。",
+    "source": "S20两表首行；S03第5.4节；D06",
+    "level": "L0/L2",
+    "frequency": "两表表头核对；不复制具体工程数据",
+    "impact": "BOM导出结构有依据，生产必填/分配仍未决",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F10",
+    "tag": "FOUND",
+    "statement": "三份2024版PDF可读取页树及首页；旧知识库“无法打开”现状已过时。",
+    "source": "S16/S17/S18首页；S04第4.5节",
+    "level": "L2",
+    "frequency": "本轮打开3册，未全书查图",
+    "impact": "可打开不代表历史图号已映射",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F11",
+    "tag": "FOUND",
+    "statement": "C13源行69906的G/H/I为历史分册名称、图5-13、图5-013。",
+    "source": "S09 金具最新分解G69906:I69906；evidence/catalog-sample.json",
+    "level": "L2",
+    "frequency": "本轮抽读一个目标串",
+    "impact": "真实来源不是2024版页码验证",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F12",
+    "tag": "FOUND",
+    "statement": "C21/C22源行71453/105637对应规范编码及66kV/300/40记录。",
+    "source": "S09对应行A至I；evidence/catalog-sample.json",
+    "level": "L2",
+    "frequency": "抽样两组，不是全量主库验收",
+    "impact": "演示选型依据与样本覆盖分开",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F13",
+    "tag": "FOUND",
+    "statement": "原型BOM仅从已采用串输出，缺业务字段留空，平行挂板只有表头。",
+    "source": "S21 projectBom；S22 createBomWorkbook",
+    "level": "L2",
+    "frequency": "本轮源码核对",
+    "impact": "技术确认版不等于生产下单",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F14",
+    "tag": "FOUND",
+    "statement": "董事长调价后回财务；一致方案沿用确认，变更价格/成本/税率/说明/配置会重审。",
+    "source": "S11 bossAdjust/approveFinance；S12 pricingBasis/bossReviewRequired",
+    "level": "L2",
+    "frequency": "本轮源码核对",
+    "impact": "保持价格决策与签发责任分开",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F15",
+    "tag": "FOUND",
+    "statement": "当前签发命令限定财务；销售下载已签发CSV，旧快照保留。",
+    "source": "S11 issue/revision；S25 download",
+    "level": "L2",
+    "frequency": "本轮源码核对",
+    "impact": "不是正式Excel/PDF及签章完成",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F16",
+    "tag": "FOUND",
+    "statement": "合同列抽取≥95%且20份样本、时效20份回测、零错价20份、并发≥15、出图≥98%全自动20份。",
+    "source": "S01第74至94、300至345段",
+    "level": "L2",
+    "frequency": "一份合同明确条目",
+    "impact": "逐项保留不同指标和样本；无本轮达标结论",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F17",
+    "tag": "FOUND",
+    "statement": "一期覆盖≥80%与标准串命中≥80%分别位于正文和附件；二期品类扩充另列。",
+    "source": "S01第56、83至85、306至309段",
+    "level": "L2",
+    "frequency": "不同条款，不合并分母",
+    "impact": "计分口径与阶段关系待双方确认",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F18",
+    "tag": "FOUND",
+    "statement": "合同要求内网、ERP/MES只读、阶段三POC书面门禁和资料依赖。",
+    "source": "S01第41、67至68、139至143、363段",
+    "level": "L2",
+    "frequency": "一份合同",
+    "impact": "不因原型演示放行正式接入",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F19",
+    "tag": "FOUND",
+    "statement": "原型关键条件校验仍依赖导线非空及字符串比较，没有完整电压必填/地线对象和子件必要字段门禁。",
+    "source": "S12 candidateAdoptionIssues/candidateDifferences/technicalReadiness",
+    "level": "L2",
+    "frequency": "当前代码静态比较",
+    "impact": "作为原型与正式FR-SR-05/FR-BM-01的差异登记",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F20",
+    "tag": "CALCULATED",
+    "statement": "输入含34条FR加8条NFR共42条要求，39组、124分支、17项OPEN。",
+    "source": "S23；34+8=42，场景group去重39，scenarios长度124",
+    "level": "L3",
+    "frequency": "只统计当前规格结构",
+    "impact": "不是本轮独立通过或真实执行数量",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F21",
+    "tag": "FOUND",
+    "statement": "当前PRD包含历史证据定位与旧“单文件为主”表述，需用本轮来源更新。",
+    "source": "S19第9/15章及附录；F05/F06",
+    "level": "L3/L1",
+    "frequency": "规格与当前指令/源码交叉检查",
+    "impact": "P3回写同一整合PRD并更新交接包",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  },
+  {
+    "id": "F22",
+    "tag": "INFERRED",
+    "statement": "主要任务是刷新事实状态和跨角色/数据/验收一致性，无需重建已确认业务方向。",
+    "source": "F01至F21",
+    "level": "L1",
+    "frequency": "对本轮来源的综合判断",
+    "impact": "P2优先级与修订范围",
+    "read_at": "2026-09-08T15:15:01.236997+08:00"
+  }
+]

@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>国网项目询价资料汇总</title>
+    <style>
+      :root {
+        --paper: #f4f7fb;
+        --card: #ffffff;
+        --ink: #14385f;
+        --strong: #0d2f52;
+        --muted: #6f849b;
+        --soft: #9aabbb;
+        --rule: #d8e3ed;
+        --rule-strong: #b8ccdd;
+        --accent: #0b5b96;
+        --accent-tint: #e6f1fa;
+        --accent-soft: #c5dced;
+        --alert: #d84b3f;
+        --alert-tint: #fff1ef;
+        --success: #397b68;
+        --success-tint: #edf7f2;
+        --warm: #ae6a1c;
+        --warm-tint: #fff6e8;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; min-width: 1180px; background: var(--paper); color: var(--strong); font-family: "PingFang SC", "Noto Sans SC", sans-serif; }
+      body { padding: 28px; }
+      .shell { max-width: 1840px; margin: 0 auto; }
+      .eyebrow { margin: 0 0 8px; color: var(--muted); font: 600 12px/1 "PingFang SC", "Noto Sans SC", sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+      h1 { margin: 0; font: 400 clamp(32px, 4vw, 50px)/1 "Noto Serif SC", "Songti SC", serif; letter-spacing: -.02em; }
+      .lede { max-width: 1040px; margin: 12px 0 0; color: var(--muted); font-size: 16px; line-height: 1.6; }
+      .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+      .meta span, .chip { display: inline-flex; align-items: center; min-height: 28px; padding: 5px 10px; border: 1px solid var(--rule); border-radius: 6px; background: var(--card); color: var(--muted); font-size: 12px; }
+      .meta .primary, .chip.primary { border-color: var(--accent-soft); background: var(--accent-tint); color: var(--accent); font-weight: 600; }
+      .meta .warning, .chip.warning { border-color: #efd7af; background: var(--warm-tint); color: var(--warm); font-weight: 600; }
+      .figure { margin-top: 24px; border: 1px solid var(--rule); border-radius: 10px; background: var(--card); overflow: hidden; }
+      .figure-head { display: flex; align-items: baseline; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--rule); }
+      .figure-index { color: var(--accent); font: 600 12px/1 "PingFang SC", "Noto Sans SC", sans-serif; letter-spacing: .1em; }
+      h2 { margin: 0; font-size: 21px; line-height: 1.2; }
+      .figure-head p { margin: 0 0 0 auto; color: var(--muted); font-size: 13px; }
+      .canvas { overflow-x: auto; padding: 14px 18px 18px; background: var(--paper); }
+      svg { display: block; width: 100%; min-width: 1180px; height: auto; }
+      .edge { fill: none; stroke: #527d99; stroke-width: 2; marker-end: url(#arrow); }
+      .edge-accent { fill: none; stroke: var(--accent); stroke-width: 2.4; marker-end: url(#arrow-accent); }
+      .edge-alert { fill: none; stroke: var(--alert); stroke-width: 2; stroke-dasharray: 7 5; marker-end: url(#arrow-alert); }
+      .edge-label { fill: var(--muted); font-size: 12px; font-weight: 600; }
+      .edge-label.alert { fill: var(--alert); }
+      .node { fill: var(--card); stroke: var(--rule-strong); stroke-width: 1.5; }
+      .node-focal { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 2; }
+      .node-warm { fill: var(--warm-tint); stroke: #e1b66f; stroke-width: 1.5; }
+      .node-alert { fill: var(--alert-tint); stroke: var(--alert); stroke-width: 1.7; }
+      .node-success { fill: var(--success-tint); stroke: #96cbb9; stroke-width: 1.5; }
+      .canvas svg text { opacity: 1; }
+      .node-title { fill: #0d2f52; font-size: 16px; font-weight: 700; }
+      .node-title.focal { fill: #0b5b96; }
+      .node-title.alert { fill: #d84b3f; }
+      .node-copy { fill: #6f849b; font-size: 12px; font-weight: 500; }
+      .node-copy.strong { fill: #14385f; }
+      .node-kicker { fill: #6f849b; font: 600 10px/1 "PingFang SC", "Noto Sans SC", sans-serif; letter-spacing: .08em; }
+      .node-kicker.alert { fill: #d84b3f; }
+      .decision { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.8; }
+      .decision-warm { fill: var(--warm-tint); stroke: #d99e4a; stroke-width: 1.8; }
+      .decision-title { fill: var(--strong); font-size: 14px; font-weight: 700; text-anchor: middle; }
+      .decision-copy { fill: var(--muted); font-size: 11px; text-anchor: middle; }
+      .start { fill: var(--strong); stroke: var(--strong); stroke-width: 1; }
+      .start-title { fill: #ffffff; font-size: 15px; font-weight: 700; text-anchor: middle; }
+      .start-copy { fill: #c5dced; font-size: 11px; text-anchor: middle; }
+      .note { fill: var(--paper); stroke: var(--rule); stroke-width: 1.2; }
+      .note-title { fill: #0d2f52; font-size: 14px; font-weight: 700; }
+      .note-copy { fill: #6f849b; font-size: 12px; }
+      .note-copy.alert { fill: #d84b3f; }
+      .section-label { fill: var(--muted); font: 600 11px/1 "PingFang SC", "Noto Sans SC", sans-serif; letter-spacing: .1em; }
+      .legend { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 24px 18px; border-top: 1px solid var(--rule); }
+      .legend .chip::before { content: ""; width: 7px; height: 7px; margin-right: 7px; border-radius: 50%; background: var(--accent); }
+      .legend .chip.warning::before { background: var(--warm); }
+      .legend .chip.alert::before { background: var(--alert); }
+      .legend .chip.success::before { background: var(--success); }
+      .evidence { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 0 24px 20px; }
+      .evidence-card { min-height: 126px; padding: 15px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); }
+      .evidence-card.alert { border-color: #efb5ae; background: var(--alert-tint); }
+      .selection-card { margin: 0 24px 20px; padding: 15px 16px; border: 1px solid #b9d4e8; border-radius: 6px; background: #f2f8fc; }
+      .selection-card h3 { margin: 0 0 7px; color: var(--strong); font-size: 14px; }
+      .selection-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+      .selection-card strong { color: var(--ink); }
+      .evidence-card h3 { margin: 0 0 7px; font-size: 14px; }
+      .evidence-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.65; }
+      .evidence-card strong { color: var(--ink); }
+      .footer { display: flex; gap: 20px; margin-top: 22px; padding: 16px 2px 0; border-top: 1px solid var(--rule); color: var(--muted); font-size: 12px; line-height: 1.6; }
+      .footer strong { color: var(--ink); }
+
+      .playbook-intro { display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px; padding: 20px 24px 14px; }
+      .playbook-rule { padding: 18px; border: 1px solid var(--accent-soft); border-radius: 8px; background: var(--accent-tint); }
+      .playbook-rule h3, .guide h3 { margin: 0 0 8px; font-size: 16px; }
+      .playbook-rule p, .guide p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+      .guide { padding: 18px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+      .guide-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+      .guide-step { padding: 10px; border: 1px solid var(--rule); border-radius: 6px; background: var(--card); }
+      .guide-step b { display: block; margin-bottom: 4px; color: var(--accent); font: 600 11px/1 "PingFang SC", "Noto Sans SC", sans-serif; }
+      .guide-step span { display: block; color: var(--ink); font-size: 12px; line-height: 1.45; }
+      .playbook-group { padding: 0 24px 18px; }
+      .playbook-group h3 { margin: 0; padding: 14px 0 10px; border-top: 1px solid var(--rule); color: var(--strong); font-size: 16px; }
+      .playbook-table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 7px; }
+      .playbook-table { width: 100%; min-width: 1180px; border-collapse: collapse; table-layout: fixed; background: var(--card); }
+      .playbook-table th, .playbook-table td { padding: 10px 11px; border-bottom: 1px solid var(--rule); vertical-align: top; text-align: left; font-size: 12px; line-height: 1.55; }
+      .playbook-table th { background: #eef4f8; color: var(--muted); font-weight: 700; }
+      .playbook-table tr:last-child td { border-bottom: 0; }
+      .playbook-table td:first-child { width: 66px; color: var(--accent); font: 600 11px/1.2 "PingFang SC", "Noto Sans SC", sans-serif; }
+      .playbook-table td:nth-child(2) { width: 20%; color: var(--strong); font-weight: 600; }
+      .playbook-table td:nth-child(3) { width: 18%; color: var(--ink); }
+      .playbook-table td:nth-child(4) { width: 31%; color: var(--muted); }
+      .playbook-table td:nth-child(5) { width: 18%; color: var(--ink); }
+      .playbook-table td:nth-child(6) { width: 17%; color: var(--alert); }
+      .playbook-table .tag { display: inline-flex; padding: 2px 6px; border: 1px solid var(--accent-soft); border-radius: 4px; background: var(--accent-tint); color: var(--accent); font-size: 11px; }
+      .playbook-table .hold { color: var(--warm); }
+      .playbook-note { margin: 0 24px 20px; padding: 12px 14px; border-left: 3px solid var(--alert); background: var(--alert-tint); color: var(--muted); font-size: 12px; line-height: 1.6; }
+      @media (max-width: 900px) { .playbook-intro { grid-template-columns: 1fr; } .guide-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+      @media (max-width: 900px) { body { padding: 16px; } .figure-head { display: block; } .figure-head p { margin-top: 8px; } .evidence { grid-template-columns: 1fr; } }
+      @media print { body { padding: 0; } .figure { break-inside: avoid; } .canvas { overflow: visible; } svg { min-width: 0; } }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <p class="eyebrow">国网项目 · 询价资料结构剖析</p>
+      <h1>国网项目询价资料结构剖析图</h1>
+      <p class="lede">这不是按技术编号 查一张表，而是把每条货物行放回本次包，按现象选择证据链。先判断串或单件，再沿货物清单、技术规范、匹配拆解、图册和 U9 逐层核对，最后把结果分成已确认、待裁定和待补。</p>
+      <div class="meta">
+        <span class="primary">主键：技术编号 + 父级货物 + 条件</span>
+        <span>对象：金具串 / 直接采购单件</span>
+        <span>人工裁定：技术选型与阻断</span>
+        <span class="warning">缺条件不自动定型</span>
+      </div>
+
+      <section class="figure" aria-labelledby="overview-title">
+        <header class="figure-head"><span class="figure-index">01 / 项目资料结构总览</span><h2 id="overview-title">国网项目询价资料结构：从项目到可核价 物料清单</h2><p>按项目、包、货物行和技术资料逐层剖析</p></header>
+        <div class="canvas">
+          <svg viewBox="0 0 1440 560" role="img" aria-labelledby="overview-svg-title overview-svg-desc">
+            <title id="overview-svg-title">国网项目询价资料结构总览</title>
+            <desc id="overview-svg-desc">从项目和包开始，逐层查看货物清单、技术规范、附图图册和拆解匹配，最后形成技术确认结果、物料清单 及 U9 状态。</desc>
+            <defs>
+              <marker id="arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0 L9 3.5 L0 7 Z" fill="#527d99"></path></marker>
+              <marker id="arrow-accent" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0 L9 3.5 L0 7 Z" fill="#0b5b96"></path></marker>
+              <marker id="arrow-alert" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0 L9 3.5 L0 7 Z" fill="#d84b3f"></path></marker>
+            </defs>
+            <text x="42" y="42" class="section-label">第一层：项目与本次包</text>
+            <path d="M160 255 H190" class="edge"></path><path d="M370 255 H400" class="edge"></path>
+            <path d="M580 255 H610" class="edge-accent"></path><path d="M790 255 H820" class="edge-accent"></path>
+            <path d="M1000 255 H1030" class="edge-accent"></path><path d="M1210 255 H1240" class="edge-accent"></path>
+            <path d="M490 310 V400 H650" class="edge-alert"></path><path d="M700 320 V400 H650" class="edge"></path>
+            <text x="592" y="238" class="edge-label">串 / 单件</text>
+            <text x="512" y="386" class="edge-label alert">条件不足 / 冲突</text>
+            <text x="715" y="386" class="edge-label">技术裁定</text>
+            <g transform="translate(36 204)"><rect width="124" height="102" rx="20" class="start"/><g class="text-layer"><text x="62" y="40" class="start-title">项目与本次包</text><text x="62" y="62" class="start-copy">项目 · 电网类型 · 电压</text><text x="62" y="80" class="start-copy">包号 · 保留原始来源</text></g></g>
+            <g transform="translate(190 204)"><rect width="180" height="102" rx="6" class="node"/><g class="text-layer"><text x="16" y="28" class="node-kicker">01 / 资料入口</text><text x="16" y="56" class="node-title">货物清单</text><text x="16" y="77" class="node-copy">包名 · 品名 · 数量 · 技术编号</text><text x="16" y="93" class="node-copy">先限定本次包和货物行</text></g></g>
+            <g transform="translate(390 204)"><polygon points="100,0 200,51 100,102 0,51" class="decision"></polygon><text x="100" y="46" class="decision-title">对象是哪类？</text><text x="100" y="65" class="decision-copy">串 / 单件 / 待判</text></g>
+            <g transform="translate(610 204)"><rect width="180" height="102" rx="6" class="node-focal"/><g class="text-layer"><text x="16" y="28" class="node-kicker">02 / 技术依据</text><text x="16" y="56" class="node-title focal">技术规范</text><text x="16" y="77" class="node-copy strong">技术编号 · 品名 · 扩展描述</text><text x="16" y="93" class="node-copy strong">项目要求 · 适用条件</text></g></g>
+            <g transform="translate(820 204)"><polygon points="90,0 180,51 90,102 0,51" class="decision-warm"></polygon><text x="90" y="46" class="decision-title">图纸资料齐备？</text><text x="90" y="65" class="decision-copy">版本 · 图号 · 条件</text></g>
+            <g transform="translate(1030 204)"><rect width="180" height="102" rx="6" class="node-success"/><g class="text-layer"><text x="16" y="28" class="node-kicker">03 / 结构对照</text><text x="16" y="56" class="node-title">附图、图册与拆解</text><text x="16" y="77" class="node-copy">组装图 · 子件 · 分配量</text><text x="16" y="93" class="node-copy">分册 · 版本 · 图号</text></g></g>
+            <g transform="translate(1240 204)"><rect width="164" height="102" rx="6" class="node-focal"/><g class="text-layer"><text x="16" y="28" class="node-kicker">04 / 结构结论</text><text x="16" y="56" class="node-title focal">技术确认 → 物料清单</text><text x="16" y="77" class="node-copy strong">串 + 子件 + 单件</text><text x="16" y="93" class="node-copy strong">U9 状态独立记录</text></g></g>
+            <g transform="translate(650 400)"><rect width="260" height="82" rx="6" class="node-alert"/><g class="text-layer"><text x="16" y="28" class="node-kicker alert">资料缺口 / 冲突</text><text x="16" y="52" class="node-title alert">补资料或技术裁定</text><text x="16" y="70" class="node-copy alert">不猜型号，不借用无关父级</text></g></g>
+            <g transform="translate(970 400)"><rect width="300" height="82" rx="6" class="note"/><g class="text-layer"><text x="16" y="28" class="note-title">结果不是一个状态</text><text x="16" y="51" class="note-copy">检索命中 · 技术确认 · U9 可核价</text><text x="16" y="69" class="note-copy">三者分别展示</text></g></g>
+          </svg>
+        </div>
+        <div class="legend"><span class="chip primary">主流程</span><span class="chip success">已确认</span><span class="chip warning">需核对条件</span><span class="chip alert">阻断 / 待补</span></div>
+      </section>
+
+      <section class="figure" aria-labelledby="classify-title">
+        <header class="figure-head"><span class="figure-index">02 / 资料对象判别</span><h2 id="classify-title">先判断采购对象，再选择检索分支</h2><p>单位和拆解行数不能单独证明是串</p></header>
+        <div class="canvas">
+          <svg viewBox="0 0 1440 620" role="img" aria-labelledby="classify-svg-title classify-svg-desc">
+            <title id="classify-svg-title">金具串与直接采购单件判断</title>
+            <desc id="classify-svg-desc">按每条货物行判断对象是否明确，再分为金具串、直接采购单件或需要补充和技术裁定的模糊对象。</desc>
+            <defs>
+              <marker id="arrow2" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0 L9 3.5 L0 7 Z" fill="#527d99"></path></marker>
+              <marker id="arrow2-alert" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0 L9 3.5 L0 7 Z" fill="#d84b3f"></path></marker>
+            </defs>
+            <path d="M170 282 H270" class="edge" marker-end="url(#arrow2)"></path><path d="M480 282 H500" class="edge" marker-end="url(#arrow2)"></path>
+            <path d="M595 332 V475 H520" class="edge-alert" marker-end="url(#arrow2-alert)"></path>
+            <path d="M690 282 H720" class="edge" marker-end="url(#arrow2)"></path><path d="M802 332 V430 H930" class="edge" marker-end="url(#arrow2)"></path>
+            <path d="M884 282 H930" class="edge-accent" marker-end="url(#arrow2)"></path>
+            <text x="490" y="265" class="edge-label">已识别</text><text x="405" y="462" class="edge-label alert">缺字段 / 冲突</text><text x="895" y="265" class="edge-label">是</text><text x="814" y="414" class="edge-label">否</text>
+            <g transform="translate(34 232)"><rect width="136" height="100" rx="20" class="start"/><g class="text-layer"><text x="68" y="40" class="start-title">一条货物行</text><text x="68" y="62" class="start-copy">名称 · 描述 · 单位</text><text x="68" y="80" class="start-copy">编码 · 扩展描述</text></g></g>
+            <g transform="translate(270 232)"><rect width="210" height="100" rx="6" class="node"/><g class="text-layer"><text x="16" y="28" class="node-kicker">对象线索</text><text x="16" y="56" class="node-title">读取对象线索</text><text x="16" y="76" class="node-copy">“见物料描述”要回查原文</text><text x="16" y="92" class="node-copy">保留文件、行号和版本</text></g></g>
+            <g transform="translate(500 232)"><polygon points="95,0 190,50 95,100 0,50" class="decision"></polygon><text x="95" y="45" class="decision-title">对象可确定？</text><text x="95" y="64" class="decision-copy">证据是否足够</text></g>
+            <g transform="translate(720 232)"><polygon points="82,0 164,50 82,100 0,50" class="decision-warm"></polygon><text x="82" y="45" class="decision-title">成套串？</text><text x="82" y="64" class="decision-copy">看父级结构和依据</text></g>
+            <g transform="translate(930 232)"><rect width="190" height="100" rx="6" class="node-focal"/><g class="text-layer"><text x="16" y="28" class="node-kicker">串型路径</text><text x="16" y="56" class="node-title focal">金具串路径</text><text x="16" y="76" class="node-copy strong">串型号 / 导地线条件</text><text x="16" y="92" class="node-copy strong">组装图 / 子件明细</text></g></g>
+            <g transform="translate(930 430)"><rect width="214" height="100" rx="6" class="node-success"/><g class="text-layer"><text x="16" y="28" class="node-kicker">直接采购单件</text><text x="16" y="56" class="node-title">直接采购单件</text><text x="16" y="76" class="node-copy">独立物资行，不挂串子件</text><text x="16" y="92" class="node-copy">进入完整核价报价范围</text></g></g>
+            <g transform="translate(520 475)"><rect width="290" height="88" rx="6" class="node-alert"/><g class="text-layer"><text x="16" y="28" class="node-kicker alert">技术裁定</text><text x="16" y="54" class="node-title alert">销售补充 + 技术裁定</text><text x="16" y="74" class="node-copy alert">不凭“套”或行数直接定型</text></g></g>
+            <g transform="translate(1150 430)"><rect width="260" height="100" rx="6" class="note"/><g class="text-layer"><text x="16" y="28" class="note-title">混合包按行分开</text><text x="16" y="52" class="note-copy">串与单件都纳入 物料清单</text><text x="16" y="70" class="note-copy">保持原货物行归属</text><text x="16" y="88" class="note-copy">避免重复计量</text></g></g>
+          </svg>
+        </div>
+      </section>
+
+      <section class="figure" aria-labelledby="string-title">
+        <header class="figure-head"><span class="figure-index">03 / 串型资料与图册</span><h2 id="string-title">串型检索：编码召回，图册补证</h2><p>图册是核对、补拆解和附表选型的依据</p></header>
+        <div class="canvas">
+          <svg viewBox="0 0 1440 650" role="img" aria-labelledby="string-svg-title string-svg-desc">
+            <title id="string-svg-title">串型检索与图册核对路径</title>
+            <desc id="string-svg-desc">串型先限定本包并精确关联父级货物，已有拆解则核对条件，缺失时使用品名、扩展描述和图册组装图补齐。</desc>
+            <defs>
+              <marker id="arrow3" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0 L9 3.5 L0 7 Z" fill="#527d99"></path></marker>
+              <marker id="arrow3-accent" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0 L9 3.5 L0 7 Z" fill="#0b5b96"></path></marker>
+              <marker id="arrow3-alert" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0 L9 3.5 L0 7 Z" fill="#d84b3f"></path></marker>
+            </defs>
+            <path d="M170 260 H250" class="edge" marker-end="url(#arrow3)"></path><path d="M460 260 H540" class="edge-accent" marker-end="url(#arrow3-accent)"></path>
+            <path d="M720 260 H800" class="edge" marker-end="url(#arrow3)"></path><path d="M905 310 V458 H1010" class="edge-alert" marker-end="url(#arrow3-alert)"></path>
+            <path d="M1010 260 H1100" class="edge-accent" marker-end="url(#arrow3-accent)"></path><path d="M1210 310 V458 H1010" class="edge-alert" marker-end="url(#arrow3-alert)"></path>
+            <text x="742" y="243" class="edge-label">是</text><text x="930" y="438" class="edge-label alert">否 / 缺资料</text><text x="1025" y="243" class="edge-label">核对</text><text x="1220" y="438" class="edge-label alert">条件冲突</text>
+            <g transform="translate(30 210)"><rect width="140" height="100" rx="20" class="start"/><g class="text-layer"><text x="70" y="40" class="start-title">串型线索</text><text x="70" y="62" class="start-copy">技术编号 · 串型号</text><text x="70" y="80" class="start-copy">导地线 · 电压</text></g></g>
+            <g transform="translate(250 210)"><rect width="210" height="100" rx="6" class="node"/><g class="text-layer"><text x="16" y="28" class="node-kicker">父级范围</text><text x="16" y="56" class="node-title">精确回查本包货物</text><text x="16" y="76" class="node-copy">父级品名 + 扩展描述</text><text x="16" y="92" class="node-copy">不跨包、不跨父级借用</text></g></g>
+            <g transform="translate(540 210)"><rect width="180" height="100" rx="6" class="node-focal"/><g class="text-layer"><text x="16" y="28" class="node-kicker">拆解匹配</text><text x="16" y="56" class="node-title focal">查金具最新分解</text><text x="16" y="76" class="node-copy strong">父级 + 条件 + 子件</text><text x="16" y="92" class="node-copy strong">读取分配量和单位</text></g></g>
+            <g transform="translate(800 210)"><polygon points="105,0 210,50 105,100 0,50" class="decision-warm"></polygon><text x="105" y="45" class="decision-title">完整且适用？</text><text x="105" y="64" class="decision-copy">来源 / 条件 / 用量</text></g>
+            <g transform="translate(1010 210)"><rect width="190" height="100" rx="6" class="node-success"/><g class="text-layer"><text x="16" y="28" class="node-kicker">技术确认</text><text x="16" y="56" class="node-title">技术核对串构成</text><text x="16" y="76" class="node-copy">型号、材质、数量、单位</text><text x="16" y="92" class="node-copy">通过后进入 物料清单</text></g></g>
+            <g transform="translate(1200 210)"><rect width="190" height="100" rx="6" class="node"/><g class="text-layer"><text x="16" y="28" class="node-kicker">图册核对</text><text x="16" y="56" class="node-title">定位图册与附表</text><text x="16" y="76" class="node-copy">目录 / 型号索引 / 图号</text><text x="16" y="92" class="node-copy">组装图 / 选择附表</text></g></g>
+            <g transform="translate(410 458)"><rect width="300" height="102" rx="6" class="note"/><g class="text-layer"><text x="16" y="28" class="note-title">图册用途</text><text x="16" y="51" class="note-copy">核对已有拆解，补齐缺失组成</text><text x="16" y="69" class="note-copy">按导线与包缠物选择线夹</text><text x="16" y="87" class="note-copy">记录分册、版本、图号与页码</text></g></g>
+            <g transform="translate(740 458)"><rect width="250" height="102" rx="6" class="node-alert"/><g class="text-layer"><text x="16" y="28" class="node-kicker alert">待处理</text><text x="16" y="54" class="node-title alert">补资料 / 技术裁定</text><text x="16" y="75" class="node-copy alert">没有原图不生成虚假子件</text><text x="16" y="92" class="node-copy alert">旧版与新版不自动替换</text></g></g>
+            <g transform="translate(1010 458)"><rect width="380" height="102" rx="6" class="node-focal"/><g class="text-layer"><text x="16" y="28" class="node-kicker">案例 / 9111-500085194-00012</text><text x="16" y="54" class="node-title focal">12 条串型拆解记录</text><text x="16" y="75" class="node-copy strong">UK-1085 在第79256行，非330千伏误配</text><text x="16" y="92" class="node-copy strong">全局子件搜索必须带父级与技术编号</text></g></g>
+          </svg>
+        </div>
+        <div class="evidence">
+          <article class="evidence-card"><h3>FJY-80/760/340</h3><p>标书表1.362有该型号；最新拆解第79249行也有。当前差异是单位“付 / 件”和 U9 料号为空，状态应为<strong>型号已匹配、单位待核、U9待补</strong>。</p></article>
+          <article class="evidence-card"><h3>JL3/G1A-400/50</h3><p>标书保留完整导线型号，清单和拆解写成“400/50”。这是<strong>条件缩写风险</strong>，不能直接当成所有400/50导线的同义词。</p></article>
+          <article class="evidence-card alert"><h3>图册引用冲突</h3><p>同一图号在拆解记录中可能出现不同分册标注。保留原值，增加图册实核状态，由技术确认后再修正主数据。</p></article>
+        </div>
+        <div class="selection-card"><h3>悬垂线夹选择经验</h3><p>先看组装零件表：悬垂线夹、导线包缠物标注“见附表”时，不能直接从组装表读取型号。先确认<strong>完整导线型号或标称截面</strong>，再确认包缠物组合（如铝包带、护线条或两者组合），到对应图册的悬垂线夹选择附表定位条件行，读取该行的线夹型号；最后回组装图核对序号、数量、单位和总质量。导线或包缠物条件缺失时转技术确认，不能按电压、相似型号或最近一行猜选。</p></div>
+      </section>
+
+      <section class="figure" aria-labelledby="single-title">
+        <header class="figure-head"><span class="figure-index">04 / 单件资料与 U9</span><h2 id="single-title">单件与 U9：独立归属，分层处理</h2><p>型号相同不等于父级相同，U9可用也不等于技术已确认</p></header>
+        <div class="canvas">
+          <svg viewBox="0 0 1440 600" role="img" aria-labelledby="single-svg-title single-svg-desc">
+            <title id="single-svg-title">直接采购单件与 U9 异常处理</title>
+            <desc id="single-svg-desc">直接采购单件按货物行独立匹配，遇到多结果或缺映射时交技术和信息技术部门处理，不把其他父级串型记录直接借用。</desc>
+            <defs>
+              <marker id="arrow4" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0 L9 3.5 L0 7 Z" fill="#527d99"></path></marker>
+              <marker id="arrow4-accent" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0 L9 3.5 L0 7 Z" fill="#0b5b96"></path></marker>
+              <marker id="arrow4-alert" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0 0 L9 3.5 L0 7 Z" fill="#d84b3f"></path></marker>
+            </defs>
+            <path d="M170 245 H260" class="edge" marker-end="url(#arrow4)"></path><path d="M470 245 H550" class="edge-accent" marker-end="url(#arrow4-accent)"></path>
+            <path d="M750 245 H830" class="edge" marker-end="url(#arrow4)"></path><path d="M935 295 V450 H1050" class="edge-alert" marker-end="url(#arrow4-alert)"></path>
+            <path d="M1040 245 H1130" class="edge-accent" marker-end="url(#arrow4-accent)"></path><path d="M1230 295 V450 H1050" class="edge-alert" marker-end="url(#arrow4-alert)"></path>
+            <text x="766" y="228" class="edge-label">唯一且条件一致</text><text x="959" y="430" class="edge-label alert">多结果 / 缺条件</text><text x="1062" y="228" class="edge-label">建立单件关联</text><text x="1245" y="430" class="edge-label alert">缺映射 / 缺价格</text>
+            <g transform="translate(34 195)"><rect width="136" height="100" rx="20" class="start"/><g class="text-layer"><text x="68" y="40" class="start-title">独立货物行</text><text x="68" y="62" class="start-copy">FZC-20</text><text x="68" y="80" class="start-copy">数量 · 单位 · 包</text></g></g>
+            <g transform="translate(260 195)"><rect width="210" height="100" rx="6" class="node"/><g class="text-layer"><text x="16" y="28" class="node-kicker">直接采购单件范围</text><text x="16" y="56" class="node-title">精确限定当前货物</text><text x="16" y="76" class="node-copy">技术编号 + 品名 + 货物行</text><text x="16" y="92" class="node-copy">不挂接串型子件</text></g></g>
+            <g transform="translate(550 195)"><rect width="200" height="100" rx="6" class="node-focal"/><g class="text-layer"><text x="16" y="28" class="node-kicker">产品匹配</text><text x="16" y="56" class="node-title focal">产品与型号匹配</text><text x="16" y="76" class="node-copy strong">技术规范 / 物资描述</text><text x="16" y="92" class="node-copy strong">型号 / 材质 / 单位</text></g></g>
+            <g transform="translate(830 195)"><polygon points="105,0 210,50 105,100 0,50" class="decision-warm"></polygon><text x="105" y="45" class="decision-title">唯一且适用？</text><text x="105" y="64" class="decision-copy">不是最低价优先</text></g>
+            <g transform="translate(1040 195)"><rect width="190" height="100" rx="6" class="node-success"/><g class="text-layer"><text x="16" y="28" class="node-kicker">U9 关联</text><text x="16" y="56" class="node-title">关联 U9 信息</text><text x="16" y="76" class="node-copy">料号、单位、价格状态</text><text x="16" y="92" class="node-copy">进入单件 物料清单 核价</text></g></g>
+            <g transform="translate(1230 195)"><rect width="170" height="100" rx="6" class="node-alert"/><g class="text-layer"><text x="16" y="28" class="node-kicker alert">复核裁定</text><text x="16" y="56" class="node-title alert">技术裁定</text><text x="16" y="76" class="node-copy alert">多候选 / 条件冲突</text><text x="16" y="92" class="node-copy alert">保留来源差异</text></g></g>
+            <g transform="translate(420 450)"><rect width="290" height="90" rx="6" class="note"/><g class="text-layer"><text x="16" y="29" class="note-title">全局同型号记录</text><text x="16" y="53" class="note-copy">只作为候选参考</text><text x="16" y="72" class="note-copy">必须回到当前父级和货物行</text></g></g>
+            <g transform="translate(760 450)"><rect width="280" height="90" rx="6" class="node-alert"/><g class="text-layer"><text x="16" y="29" class="node-kicker alert">案例 / FZC-20</text><text x="16" y="55" class="node-title alert">单件映射待补</text><text x="16" y="75" class="node-copy alert">不能套用串型12条子件</text></g></g>
+            <g transform="translate(1050 450)"><rect width="350" height="90" rx="6" class="node"/><g class="text-layer"><text x="16" y="29" class="node-kicker">状态分层</text><text x="16" y="55" class="node-title">技术确认 / U9映射 / 价格可用</text><text x="16" y="75" class="node-copy">三个状态分别留存</text></g></g>
+          </svg>
+        </div>
+      </section>
+
+
+      <section class="figure" aria-labelledby="playbook-title">
+        <header class="figure-head"><span class="figure-index">05 / 检索经验清单</span><h2 id="playbook-title">检索经验清单：看到现象就知道下一步</h2><p>每条货物行按现象定位证据，不靠猜测跳步骤</p></header>
+        <div class="playbook-intro">
+          <div class="playbook-rule"><h3>统一入口</h3><p>本次包 → 原始货物行 → 对象分类 → 证据组合 → 技术确认 → 物料清单 / U9。所有场景都沿这条主线，只是根据“看到的现象”选择不同的下一步。</p></div>
+          <div class="guide"><h3>四步口诀</h3><div class="guide-list"><div class="guide-step"><b>01 / 锁范围</b><span>先筛本次包，保留文件、工作表、行号。</span></div><div class="guide-step"><b>02 / 判对象</b><span>先分串、单件、待判，不用“套”代替判断。</span></div><div class="guide-step"><b>03 / 走证据</b><span>编码、品名、条件、图册组合检索。</span></div><div class="guide-step"><b>04 / 分状态</b><span>匹配、技术确认、U9 价格分别留存。</span></div></div></div>
+        </div>
+        <div class="evidence">
+          <article class="evidence-card"><h3>案例 1 · 9977-500130699-00001</h3><p>规范多处写“见物料描述”，附件只给分册引用。先用技术编号 回查本次包货物行，再读具体品名、型号、扩展描述，判断串/单件；只有拿到具体型号后才去图册定位。输出必须保留“对象待技术确认”或完整证据链。</p></article>
+          <article class="evidence-card"><h3>案例 2 · 9977-500121236-00006</h3><p>规范明确是地线耐张/悬垂串，但按编码查不到拆解。先从本次包取得 <strong>BN2BG-40-1007P</strong> 和 <strong>LBGJ-150-40AC</strong>，再定位 750千伏 2010 版图 6-8；图册条件不能直接当串型号。</p></article>
+          <article class="evidence-card alert"><h3>案例 3 · 9111-500085194-00012</h3><p>用“技术编号 + 父级品名 + 扩展描述”精确得到 12 条子件；<strong>UK-1085</strong> 在第 79256 行。<strong>FZC-20</strong> 是独立单件，不能套用这 12 条；<strong>FJY-80/760/340</strong> 需单独核单位和 U9。</p></article>
+        </div>
+        <div class="playbook-group"><h3>范围与对象判断</h3><div class="playbook-table-wrap"><table class="playbook-table"><thead><tr><th>编号</th><th>你看到的现象</th><th>先查什么</th><th>继续怎么走</th><th>必须留下的结果</th><th>不能直接做</th></tr></thead><tbody><tr><td>A1</td><td>总货物清单包含多个包</td><td>包名、分标、招标信息</td><td>先筛出本次包，再关联本包资料；同名包继续核对分包信息。</td><td>本次包原始货物行、文件/工作表/行号</td><td>未限定本次包就直接全表检索</td></tr><tr><td>A2</td><td>一个技术规范编码对应多条货物或多个型号</td><td>本包内的品名、扩展描述、数量</td><td>按货物行逐行处理，分别读取型号、条件和数量。</td><td>多个独立采购对象及各自来源</td><td>把同一编码合成一串</td></tr><tr><td>A3</td><td>本包全是金具串</td><td>每行串型号、导地线条件</td><td>每个串分别走串型检索，核对子件和每套用量。</td><td>每个串的构成、分配量、单位</td><td>用行数代替串的数量</td></tr><tr><td>A4</td><td>本包同时有串和直接采购单件</td><td>品名、物资描述、扩展描述</td><td>逐行分类；串走拆解，单件走产品匹配，两类都进入 物料清单。</td><td>串/单件归属、数量及核价范围</td><td>把单件挂到某个串下面</td></tr><tr><td>A5</td><td>本包全是直接采购单件</td><td>技术编号、品名、型号、单位</td><td>逐行匹配产品、技术条件和 U9，不进入串型子件路径。</td><td>单件 物料清单 与完整核价范围</td><td>因没有串就跳过技术确认</td></tr><tr><td>A6</td><td>只写“金具”“其他金具”“见物料描述”</td><td>货物清单原文、技术规范、附图</td><td>回查原始行和实际附图；证据不足交技术裁定类别。</td><td>分类依据或待判定状态</td><td>凭一个泛化词直接定型</td></tr><tr><td>A7</td><td>串、零件参数或文件描述互相冲突</td><td>货物行与图纸整体/组成关系</td><td>保留各来源原值，由技术裁定对象和适用条件。</td><td>裁定结论、来源差异和时间</td><td>用关键词或“套”自动覆盖冲突</td></tr></tbody></table></div></div>        <div class="playbook-group"><h3>金具串检索与拆解</h3><div class="playbook-table-wrap"><table class="playbook-table"><thead><tr><th>编号</th><th>你看到的现象</th><th>先查什么</th><th>继续怎么走</th><th>必须留下的结果</th><th>不能直接做</th></tr></thead><tbody><tr><td>B1</td><td>技术编号 命中完整适用拆解</td><td>父级品名、扩充描述、适用条件</td><td>确认父级和条件后读取子件、分配量、单位及 U9。</td><td>可供技术确认的串拆解</td><td>只看技术编号，不看父级条件</td></tr><tr><td>B2</td><td>同一编码命中多组串型/配置</td><td>父级品名、导地线、扩充描述</td><td>先按父级和条件分组，再在组内核对子件。</td><td>唯一候选或多组待裁定</td><td>把多组子件拼成一串</td></tr><tr><td>B3</td><td>规范明确是串，但编码查不到拆解</td><td>货物清单中的具体品名、串型号、扩展描述</td><td>用编码回查本包货物行，再用品名+扩展描述查匹配表。</td><td>串型拆解或缺口记录</td><td>停在“编码无结果”</td></tr><tr><td>B4</td><td>定制规范已给出具体组成</td><td>技术规范明细、关联图纸</td><td>按明细提取型号、数量、单位，分别保存原品名和选用产品。</td><td>有规范依据的拆解及 U9 状态</td><td>把产品型号改写成原品名</td></tr><tr><td>B5</td><td>型号明确但拆解缺行、缺用量或单位</td><td>指定分册、版本、串型号、图号</td><td>查组装图和材料明细，补齐可核验字段；缺资料则待补。</td><td>补齐记录或明确缺口</td><td>用相近串型的子件代替</td></tr><tr><td>B6</td><td>编码缺失但有串型号、图号或导地线</td><td>已有型号、附图/图册引用</td><td>按型号和条件继续检索，保留货物行关联。</td><td>可核对结果或待补条件</td><td>因为缺编码就判定无法处理</td></tr></tbody></table></div></div>        <div class="playbook-group"><h3>单件匹配与多结果</h3><div class="playbook-table-wrap"><table class="playbook-table"><thead><tr><th>编号</th><th>你看到的现象</th><th>先查什么</th><th>继续怎么走</th><th>必须留下的结果</th><th>不能直接做</th></tr></thead><tbody><tr><td>C1</td><td>单件可按技术编号 找到产品</td><td>技术规范、品名型号、材质</td><td>核对适用条件后关联 U9。</td><td>单件产品、来源、U9 状态</td><td>把命中记录直接当最终选型</td></tr><tr><td>C2</td><td>编码查不到，但物资描述含型号</td><td>货物清单物资描述</td><td>提取完整型号，再查产品/匹配记录。</td><td>型号匹配结果及来源</td><td>只用技术编号 作为唯一入口</td></tr><tr><td>C3</td><td>型号只匹配到一条记录</td><td>材质、规格、单位、导线条件</td><td>逐项核对后由技术确认。</td><td>唯一候选不等于自动采用</td><td>跳过技术确认</td></tr><tr><td>C4</td><td>型号多结果，扩展描述含导线</td><td>完整导线条件、父级关系</td><td>先按导线筛选；仍多结果再按所属串品名筛选，最后技术裁定。</td><td>候选差异和裁定结论</td><td>按第一条或最低价选</td></tr><tr><td>C5</td><td>多结果但扩展描述没有导线</td><td>物资描述、技术规范、附图</td><td>继续查原始条件；缺失时销售补充、技术裁定。</td><td>缺失条件、候选集、待裁定</td><td>借用其他货物的导线条件</td></tr><tr><td>C6</td><td>多结果区别在材质、结构、单重或 U9</td><td>产品差异字段、映射关系</td><td>展示差异，由技术判定；信息技术部门维护正确映射。</td><td>选型结论、料号、映射状态</td><td>把 U9 料号当选型依据</td></tr><tr><td>C7</td><td>所有路径都找不到适用产品</td><td>原始型号和已提供资料</td><td>核查资料完整性，技术确认补产品或另行处理。</td><td>未匹配原因及处理人</td><td>生成虚构产品、子件或料号</td></tr></tbody></table></div></div>        <div class="playbook-group"><h3>附图、图册与特殊条件</h3><div class="playbook-table-wrap"><table class="playbook-table"><thead><tr><th>编号</th><th>你看到的现象</th><th>先查什么</th><th>继续怎么走</th><th>必须留下的结果</th><th>不能直接做</th></tr></thead><tbody><tr><td>D1</td><td>已有完整且适用的拆解记录</td><td>分册、版本、图号、适用条件</td><td>核对记录后复用；有差异再展开原图。</td><td>复用依据和核验状态</td><td>每次无条件重翻图册</td></tr><tr><td>D2</td><td>附图是具体组装图</td><td>标题栏、型号、图号、序号明细</td><td>读取整体结构、子件序号、数量和技术说明。</td><td>组装结构、子件明细、页码</td><td>把示意图当完整明细</td></tr><tr><td>D3</td><td>只写“参见某分册”</td><td>货物清单型号、目录、型号/图号索引</td><td>先取得具体型号和条件，再定位实际图页。</td><td>具体页面、图号、组装资料</td><td>只保存分册名称</td></tr><tr><td>D4</td><td>串型号明确但拆解表无记录</td><td>适用图册组装图、材料明细、备注</td><td>用图册补齐拆解，核对替代和供货范围。</td><td>补齐子件或待补项</td><td>用相近型号替代</td></tr><tr><td>D5</td><td>悬垂线夹受铝包带/护线条影响</td><td>图册选择附表、导线、包缠物</td><td>按附表条件定位具体线夹型号，并保存表行。</td><td>线夹、包缠物、附表依据</td><td>按型号相似度选线夹</td></tr><tr><td>D6</td><td>需要核对子件规格或连接要求</td><td>元件结构图、尺寸/参数表</td><td>按子件型号查适用参数和连接方式。</td><td>子件适用性依据</td><td>把元件图当整串图</td></tr><tr><td>D7</td><td>匹配表引用 2010/2011，现有 2024 图册</td><td>原版本、变更关系、旧版图册</td><td>核对版本关系，必要时补旧版或技术确认。</td><td>可用版本或版本缺口</td><td>静默用 2024 替换旧版</td></tr><tr><td>D8</td><td>文档 有示意图，组装图另附电子版</td><td>附件目录、电子组装图</td><td>核查配套电子资料是否已提供，定位实际明细。</td><td>有效拆解资料或缺件清单</td><td>以 文档 文件名证明资料齐全</td></tr><tr><td>D9</td><td>电压、导线、图册或条件不一致</td><td>各来源原值、适用条款</td><td>保留差异，交技术裁定最终条件。</td><td>最终条件及冲突记录</td><td>自动用“最新”覆盖原需求</td></tr><tr><td>D10</td><td>需要区分耐寒/非耐寒标准品</td><td>客户确认的地域、温度、标准规则</td><td>按规则辅助推荐，规则缺失或冲突交技术确认。</td><td>候选品类及规则依据</td><td>按项目所在地文字猜耐寒等级</td></tr></tbody></table></div></div>        <div class="playbook-group"><h3>U9、确认与后续变更</h3><div class="playbook-table-wrap"><table class="playbook-table"><thead><tr><th>编号</th><th>你看到的现象</th><th>先查什么</th><th>继续怎么走</th><th>必须留下的结果</th><th>不能直接做</th></tr></thead><tbody><tr><td>E1</td><td>已有 U9 且有本次有效价格</td><td>物料身份、计价单位、含税属性</td><td>核对价格字段和有效版本后进入核价。</td><td>可核价来源及查询记录</td><td>有料号就标记价格可用</td></tr><tr><td>E2</td><td>产品已选定但没有 U9</td><td>确认物料、信息技术部门映射结果</td><td>信息技术部门维护映射，技术核对物料身份。</td><td>物料清单 保留 U9 待映射</td><td>手工编造料号</td></tr><tr><td>E3</td><td>U9 有料号但价格缺失/含义不明</td><td>字段定义、计价单位、价格版本</td><td>财务与信息技术部门核实价格口径，价格待补。</td><td>价格待补原因和责任人</td><td>按零价计算或标记同步完成</td></tr><tr><td>E4</td><td>技术分类、选型或图册差异未裁定</td><td>匹配结果、风险问题、来源</td><td>保留候选，提交技术处理；受影响项不能最终采用。</td><td>待裁定状态和处理结论</td><td>为了生成 物料清单 强行选定</td></tr><tr><td>E5</td><td>销售与技术完成当前版本确认</td><td>两方确认版本、串/单件及子件</td><td>生成 物料清单，串、单件和子件分别保留归属。</td><td>物料清单 版本、U9/技术状态</td><td>只要 U9 有值就生成 物料清单</td></tr><tr><td>E6</td><td>确认后型号、导线或包缠物改变</td><td>变更前后来源、受影响项</td><td>重新检索并复核，保留历史版本，成本/报价按影响重审。</td><td>新确认版本和变更记录</td><td>直接修改旧结果不留版本</td></tr><tr><td>E7</td><td>同型号既是串内子件又是独立单件</td><td>串内分配量、独立采购数量、货物行</td><td>保留两种采购归属，分别核算需求量。</td><td>不重复、不漏计的 物料清单 用量</td><td>按型号合并后只保留一条</td></tr></tbody></table></div></div>        <p class="playbook-note"><strong>判定边界：</strong>技术编号 负责关联和召回，不能单独决定串数、子件数或最终型号；型号命中不等于技术确认，U9 料号存在也不等于价格可用。遇到缺条件、版本冲突、单位冲突或父级不一致，必须保留差异并转技术/信息技术部门/财务对应处理。</p>
+      </section>
+
+      <footer class="footer"><div><strong>使用原则：</strong>型号相同只代表候选相同，最终匹配必须回到当前包、父级货物、技术编号和适用条件。</div><div><strong>状态原则：</strong>已找到记录不等于技术已确认，技术已确认也不等于 U9 价格已可用。</div><div><strong>绘图范围：</strong>检索与异常处理；报价成本、权限边界及流程导航不放入本图。</div></footer>
+    </main>
+  </body>
+</html>

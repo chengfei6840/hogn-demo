@@ -1,0 +1,13 @@
+{
+  "pages": 41,
+  "sections": 39,
+  "screenshots": 37,
+  "checks": [
+    "DOCX rendered to PDF and PNG",
+    "No isolated image-only pages",
+    "All screenshot assets present",
+    "Local-file project upload guidance removed",
+    "Role permissions save automatically",
+    "Customer flow covered through archive"
+  ]
+}

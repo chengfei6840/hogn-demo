@@ -1,0 +1,15 @@
+{
+  "workflow": "pm-start → pm-requirements-v1",
+  "input_prd": "docs/正式项目需求文档_红光金具智能报价系统_2026-09-08.md",
+  "target_folder": "docs/pm-run-2026-09-08",
+  "overwrite_authorized": true,
+  "backup": "docs/archive/pm-run-before-v1.4-rerun-20260908-150600",
+  "status": "context_confirmed_running",
+  "proposed_metric": "关键业务场景可验收覆盖率",
+  "proposed_groups": 39,
+  "target_percent": 100,
+  "production_pass_claim": false,
+  "next_action": "上下文与指标确认后替换旧运行目录并进入P0至P2；各新人工Gate保持待确认",
+  "old_approvals_reusable": false,
+  "confirmed_at": "2026-09-08T15:08:32.831631+08:00"
+}

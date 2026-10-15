@@ -1,0 +1,11 @@
+{
+  "structural_check": "PASS",
+  "requirements": 42,
+  "scenario_groups": 39,
+  "branches": 124,
+  "accepted_open": 17,
+  "issues": [],
+  "source_drift": [],
+  "note": "结构校验不代替独立定义审查或功能测试；来源变化不静默更新哈希",
+  "formal_validator_count_note": "通用SRS正则未包含FR-P2/P3且将历史AC计数；本检查按精确表格核对42条要求与42个当前AC"
+}

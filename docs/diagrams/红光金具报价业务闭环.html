@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>红光金具报价业务闭环</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
+    />
+    <style>
+      :root {
+        --paper: #f4f7fb;
+        --paper-strong: #ffffff;
+        --ink: #14385f;
+        --ink-strong: #0d2f52;
+        --muted: #6f849b;
+        --soft: #9aabbb;
+        --rule: #d8e3ed;
+        --rule-strong: #b8ccdd;
+        --accent: #0b5b96;
+        --accent-tint: #e6f1fa;
+        --accent-soft: #c5dced;
+        --alert: #d84b3f;
+        --alert-tint: #fff1ef;
+        --system: #527d99;
+        --system-tint: #eef5f9;
+        --success: #397b68;
+        --success-tint: #edf7f2;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-width: 1180px;
+        background: var(--paper);
+        color: var(--ink-strong);
+        font-family: "Geist", "Noto Sans SC", "PingFang SC", sans-serif;
+      }
+
+      body {
+        padding: 24px;
+      }
+
+      .shell {
+        max-width: 1840px;
+        margin: 0 auto;
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--muted);
+        font: 600 12px/1 "Geist Mono", "SFMono-Regular", monospace;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        color: var(--ink-strong);
+        font: 400 clamp(32px, 4vw, 48px)/1 "Instrument Serif", "Noto Serif SC", serif;
+        letter-spacing: -0.02em;
+      }
+
+      .lede {
+        max-width: 980px;
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.55;
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+      }
+
+      .meta span {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 5px 10px;
+        border: 1px solid var(--rule);
+        border-radius: 6px;
+        background: var(--paper-strong);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .meta .primary {
+        border-color: var(--accent-soft);
+        background: var(--accent-tint);
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .canvas-wrap {
+        margin-top: 24px;
+        overflow-x: auto;
+        border: 1px solid var(--rule);
+        border-radius: 10px;
+        background: var(--paper);
+      }
+
+      svg {
+        display: block;
+        width: 100%;
+        min-width: 1180px;
+        height: auto;
+      }
+
+      .slot-label {
+        fill: var(--muted);
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      .group-label {
+        fill: var(--muted);
+        font: 600 11px/1 "Geist Mono", "SFMono-Regular", monospace;
+        letter-spacing: 0.08em;
+      }
+
+      .stage-number {
+        fill: var(--muted);
+        font: 600 12px/1 "Geist Mono", "SFMono-Regular", monospace;
+      }
+
+      .stage-number.focal {
+        fill: var(--accent);
+      }
+
+      .stage-title {
+        fill: var(--ink-strong);
+        font-size: 17px;
+        font-weight: 700;
+      }
+
+      .stage-title.focal {
+        fill: var(--accent);
+      }
+
+      .cell-kicker {
+        fill: var(--muted);
+        font: 600 10px/1 "Geist Mono", "SFMono-Regular", monospace;
+        letter-spacing: 0.07em;
+      }
+
+      .cell-title {
+        fill: var(--ink-strong);
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .cell-title.alert {
+        fill: var(--alert);
+      }
+
+      .cell-copy {
+        fill: var(--muted);
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .cell-copy.strong {
+        fill: var(--ink);
+      }
+
+      .cell-copy.alert {
+        fill: var(--alert);
+      }
+
+      .cell-kicker.alert {
+        fill: var(--alert);
+      }
+
+      .handoff-label {
+        fill: var(--soft);
+        font: 600 10px/1 "Geist Mono", "SFMono-Regular", monospace;
+        letter-spacing: 0.08em;
+      }
+
+      .note-title {
+        fill: var(--ink-strong);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .note-copy {
+        fill: var(--muted);
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .footer-title {
+        fill: var(--ink);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .footer-copy {
+        fill: var(--muted);
+        font-size: 11px;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --paper: #102238;
+          --paper-strong: #162d46;
+          --ink: #e3eef8;
+          --ink-strong: #f3f8fc;
+          --muted: #a9bdd0;
+          --soft: #829bb2;
+          --rule: #2d4862;
+          --rule-strong: #4c6c89;
+          --accent: #75b5e1;
+          --accent-tint: #183d5c;
+          --accent-soft: #3b6686;
+          --alert: #f07b6e;
+          --alert-tint: #4a2b2a;
+          --system: #91b4cb;
+          --system-tint: #1f3a50;
+          --success: #86c2ab;
+          --success-tint: #1d3d3b;
+        }
+      }
+
+      @media print {
+        body {
+          padding: 0;
+        }
+
+        .canvas-wrap {
+          overflow: visible;
+          border: 0;
+        }
+
+        svg {
+          min-width: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <p class="eyebrow">HOGN · PRODUCT TO DEAL</p>
+      <h1>红光金具报价业务闭环</h1>
+      <p class="lede">
+        以“项目 → 包”为台账主线，把货物清单解析、销售与技术确认、BOM、U9成本核算、报价审批、销售外发和成交追踪串成一条可回看的业务链。
+      </p>
+      <div class="meta" aria-label="图示说明">
+        <span class="primary">按实际项目节点渲染流程步骤条</span>
+        <span>每个包独立报价、审批、外发与成交追踪</span>
+        <span>输入、门禁、输出和责任角色同屏可见</span>
+      </div>
+
+      <div class="canvas-wrap">
+        <svg
+          viewBox="0 0 1840 860"
+          role="img"
+          aria-labelledby="redlight-diagram-title redlight-diagram-desc"
+          preserveAspectRatio="xMinYMin meet"
+        >
+          <title id="redlight-diagram-title">红光金具报价业务闭环</title>
+          <desc id="redlight-diagram-desc">
+            从项目和包建立开始，经过资料解析、销售需求确认、技术选型与风险裁定、BOM生成、财务核价、方案审批、财务签发、销售外发和成交追踪。技术必须参与选型并裁定技术阻断，串型成本直接使用U9子件价格，单件金具仍纳入完整核价范围。
+          </desc>
+
+          <defs>
+            <pattern id="redlight-dots" width="24" height="24" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="0.8" fill="#8ea7bd" opacity="0.18" />
+            </pattern>
+            <marker id="redlight-arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+              <polygon points="0 0, 10 4, 0 8" fill="#6f849b" />
+            </marker>
+            <marker id="redlight-arrow-accent" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+              <polygon points="0 0, 10 4, 0 8" fill="#0b5b96" />
+            </marker>
+            <marker id="redlight-arrow-alert" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+              <polygon points="0 0, 10 4, 0 8" fill="#d84b3f" />
+            </marker>
+          </defs>
+
+          <rect width="1840" height="860" fill="var(--paper)" />
+          <rect x="24" y="20" width="1792" height="820" rx="10" fill="url(#redlight-dots)" opacity="0.42" />
+
+          <g aria-label="三段业务叙事">
+            <rect x="150" y="148" width="790" height="26" rx="6" fill="var(--accent-tint)" stroke="var(--accent-soft)" />
+            <rect x="960" y="148" width="520" height="26" rx="6" fill="var(--system-tint)" stroke="var(--rule)" />
+            <rect x="1500" y="148" width="250" height="26" rx="6" fill="var(--success-tint)" stroke="var(--rule)" />
+            <text class="group-label" x="545" y="165" text-anchor="middle">01 · 需求接入与确认</text>
+            <text class="group-label" x="1220" y="165" text-anchor="middle">02 · BOM与核价审批</text>
+            <text class="group-label" x="1625" y="165" text-anchor="middle">03 · 外发与成交</text>
+          </g>
+
+          <g aria-label="阶段交接">
+            <line x1="400" y1="219" x2="428" y2="219" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#redlight-arrow)" />
+            <line x1="670" y1="219" x2="698" y2="219" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#redlight-arrow)" />
+            <line x1="940" y1="219" x2="968" y2="219" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#redlight-arrow-accent)" />
+            <line x1="1210" y1="219" x2="1238" y2="219" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#redlight-arrow)" />
+            <line x1="1480" y1="219" x2="1508" y2="219" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#redlight-arrow)" />
+          </g>
+
+          <g aria-hidden="true">
+            <line x1="40" y1="246" x2="1796" y2="246" stroke="var(--rule)" stroke-width="1" />
+            <line x1="40" y1="342" x2="1796" y2="342" stroke="var(--rule)" stroke-width="1" />
+            <line x1="40" y1="438" x2="1796" y2="438" stroke="var(--rule)" stroke-width="1" />
+            <line x1="40" y1="534" x2="1796" y2="534" stroke="var(--rule)" stroke-width="1" />
+            <line x1="40" y1="630" x2="1796" y2="630" stroke="var(--rule)" stroke-width="1" />
+            <line x1="130" y1="184" x2="130" y2="630" stroke="var(--rule-strong)" stroke-width="1" />
+          </g>
+
+          <g aria-label="语义槽位标签">
+            <text class="slot-label" x="78" y="304" text-anchor="middle">输入</text>
+            <text class="slot-label" x="78" y="400" text-anchor="middle">处理</text>
+            <text class="slot-label" x="78" y="496" text-anchor="middle">门禁</text>
+            <text class="slot-label" x="78" y="592" text-anchor="middle">输出</text>
+          </g>
+
+          <g aria-label="项目与包">
+            <rect x="150" y="184" width="250" height="58" rx="8" fill="var(--paper-strong)" stroke="var(--rule-strong)" />
+            <circle cx="175" cy="213" r="14" fill="var(--accent-tint)" stroke="var(--accent-soft)" />
+            <text class="stage-number" x="175" y="217" text-anchor="middle">01</text>
+            <text class="stage-title" x="200" y="219">项目与包</text>
+
+            <rect x="150" y="260" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="166" y="281">ENTRY</text>
+            <text class="cell-title" x="166" y="303">项目基础条件</text>
+            <text class="cell-copy" x="166" y="324">地区 · 电网类型 · 电压等级</text>
+
+            <rect x="150" y="356" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="166" y="377">OWNER · 销售</text>
+            <text class="cell-title" x="166" y="399">先建项目，再建包</text>
+            <text class="cell-copy" x="166" y="420">同一项目可创建包11、包12…</text>
+
+            <rect x="150" y="452" width="250" height="82" rx="8" fill="var(--accent-tint)" stroke="var(--accent-soft)" />
+            <text class="cell-kicker" x="166" y="473">GATE</text>
+            <text class="cell-title" x="166" y="495">包是独立流转单元</text>
+            <text class="cell-copy strong" x="166" y="516">每个包独立询价、核价、审批、外发</text>
+
+            <rect x="150" y="548" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="166" y="569">OUTPUT</text>
+            <text class="cell-title" x="166" y="591">项目 / 包台账</text>
+            <text class="cell-copy" x="166" y="612">地区规则版本随项目留存</text>
+          </g>
+
+          <g aria-label="资料解析">
+            <rect x="420" y="184" width="250" height="58" rx="8" fill="var(--paper-strong)" stroke="var(--rule-strong)" />
+            <circle cx="445" cy="213" r="14" fill="var(--system-tint)" stroke="var(--rule)" />
+            <text class="stage-number" x="445" y="217" text-anchor="middle">02</text>
+            <text class="stage-title" x="470" y="219">资料解析</text>
+
+            <rect x="420" y="260" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="436" y="281">ENTRY · 国网必填</text>
+            <text class="cell-title" x="436" y="303">货物清单 + 包文件</text>
+            <text class="cell-copy" x="436" y="324">招标文件、技术规范、附图</text>
+
+            <rect x="420" y="356" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="436" y="377">OWNER · 系统</text>
+            <text class="cell-title" x="436" y="399">先按包过滤，再关联</text>
+            <text class="cell-copy" x="436" y="420">货物项 ↔ 规范 ↔ 图册 ↔ 附件</text>
+
+            <rect x="420" y="452" width="250" height="82" rx="8" fill="var(--system-tint)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="436" y="473">GATE</text>
+            <text class="cell-title" x="436" y="495">来源不全就保留阻断</text>
+            <text class="cell-copy strong" x="436" y="516">不猜填，不把不同包自动合并</text>
+
+            <rect x="420" y="548" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="436" y="569">OUTPUT</text>
+            <text class="cell-title" x="436" y="591">货物项草稿</text>
+            <text class="cell-copy" x="436" y="612">字段来源、文件关系、缺失清单</text>
+          </g>
+
+          <g aria-label="销售与技术确认">
+            <rect x="690" y="184" width="250" height="58" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.5" />
+            <circle cx="715" cy="213" r="14" fill="var(--accent)" />
+            <text class="stage-number focal" x="715" y="217" text-anchor="middle" style="fill:#ffffff">03</text>
+            <text class="stage-title focal" x="740" y="219">销售确认与技术选型</text>
+
+            <rect x="690" y="260" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="706" y="281">ENTRY · 当前版本</text>
+            <text class="cell-title" x="706" y="303">客户条件 + 货物项</text>
+            <text class="cell-copy" x="706" y="324">销售确认需求，技术负责选型</text>
+
+            <rect x="690" y="356" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="706" y="377">OWNER · 销售 / 技术</text>
+            <text class="cell-title" x="706" y="399">销售补充，技术完成选型</text>
+            <text class="cell-copy" x="706" y="420">系统自动选路径，结果保留来源依据</text>
+
+            <rect x="690" y="452" width="250" height="82" rx="8" fill="var(--alert-tint)" stroke="var(--alert)" stroke-width="1.5" />
+            <text class="cell-kicker alert" x="706" y="473">FORCED BRANCH</text>
+            <text class="cell-title alert" x="706" y="495">检测到技术阻断</text>
+            <text class="cell-copy alert" x="706" y="516">技术裁定未完成，流程不能继续</text>
+
+            <rect x="690" y="548" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--accent-soft)" />
+            <text class="cell-kicker" x="706" y="569">OUTPUT</text>
+            <text class="cell-title" x="706" y="591">需求确认 / 选型确认</text>
+            <text class="cell-copy" x="706" y="612">技术裁定完成且阻断解除后才生成BOM</text>
+          </g>
+
+          <g aria-label="BOM生成">
+            <rect x="960" y="184" width="250" height="58" rx="8" fill="var(--paper-strong)" stroke="var(--rule-strong)" />
+            <circle cx="985" cy="213" r="14" fill="var(--system-tint)" stroke="var(--rule)" />
+            <text class="stage-number" x="985" y="217" text-anchor="middle">04</text>
+            <text class="stage-title" x="1010" y="219">BOM生成</text>
+
+            <rect x="960" y="260" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="976" y="281">ENTRY · 已确认结果</text>
+            <text class="cell-title" x="976" y="303">串型 / 单件 + 子件</text>
+            <text class="cell-copy" x="976" y="324">采购套数与每套用量分开保存</text>
+
+            <rect x="960" y="356" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="976" y="377">OWNER · 系统 / 技术</text>
+            <text class="cell-title" x="976" y="399">生成可回看的BOM</text>
+            <text class="cell-copy" x="976" y="420">品名、型号、单位、来源、U9信息</text>
+
+            <rect x="960" y="452" width="250" height="82" rx="8" fill="var(--system-tint)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="976" y="473">GATE · 红光内部IT</text>
+            <text class="cell-title" x="976" y="495">U9映射由IT维护</text>
+            <text class="cell-copy strong" x="976" y="516">串型不配置工艺路线和工艺价格</text>
+
+            <rect x="960" y="548" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="976" y="569">OUTPUT</text>
+            <text class="cell-title" x="976" y="591">BOM</text>
+            <text class="cell-copy" x="976" y="612">U9料号、子件价格；单件按适用规则带工艺</text>
+          </g>
+
+          <g aria-label="财务核价">
+            <rect x="1230" y="184" width="250" height="58" rx="8" fill="var(--paper-strong)" stroke="var(--rule-strong)" />
+            <circle cx="1255" cy="213" r="14" fill="var(--system-tint)" stroke="var(--rule)" />
+            <text class="stage-number" x="1255" y="217" text-anchor="middle">05</text>
+            <text class="stage-title" x="1280" y="219">财务核价</text>
+
+            <rect x="1230" y="260" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="1246" y="281">ENTRY · BOM</text>
+            <text class="cell-title" x="1246" y="303">U9子件价格 × 分配量</text>
+            <text class="cell-copy" x="1246" y="324">按采购量汇总，包含直接采购单件</text>
+
+            <rect x="1230" y="356" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="1246" y="377">OWNER · 财务</text>
+            <text class="cell-title" x="1246" y="399">汇总成本并生成方案</text>
+            <text class="cell-copy" x="1246" y="420">默认：保守25% · 标准20% · 竞争15%</text>
+
+            <rect x="1230" y="452" width="250" height="82" rx="8" fill="var(--system-tint)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="1246" y="473">GATE</text>
+            <text class="cell-title" x="1246" y="495">整包毛利率可改、可重算</text>
+            <text class="cell-copy strong" x="1246" y="516">含税 / 不含税价格 · 四位小数</text>
+
+            <rect x="1230" y="548" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="1246" y="569">OUTPUT</text>
+            <text class="cell-title" x="1246" y="591">成本版本 + 报价方案</text>
+            <text class="cell-copy" x="1246" y="612">财务选择方案后进入适用审批</text>
+          </g>
+
+          <g aria-label="审批签发与成交">
+            <rect x="1500" y="184" width="250" height="58" rx="8" fill="var(--success-tint)" stroke="var(--rule-strong)" />
+            <circle cx="1525" cy="213" r="14" fill="var(--success)" />
+            <text class="stage-number" x="1525" y="217" text-anchor="middle" style="fill:#ffffff">06</text>
+            <text class="stage-title" x="1550" y="219">审批签发与成交</text>
+
+            <rect x="1500" y="260" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="1516" y="281">ENTRY · 已选方案</text>
+            <text class="cell-title" x="1516" y="303">报价方案 + 审批配置</text>
+            <text class="cell-copy" x="1516" y="324">流程节点名称来自已发布配置</text>
+
+            <rect x="1500" y="356" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="1516" y="377">OWNER · 财务 / 董事长 / 销售</text>
+            <text class="cell-title" x="1516" y="399">财务签发，销售外发</text>
+            <text class="cell-copy" x="1516" y="420">董事长按条件审批；驳回回财务留痕</text>
+
+            <rect x="1500" y="452" width="250" height="82" rx="8" fill="var(--success-tint)" stroke="var(--rule)" />
+            <text class="cell-kicker" x="1516" y="473">GATE</text>
+            <text class="cell-title" x="1516" y="495">签发后报价冻结</text>
+            <text class="cell-copy strong" x="1516" y="516">销售下载已签发文件，不代表客户已收到</text>
+
+            <rect x="1500" y="548" width="250" height="82" rx="8" fill="var(--paper-strong)" stroke="var(--success)" />
+            <text class="cell-kicker" x="1516" y="569">OUTPUT</text>
+            <text class="cell-title" x="1516" y="591">客户议价中 → 成交追踪</text>
+            <text class="cell-copy" x="1516" y="612">成交 / 未成交 / 新报价版本</text>
+          </g>
+
+          <g aria-label="仍需客户确认的配置">
+            <rect x="40" y="654" width="1710" height="116" rx="8" fill="var(--alert-tint)" stroke="var(--rule)" />
+            <text class="note-title" x="60" y="682">仍需客户确认的配置</text>
+            <text class="note-copy" x="60" y="708">U9价格字段含义与含税属性、适用税率及正式舍入规则</text>
+            <text class="note-copy" x="60" y="730">地域耐寒映射、审批阈值及生产毛利率底线</text>
+          </g>
+
+          <g aria-label="图例">
+            <line x1="40" y1="794" x2="72" y2="794" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#redlight-arrow)" />
+            <text class="footer-copy" x="84" y="798">阶段交接</text>
+            <rect x="176" y="786" width="24" height="16" rx="4" fill="var(--accent-tint)" stroke="var(--accent)" />
+            <text class="footer-copy" x="212" y="798">关键门禁</text>
+            <rect x="292" y="786" width="24" height="16" rx="4" fill="var(--alert-tint)" stroke="var(--alert)" />
+            <text class="footer-copy" x="328" y="798">强制技术介入</text>
+            <text class="footer-title" x="1796" y="798" text-anchor="end">基于 PRD v1.8 · 2026-09-10</text>
+          </g>
+        </svg>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,569 @@
+[
+  {
+    "id": "FR-IN-01",
+    "title": "资料批次、ZIP清点及来源登记",
+    "groups": [
+      "SC-01"
+    ],
+    "slice": "SL-02",
+    "evidence": "E06/E09",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-01"
+  },
+  {
+    "id": "FR-IN-02",
+    "title": "单文件转换提取、质量及字段来源",
+    "groups": [
+      "SC-03"
+    ],
+    "slice": "SL-02",
+    "evidence": "E05/E08",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-02"
+  },
+  {
+    "id": "FR-IN-03",
+    "title": "包归属和跨文件关系及冲突",
+    "groups": [
+      "SC-04"
+    ],
+    "slice": "SL-02",
+    "evidence": "E06/E09",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-03"
+  },
+  {
+    "id": "FR-IN-04",
+    "title": "部分失败与幂等重试",
+    "groups": [
+      "SC-02"
+    ],
+    "slice": "SL-02",
+    "evidence": "E08/E09",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-04"
+  },
+  {
+    "id": "FR-SR-01",
+    "title": "技术规范编码检索",
+    "groups": [
+      "SC-05"
+    ],
+    "slice": "SL-04",
+    "evidence": "E04/E05",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-05"
+  },
+  {
+    "id": "FR-SR-02",
+    "title": "串型号组合检索",
+    "groups": [
+      "SC-06"
+    ],
+    "slice": "SL-04",
+    "evidence": "E04/E05",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-06"
+  },
+  {
+    "id": "FR-SR-03",
+    "title": "附图图册检索",
+    "groups": [
+      "SC-07"
+    ],
+    "slice": "SL-04",
+    "evidence": "E04/E05",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-07"
+  },
+  {
+    "id": "FR-SR-04",
+    "title": "品名描述补充检索",
+    "groups": [
+      "SC-08"
+    ],
+    "slice": "SL-04",
+    "evidence": "E04/E05",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-08"
+  },
+  {
+    "id": "FR-SR-05",
+    "title": "适用条件、项目差异和版本确认",
+    "groups": [
+      "SC-09",
+      "SC-10",
+      "SC-11"
+    ],
+    "slice": "SL-04",
+    "evidence": "E05/E13/E17",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-30"
+  },
+  {
+    "id": "FR-SC-01",
+    "title": "原始货物项与报价范围变更",
+    "groups": [
+      "SC-12"
+    ],
+    "slice": "SL-03",
+    "evidence": "E06/E07",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-31"
+  },
+  {
+    "id": "FR-BM-01",
+    "title": "BOM层级、用量和必要字段确认",
+    "groups": [
+      "SC-13"
+    ],
+    "slice": "SL-04",
+    "evidence": "E06/E13/E22",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-09"
+  },
+  {
+    "id": "FR-PR-02",
+    "title": "U9完整性与价格关联分别校验",
+    "groups": [
+      "SC-14"
+    ],
+    "slice": "SL-05",
+    "evidence": "E05/E13/E24",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-32"
+  },
+  {
+    "id": "FR-RK-01",
+    "title": "风险任务指派与转交",
+    "groups": [
+      "SC-15"
+    ],
+    "slice": "SL-03",
+    "evidence": "E07/E12",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-10"
+  },
+  {
+    "id": "FR-RK-02",
+    "title": "暂缓、不适用和有依据的结案",
+    "groups": [
+      "SC-16",
+      "SC-17"
+    ],
+    "slice": "SL-03",
+    "evidence": "E07/E12",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-11"
+  },
+  {
+    "id": "FR-WF-01",
+    "title": "销售技术并行和当前版本双确认",
+    "groups": [
+      "SC-18"
+    ],
+    "slice": "SL-03",
+    "evidence": "E07/E23",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-12"
+  },
+  {
+    "id": "FR-WF-02",
+    "title": "技术财务退回和变更影响",
+    "groups": [
+      "SC-19",
+      "SC-20",
+      "SC-22"
+    ],
+    "slice": "SL-03",
+    "evidence": "E07/E23",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-13"
+  },
+  {
+    "id": "FR-AP-02",
+    "title": "老板驳回、重提和审批版本一致",
+    "groups": [
+      "SC-21",
+      "SC-25"
+    ],
+    "slice": "SL-05",
+    "evidence": "E07/E23",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-16"
+  },
+  {
+    "id": "FR-PR-01",
+    "title": "可复现核价与保存后审核",
+    "groups": [
+      "SC-23"
+    ],
+    "slice": "SL-05",
+    "evidence": "E24",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-14"
+  },
+  {
+    "id": "FR-AP-01",
+    "title": "金额利润规则分流与政策版本",
+    "groups": [
+      "SC-24",
+      "SC-25"
+    ],
+    "slice": "SL-05",
+    "evidence": "E07/E23",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-15"
+  },
+  {
+    "id": "FR-QT-01",
+    "title": "有效审批版本出具报价",
+    "groups": [
+      "SC-26"
+    ],
+    "slice": "SL-06",
+    "evidence": "E02/E24",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-17"
+  },
+  {
+    "id": "FR-QT-02",
+    "title": "不可变快照与新报价版本",
+    "groups": [
+      "SC-27"
+    ],
+    "slice": "SL-06",
+    "evidence": "E07/E23",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-18"
+  },
+  {
+    "id": "FR-QT-03",
+    "title": "模板拆行汇总与对外字段",
+    "groups": [
+      "SC-28"
+    ],
+    "slice": "SL-06",
+    "evidence": "E02/E06",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-19"
+  },
+  {
+    "id": "FR-UM-01",
+    "title": "账号、角色、项目与字段权限",
+    "groups": [
+      "SC-29"
+    ],
+    "slice": "SL-01",
+    "evidence": "E01/E07/E24",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-29"
+  },
+  {
+    "id": "FR-MD-01",
+    "title": "按对象路径生效的字段字典",
+    "groups": [
+      "SC-30"
+    ],
+    "slice": "SL-01",
+    "evidence": "E10/E11",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-20"
+  },
+  {
+    "id": "FR-MD-02",
+    "title": "同义词建议审核发布及回归",
+    "groups": [
+      "SC-31"
+    ],
+    "slice": "SL-01",
+    "evidence": "E10/E11",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-21"
+  },
+  {
+    "id": "FR-MD-03",
+    "title": "主库导入审核与版本治理",
+    "groups": [
+      "SC-32"
+    ],
+    "slice": "SL-01",
+    "evidence": "E05/E13",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-22"
+  },
+  {
+    "id": "NFR-01",
+    "title": "内网部署",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "E02/E20/E24",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-40"
+  },
+  {
+    "id": "NFR-02",
+    "title": "ERP/MES只读",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "E02/E20/E24",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-41"
+  },
+  {
+    "id": "NFR-03",
+    "title": "审计",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "E02/E20/E24",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-42"
+  },
+  {
+    "id": "NFR-04",
+    "title": "备份恢复",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "E02/E20/E24",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-43"
+  },
+  {
+    "id": "NFR-05",
+    "title": "至少15人并发",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "E02/E20/E24",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-44"
+  },
+  {
+    "id": "NFR-06",
+    "title": "幂等重试",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "E02/E20/E24",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-45"
+  },
+  {
+    "id": "NFR-07",
+    "title": "金额精度和并发版本",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "E02/E20/E24",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-46"
+  },
+  {
+    "id": "NFR-08",
+    "title": "离线资源",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "E02/E20/E24",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-47"
+  },
+  {
+    "id": "FR-P2-01",
+    "title": "单品成本库及核算",
+    "groups": [
+      "SC-34"
+    ],
+    "slice": "SL-08",
+    "evidence": "E02/E20",
+    "phase": 2,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-23"
+  },
+  {
+    "id": "FR-P2-02",
+    "title": "审批后的材料价人工导入",
+    "groups": [
+      "SC-34"
+    ],
+    "slice": "SL-08",
+    "evidence": "E02/E24",
+    "phase": 2,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-24"
+  },
+  {
+    "id": "FR-P2-03",
+    "title": "品类扩充与三类项目报价比对",
+    "groups": [
+      "SC-34"
+    ],
+    "slice": "SL-08",
+    "evidence": "E02/E19/E21",
+    "phase": 2,
+    "risk_class": "AMBER",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-25"
+  },
+  {
+    "id": "FR-P3-01",
+    "title": "报告参数与技术文件关联",
+    "groups": [
+      "SC-35"
+    ],
+    "slice": "SL-09",
+    "evidence": "E02",
+    "phase": 3,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-26"
+  },
+  {
+    "id": "FR-P3-02",
+    "title": "POC门禁和参数化出图",
+    "groups": [
+      "SC-36"
+    ],
+    "slice": "SL-09",
+    "evidence": "E02/E18",
+    "phase": 3,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-27"
+  },
+  {
+    "id": "FR-P3-03",
+    "title": "阶段依赖、交付资料和独立维护验收",
+    "groups": [
+      "SC-37"
+    ],
+    "slice": "SL-07",
+    "evidence": "E20",
+    "phase": "跨阶段",
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-28"
+  }
+]

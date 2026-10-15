@@ -1,0 +1,18 @@
+{
+  "metric": "关键业务场景可验收覆盖率",
+  "tool": "python3",
+  "exact_query": "python3 measure-definition-coverage.py",
+  "cwd": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/handoff",
+  "window": "本轮v1.5当前文档及独立复核",
+  "denominator": 39,
+  "threshold_percent": 100,
+  "stretch_percent": 100,
+  "north_star": "需求能无歧义地实施与验收；非生产效果",
+  "evaluation_dates": {
+    "week_1": null,
+    "month_1": null,
+    "quarter_1": null
+  },
+  "date_reason": "上线日未定，当前只执行文档审查指标",
+  "production_execution_claim": false
+}

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="290" viewBox="0 0 1200 290" role="img" aria-labelledby="title desc">
+  <title id="title">询价到报价签发</title>
+  <desc id="desc">销售与技术并行确认需求和串型，汇合后进入财务核价，再完成审批签发并保存报价快照。</desc>
+  <rect width="1200" height="290" rx="16" fill="#202b2f"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">
+    <text x="48" y="49" font-size="22" fill="#bac6c8">业务流程示意</text>
+    <g stroke="#819394" stroke-width="2" fill="none">
+      <path d="M204 160h42V111h39M246 160v59h39M467 111h35v49h50M467 219h35v-59M746 160h60M1001 160h42"/>
+      <path d="M542 154l10 6-10 6M796 154l10 6-10 6M1033 154l10 6-10 6"/>
+    </g>
+    <text x="48" y="135" font-size="20" fill="#c9d2d2">01 / 资料</text>
+    <text x="48" y="176" font-size="30" font-weight="650" fill="#ffffff">询价接入</text>
+    <g id="parallel-confirmations">
+      <rect x="285" y="76" width="182" height="70" rx="8" fill="#344348"/>
+      <text x="376" y="118" text-anchor="middle" font-size="24" fill="#ffffff">销售确认</text>
+      <rect x="285" y="184" width="182" height="70" rx="8" fill="#344348"/>
+      <text x="376" y="226" text-anchor="middle" font-size="24" fill="#ffffff">技术复核</text>
+    </g>
+    <text x="570" y="130" font-size="20" fill="#c9d2d2">02 / 双确认汇合</text>
+    <text x="570" y="171" font-size="30" font-weight="650" fill="#ffffff">财务核价</text>
+    <text x="570" y="210" font-size="20" fill="#c9d2d2">BOM 与价格依据</text>
+    <text x="824" y="130" font-size="20" fill="#c9d2d2">03 / 当前版本</text>
+    <text x="824" y="171" font-size="30" font-weight="650" fill="#ffffff">审批签发</text>
+    <text x="824" y="210" font-size="20" fill="#c9d2d2">记录意见与快照</text>
+    <rect x="1043" y="122" width="109" height="76" rx="8" fill="#b7202a"/>
+    <text x="1097" y="168" text-anchor="middle" font-size="27" font-weight="650" fill="#ffffff">报价</text>
+  </g>
+</svg>

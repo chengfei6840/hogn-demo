@@ -1,0 +1,763 @@
+[
+  {
+    "id": "FR-IN-01",
+    "title": "资料批次、ZIP清点及来源登记",
+    "groups": [
+      "SC-01"
+    ],
+    "slice": "SL-02",
+    "evidence": "F03/F06/F05/F06",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-101",
+    "legacy_acceptance": "AC-01",
+    "priority": "M",
+    "source": "../p1_research_base.md F03/F06/F05/F06",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-IN-02",
+    "title": "单文件转换提取、质量及字段来源",
+    "groups": [
+      "SC-03"
+    ],
+    "slice": "SL-02",
+    "evidence": "F03/F06/F07",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-102",
+    "legacy_acceptance": "AC-02",
+    "priority": "M",
+    "source": "../p1_research_base.md F03/F06/F07",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-IN-03",
+    "title": "包归属和跨文件关系及冲突",
+    "groups": [
+      "SC-04"
+    ],
+    "slice": "SL-02",
+    "evidence": "F03/F06/F05/F06",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-103",
+    "legacy_acceptance": "AC-03",
+    "priority": "M",
+    "source": "../p1_research_base.md F03/F06/F05/F06",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-IN-04",
+    "title": "部分失败与幂等重试",
+    "groups": [
+      "SC-02"
+    ],
+    "slice": "SL-02",
+    "evidence": "F06/F07/F05/F06",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-104",
+    "legacy_acceptance": "AC-04",
+    "priority": "M",
+    "source": "../p1_research_base.md F06/F07/F05/F06",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-SR-01",
+    "title": "技术规范编码检索",
+    "groups": [
+      "SC-05"
+    ],
+    "slice": "SL-04",
+    "evidence": "F02/F03",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-205",
+    "legacy_acceptance": "AC-05",
+    "priority": "M",
+    "source": "../p1_research_base.md F02/F03",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-SR-02",
+    "title": "串型号组合检索",
+    "groups": [
+      "SC-06"
+    ],
+    "slice": "SL-04",
+    "evidence": "F02/F03",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-206",
+    "legacy_acceptance": "AC-06",
+    "priority": "M",
+    "source": "../p1_research_base.md F02/F03",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-SR-03",
+    "title": "附图图册检索",
+    "groups": [
+      "SC-07"
+    ],
+    "slice": "SL-04",
+    "evidence": "F02/F03",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-207",
+    "legacy_acceptance": "AC-07",
+    "priority": "M",
+    "source": "../p1_research_base.md F02/F03",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-SR-04",
+    "title": "品名描述补充检索",
+    "groups": [
+      "SC-08"
+    ],
+    "slice": "SL-04",
+    "evidence": "F02/F03",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-208",
+    "legacy_acceptance": "AC-08",
+    "priority": "M",
+    "source": "../p1_research_base.md F02/F03",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-SR-05",
+    "title": "适用条件、项目差异和版本确认",
+    "groups": [
+      "SC-09",
+      "SC-10",
+      "SC-11"
+    ],
+    "slice": "SL-04",
+    "evidence": "F03/F09/F11/F19",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-230",
+    "legacy_acceptance": "AC-30",
+    "priority": "M",
+    "source": "../p1_research_base.md F03/F09/F11/F19",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-SC-01",
+    "title": "原始货物项与报价范围变更",
+    "groups": [
+      "SC-12"
+    ],
+    "slice": "SL-03",
+    "evidence": "F03/F06/F04/F14",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-231",
+    "legacy_acceptance": "AC-31",
+    "priority": "M",
+    "source": "../p1_research_base.md F03/F06/F04/F14",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-BM-01",
+    "title": "BOM层级、用量和必要字段确认",
+    "groups": [
+      "SC-13"
+    ],
+    "slice": "SL-04",
+    "evidence": "F03/F06/F09/F11/F11/F12",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-209",
+    "legacy_acceptance": "AC-09",
+    "priority": "M",
+    "source": "../p1_research_base.md F03/F06/F09/F11/F11/F12",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-PR-02",
+    "title": "U9完整性与价格关联分别校验",
+    "groups": [
+      "SC-14"
+    ],
+    "slice": "SL-05",
+    "evidence": "F03/F09/F11/F15/F18",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-232",
+    "legacy_acceptance": "AC-32",
+    "priority": "M",
+    "source": "../p1_research_base.md F03/F09/F11/F15/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-RK-01",
+    "title": "风险任务指派与转交",
+    "groups": [
+      "SC-15"
+    ],
+    "slice": "SL-03",
+    "evidence": "F04/F14/F08/F19",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-210",
+    "legacy_acceptance": "AC-10",
+    "priority": "M",
+    "source": "../p1_research_base.md F04/F14/F08/F19",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-RK-02",
+    "title": "等待补充、不适用和有依据的结案",
+    "groups": [
+      "SC-16",
+      "SC-17"
+    ],
+    "slice": "SL-03",
+    "evidence": "F04/F14/F08/F19",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-211",
+    "legacy_acceptance": "AC-11",
+    "priority": "M",
+    "source": "../p1_research_base.md F04/F14/F08/F19",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-WF-01",
+    "title": "销售技术并行和当前版本双确认",
+    "groups": [
+      "SC-18"
+    ],
+    "slice": "SL-03",
+    "evidence": "F04/F14/F04/F14",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-212",
+    "legacy_acceptance": "AC-12",
+    "priority": "M",
+    "source": "../p1_research_base.md F04/F14/F04/F14",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-WF-02",
+    "title": "技术财务退回和变更影响",
+    "groups": [
+      "SC-19",
+      "SC-20",
+      "SC-22"
+    ],
+    "slice": "SL-03",
+    "evidence": "F04/F14/F04/F14",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-213",
+    "legacy_acceptance": "AC-13",
+    "priority": "M",
+    "source": "../p1_research_base.md F04/F14/F04/F14",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-AP-02",
+    "title": "董事长驳回、重提和审批版本一致",
+    "groups": [
+      "SC-21",
+      "SC-25"
+    ],
+    "slice": "SL-05",
+    "evidence": "F04/F14/F04/F14",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-216",
+    "legacy_acceptance": "AC-16",
+    "priority": "M",
+    "source": "../p1_research_base.md F04/F14/F04/F14",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-PR-01",
+    "title": "可复现核价与保存后审核",
+    "groups": [
+      "SC-23"
+    ],
+    "slice": "SL-05",
+    "evidence": "F15/F18",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-214",
+    "legacy_acceptance": "AC-14",
+    "priority": "M",
+    "source": "../p1_research_base.md F15/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-AP-01",
+    "title": "金额利润规则分流与政策版本",
+    "groups": [
+      "SC-24",
+      "SC-25"
+    ],
+    "slice": "SL-05",
+    "evidence": "F04/F14/F04/F14",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-215",
+    "legacy_acceptance": "AC-15",
+    "priority": "M",
+    "source": "../p1_research_base.md F04/F14/F04/F14",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-QT-01",
+    "title": "有效审批版本出具报价",
+    "groups": [
+      "SC-26"
+    ],
+    "slice": "SL-06",
+    "evidence": "F01/F16/F15/F18",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-217",
+    "legacy_acceptance": "AC-17",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16/F15/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-QT-02",
+    "title": "不可变快照与新报价版本",
+    "groups": [
+      "SC-27"
+    ],
+    "slice": "SL-06",
+    "evidence": "F04/F14/F04/F14",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-218",
+    "legacy_acceptance": "AC-18",
+    "priority": "M",
+    "source": "../p1_research_base.md F04/F14/F04/F14",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-QT-03",
+    "title": "模板拆行汇总与对外字段",
+    "groups": [
+      "SC-28"
+    ],
+    "slice": "SL-06",
+    "evidence": "F01/F16/F03/F06",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-219",
+    "legacy_acceptance": "AC-19",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16/F03/F06",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-UM-01",
+    "title": "账号、角色、项目与字段权限",
+    "groups": [
+      "SC-29"
+    ],
+    "slice": "SL-01",
+    "evidence": "F01/F04/F04/F14/F15/F18",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-229",
+    "legacy_acceptance": "AC-29",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F04/F04/F14/F15/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-MD-01",
+    "title": "按对象路径生效的字段字典",
+    "groups": [
+      "SC-30"
+    ],
+    "slice": "SL-01",
+    "evidence": "F08/F08",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-220",
+    "legacy_acceptance": "AC-20",
+    "priority": "M",
+    "source": "../p1_research_base.md F08/F08",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-MD-02",
+    "title": "同义词建议审核发布及回归",
+    "groups": [
+      "SC-31"
+    ],
+    "slice": "SL-01",
+    "evidence": "F08/F08",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-221",
+    "legacy_acceptance": "AC-21",
+    "priority": "M",
+    "source": "../p1_research_base.md F08/F08",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-MD-03",
+    "title": "主库导入审核与版本治理",
+    "groups": [
+      "SC-32"
+    ],
+    "slice": "SL-01",
+    "evidence": "F03/F09/F11",
+    "phase": 1,
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-222",
+    "legacy_acceptance": "AC-22",
+    "priority": "M",
+    "source": "../p1_research_base.md F03/F09/F11",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "NFR-01",
+    "title": "内网部署",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "F01/F16/F18/F15/F18",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-301",
+    "legacy_acceptance": "AC-40",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16/F18/F15/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "NFR-02",
+    "title": "ERP/MES只读",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "F01/F16/F18/F15/F18",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-302",
+    "legacy_acceptance": "AC-41",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16/F18/F15/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "NFR-03",
+    "title": "审计",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "F01/F16/F18/F15/F18",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-303",
+    "legacy_acceptance": "AC-42",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16/F18/F15/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "NFR-04",
+    "title": "备份恢复",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "F01/F16/F18/F15/F18",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-304",
+    "legacy_acceptance": "AC-43",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16/F18/F15/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "NFR-05",
+    "title": "至少15人并发",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "F01/F16/F18/F15/F18",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-305",
+    "legacy_acceptance": "AC-44",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16/F18/F15/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "NFR-06",
+    "title": "幂等重试",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "F01/F16/F18/F15/F18",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-306",
+    "legacy_acceptance": "AC-45",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16/F18/F15/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "NFR-07",
+    "title": "金额精度和并发版本",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "F01/F16/F18/F15/F18",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-307",
+    "legacy_acceptance": "AC-46",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16/F18/F15/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "NFR-08",
+    "title": "离线资源",
+    "groups": [
+      "SC-33"
+    ],
+    "slice": "SL-07",
+    "evidence": "F01/F16/F18/F15/F18",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-308",
+    "legacy_acceptance": "AC-47",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16/F18/F15/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-P2-01",
+    "title": "单品成本库及核算",
+    "groups": [
+      "SC-34"
+    ],
+    "slice": "SL-08",
+    "evidence": "F01/F16/F18",
+    "phase": 2,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-223",
+    "legacy_acceptance": "AC-23",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-P2-02",
+    "title": "审批后的材料价人工导入",
+    "groups": [
+      "SC-34"
+    ],
+    "slice": "SL-08",
+    "evidence": "F01/F16/F15/F18",
+    "phase": 2,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-224",
+    "legacy_acceptance": "AC-24",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16/F15/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-P2-03",
+    "title": "品类扩充与三类项目报价比对",
+    "groups": [
+      "SC-34"
+    ],
+    "slice": "SL-08",
+    "evidence": "F01/F16/F16/F17/F18",
+    "phase": 2,
+    "risk_class": "AMBER",
+    "money_path": true,
+    "analytics_touch": false,
+    "acceptance": "AC-225",
+    "legacy_acceptance": "AC-25",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16/F16/F17/F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-P3-01",
+    "title": "报告参数与技术文件关联",
+    "groups": [
+      "SC-35"
+    ],
+    "slice": "SL-09",
+    "evidence": "F01/F16",
+    "phase": 3,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-226",
+    "legacy_acceptance": "AC-26",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-P3-02",
+    "title": "POC门禁和参数化出图",
+    "groups": [
+      "SC-36"
+    ],
+    "slice": "SL-09",
+    "evidence": "F01/F16/F16",
+    "phase": 3,
+    "risk_class": "RED",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-227",
+    "legacy_acceptance": "AC-27",
+    "priority": "M",
+    "source": "../p1_research_base.md F01/F16/F16",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-P3-03",
+    "title": "阶段依赖、交付资料和独立维护验收",
+    "groups": [
+      "SC-37"
+    ],
+    "slice": "SL-07",
+    "evidence": "F18",
+    "phase": "跨阶段",
+    "risk_class": "AMBER",
+    "money_path": false,
+    "analytics_touch": false,
+    "acceptance": "AC-228",
+    "legacy_acceptance": "AC-28",
+    "priority": "M",
+    "source": "../p1_research_base.md F18",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-BM-02",
+    "title": "项目 BOM 页面及客户模板导出",
+    "groups": [
+      "SC-38"
+    ],
+    "acceptance": "AC-233",
+    "slice": "SL-04",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "priority": "M",
+    "source": "../p1_research_base.md F09/F13",
+    "evidence": "F09/F13",
+    "tag": "CONSTRUCTED"
+  },
+  {
+    "id": "FR-AP-03",
+    "title": "董事长单项调价与财务复核",
+    "groups": [
+      "SC-39"
+    ],
+    "acceptance": "AC-234",
+    "slice": "SL-05",
+    "phase": 1,
+    "risk_class": "RED",
+    "money_path": true,
+    "analytics_touch": false,
+    "priority": "M",
+    "source": "../p1_research_base.md F04/F14",
+    "evidence": "F04/F14",
+    "tag": "CONSTRUCTED"
+  }
+]

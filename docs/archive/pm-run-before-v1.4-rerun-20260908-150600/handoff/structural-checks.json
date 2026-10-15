@@ -1,0 +1,23 @@
+{
+  "scope": "文档结构、引用和文件一致性校验，不判断业务真实性",
+  "requirements": 40,
+  "scenario_branches": 112,
+  "groups": 37,
+  "slices": 9,
+  "legacy_fr_retained": 29,
+  "legacy_ac_retained": 29,
+  "required_artifacts": 18,
+  "prd_projections_identical": true,
+  "source_files_unchanged": true,
+  "slice_graph_acyclic": true,
+  "metric_query": {
+    "qualified_groups": 37,
+    "total_groups": 37,
+    "definition_coverage_percent": 100.0,
+    "review_status": "PASS",
+    "execution_status": "not_run"
+  },
+  "product_tests_run": false,
+  "typecheck_run": false,
+  "gate_3_approved": false
+}

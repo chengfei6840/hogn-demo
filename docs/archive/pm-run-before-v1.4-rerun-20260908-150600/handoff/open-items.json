@@ -1,0 +1,191 @@
+[
+  {
+    "id": "OPEN-01",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "金额阈值、含税整单临界边界与特殊商务升级制度",
+    "owner": "老板/财务",
+    "blocks": "生产审批配置",
+    "question": "请确认正式金额规则及适用范围。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E07/E23",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-02",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "毛利底线、成本范围及利润例外",
+    "owner": "老板/财务",
+    "blocks": "正式利润计算",
+    "question": "请确认毛利计算和例外批准口径。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E07/E23",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-03",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "税费运费、币种/数量精度、舍入及有效期",
+    "owner": "财务/销售",
+    "blocks": "正式核价与模板",
+    "question": "请确认价格与舍入、期效配置。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E24",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-04",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "账号、项目归属、实际审批人及代办授权",
+    "owner": "客户负责人/IT",
+    "blocks": "生产账号授权",
+    "question": "请提供角色到岗及代理授权规则。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E20",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-05",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "U9账套字段只读账号及项目关联",
+    "owner": "客户IT/财务/技术",
+    "blocks": "U9联调",
+    "question": "请确认只读字段和授权凭证。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E20/E24",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-06",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "完整标准串数据与缺失物料信息处理",
+    "owner": "技术/供应",
+    "blocks": "全量主库发布",
+    "question": "请确认一期完整清单及缺失数据补齐责任。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E13/E20",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-07",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "图册页码索引与历史版本覆盖",
+    "owner": "技术",
+    "blocks": "原始图样定位",
+    "question": "请确认图号索引和所需历史版本是否齐备。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E14/E15",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-08",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "ZIP跨文件归属及Schema修订的真实集成",
+    "owner": "研发负责人",
+    "blocks": "正式资料解析链路",
+    "question": "请确认实现职责与可回测样本。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E08/E09/E10",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-09",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "按受影响项重审、仅改数量/价格保留技术引用、issue成功即已出具且文件状态独立、政策发布重算未冻结报价",
+    "owner": "客户业务/财务负责人",
+    "blocks": "生产版本管理和审批政策配置",
+    "question": "请确认已批准产品设计在客户生产制度中的启用与授权。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E07/E23",
+    "ruling": "accepted-open",
+    "note": "本轮产品设计已明确批准；生产制度与授权仍由客户对应责任方确认，接受开放不视为部署已就绪",
+    "product_design_confirmed": true,
+    "product_design_source": "本任务Gate 2第2、3、4项及用户“以上五项通过”"
+  },
+  {
+    "id": "OPEN-10",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "报价/BOM模板、拆行、签章与文件格式",
+    "owner": "销售/技术/财务",
+    "blocks": "正式导出",
+    "question": "请确认默认与客户模板及拆行口径。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E02/E06",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-11",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "指标样本分母、两个80%指标、阶段关系与并发超时",
+    "owner": "双方验收负责人",
+    "blocks": "对应正式验收计分",
+    "question": "请书面确认各指标独立定义和分母。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E18/E19/E20",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-12",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "POC样本许可证及批处理环境",
+    "owner": "技术/IT/研发",
+    "blocks": "正式三期出图",
+    "question": "请确认POC及出图环境前置。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E02/E18",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-13",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "同一新疆750kV中标项目完整端到端资料",
+    "owner": "客户技术/销售",
+    "blocks": "完整样例回测",
+    "question": "请确认清单规范附图BOM报价关系完整。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E20",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-14",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "2至3张成本样例及财务口径",
+    "owner": "客户财务",
+    "blocks": "二期核算设计",
+    "question": "请确认成本样例是否齐备可用。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E20",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-15",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "内网服务器GPU网络及运行依赖",
+    "owner": "客户IT",
+    "blocks": "正式内网部署",
+    "question": "请确认资源和拓扑。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E20/E24",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-16",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "合同四类甲方人员、历史10至20份样本与模板完备性",
+    "owner": "客户项目负责人",
+    "blocks": "开工及移交依赖",
+    "question": "请确认分工到岗和资料完备性。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E20",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  },
+  {
+    "id": "OPEN-17",
+    "tag": "NEEDS-CONFIRMATION",
+    "claim": "合同附件四引用解决方案的准确版本与确认状态",
+    "owner": "项目合同范围确认人",
+    "blocks": "扩大固定模块范围",
+    "question": "请确认附件四引用哪份获认可的方案。",
+    "source": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/pm-run-2026-09-08/p1_research_base.md E21",
+    "ruling": "accepted-open",
+    "note": "Gate 2第4项经用户“以上五项通过”批准接受开放；对应生产配置/验收仍阻断，不表示事项解决"
+  }
+]

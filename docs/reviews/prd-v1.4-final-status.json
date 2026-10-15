@@ -1,0 +1,17 @@
+{
+  "version": "v1.4",
+  "workflow": "已批准基线反馈修订与SRS整合",
+  "skills": [
+    "formal-requirements-document",
+    "Product-to-Prod/pm-requirements-v1"
+  ],
+  "independent_review": "PASS",
+  "formal_signed": false,
+  "full_pm_start_rerun": false,
+  "document": "docs/正式项目需求文档_红光金具智能报价系统_2026-09-08.md",
+  "sha256": "793a90713aca3e3eb1ad8493c5833079f2220b9e122ff1919bf007b7d0703e73",
+  "metadata_change_after_review": "仅更新独立复核状态，无业务内容变化",
+  "code_tests": 27,
+  "build": "PASS",
+  "historical_seal_files_unchanged": 32
+}

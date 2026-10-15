@@ -1,0 +1,21 @@
+{
+  "at": "2026-09-08T12:22:25.028694+08:00",
+  "pre_seal_content_review": "PASS",
+  "source_paths_reopened": 18,
+  "hashed_source_files_unchanged": 15,
+  "authoritative_anchors_reopened": [
+    "合同2.1出图全自动/至少15人/6.2成本样例",
+    "客户PDF三页四路径及禁止自动首条",
+    "当前Schema与行业适配器/风险面板"
+  ],
+  "tag_lint_delivery_final_exit": 0,
+  "style_check_exit": 0,
+  "inference_gate_exit": 0,
+  "definition_groups_passed": 37,
+  "definition_groups_total": 37,
+  "definition_coverage_percent": 100,
+  "execution_status": "not_run",
+  "product_code_modified": false,
+  "typecheck_run": false,
+  "limitations": "哈希验证原文件版本未变；图册仍仅文件可读性检查，不证明全文索引完成；独立内容审查不替代合同验收"
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "candidate": "C13",
+    "sheet": "金具最新分解",
+    "row": 69906,
+    "source_first_9_columns": [
+      "国网",
+      "750kV导线悬垂通用,7X2-4055-21H护",
+      "400/50",
+      null,
+      "套",
+      null,
+      "750kV输电线路金具分册",
+      "图5-13",
+      "图5-013"
+    ],
+    "catalog_name": "750kV导线悬垂通用,7X2-4055-21H护",
+    "parts_count": 11
+  },
+  {
+    "candidate": "C21",
+    "sheet": "金具最新分解",
+    "row": 71453,
+    "source_first_9_columns": [
+      "国网",
+      "边相笼式刚性100kN带绝缘子串750kV导线跳线串",
+      "400/50,均压环管径为80mm,带转向头,间隔棒分裂半径为375mm。",
+      "9111-500085186-00026",
+      "套",
+      null,
+      null,
+      null,
+      null
+    ],
+    "catalog_name": "边相笼式刚性100kN带绝缘子串750kV导线跳线串",
+    "parts_count": 12
+  },
+  {
+    "candidate": "C22",
+    "sheet": "金具最新分解",
+    "row": 105637,
+    "source_first_9_columns": [
+      "国网",
+      "66kV导线悬垂通用,06XZ11-4000-10P(H)-1A铝",
+      "300/40",
+      null,
+      "套",
+      null,
+      "110(66)kV输电线路金具分册 （2011版串图）",
+      "图6-1-57",
+      null
+    ],
+    "catalog_name": "66kV导线悬垂通用,06XZ11-4000-10P(H)-1A铝",
+    "parts_count": 6
+  }
+]

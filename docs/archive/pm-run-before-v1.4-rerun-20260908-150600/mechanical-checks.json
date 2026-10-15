@@ -1,0 +1,13 @@
+{
+  "preflight_exit": 0,
+  "scenario_group_count": 37,
+  "source_paths": 18,
+  "source_hashes_verified": 15,
+  "checks": [
+    "18个来源路径仍存在；15个登记哈希与原文件一致",
+    "SC-01至SC-37唯一连续；未把分母提案当完成分子",
+    "本轮Markdown与JSON可读、UTF-8无BOM、文件末尾换行和代码围栏检查通过",
+    "本轮required-only预检重新执行，退出0；无代码测试或typecheck"
+  ],
+  "scope": "文档机械检查和来源完整性，不是事实真实性或业务验收通过"
+}

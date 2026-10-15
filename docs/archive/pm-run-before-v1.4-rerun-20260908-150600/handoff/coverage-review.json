@@ -1,0 +1,568 @@
+{
+  "metric": "关键业务场景可验收覆盖率",
+  "scope": "文档定义审查，不是工程实现或运行验收",
+  "target_percent": 100,
+  "denominator_groups": 37,
+  "independent_reviewer": "prd_source_review",
+  "review_status": "PASS",
+  "groups": [
+    {
+      "id": "SC-01",
+      "required_branch_ids": [
+        "FR-IN-01.1",
+        "FR-IN-01.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-IN-01.1",
+        "FR-IN-01.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-02",
+      "required_branch_ids": [
+        "FR-IN-04.1",
+        "FR-IN-04.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-IN-04.1",
+        "FR-IN-04.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-03",
+      "required_branch_ids": [
+        "FR-IN-02.1",
+        "FR-IN-02.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-IN-02.1",
+        "FR-IN-02.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-04",
+      "required_branch_ids": [
+        "FR-IN-03.1",
+        "FR-IN-03.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-IN-03.1",
+        "FR-IN-03.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-05",
+      "required_branch_ids": [
+        "FR-SR-01.1",
+        "FR-SR-01.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-SR-01.1",
+        "FR-SR-01.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-06",
+      "required_branch_ids": [
+        "FR-SR-02.1",
+        "FR-SR-02.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-SR-02.1",
+        "FR-SR-02.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-07",
+      "required_branch_ids": [
+        "FR-SR-03.1",
+        "FR-SR-03.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-SR-03.1",
+        "FR-SR-03.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-08",
+      "required_branch_ids": [
+        "FR-SR-04.1",
+        "FR-SR-04.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-SR-04.1",
+        "FR-SR-04.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-09",
+      "required_branch_ids": [
+        "FR-SR-05.1",
+        "FR-SR-05.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-SR-05.1",
+        "FR-SR-05.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-10",
+      "required_branch_ids": [
+        "FR-SR-05.3",
+        "FR-SR-05.4"
+      ],
+      "reviewed_branch_ids": [
+        "FR-SR-05.3",
+        "FR-SR-05.4"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-11",
+      "required_branch_ids": [
+        "FR-SR-05.5",
+        "FR-SR-05.6"
+      ],
+      "reviewed_branch_ids": [
+        "FR-SR-05.5",
+        "FR-SR-05.6"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-12",
+      "required_branch_ids": [
+        "FR-SC-01.1",
+        "FR-SC-01.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-SC-01.1",
+        "FR-SC-01.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-13",
+      "required_branch_ids": [
+        "FR-BM-01.1",
+        "FR-BM-01.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-BM-01.1",
+        "FR-BM-01.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-14",
+      "required_branch_ids": [
+        "FR-PR-02.1",
+        "FR-PR-02.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-PR-02.1",
+        "FR-PR-02.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-15",
+      "required_branch_ids": [
+        "FR-RK-01.1",
+        "FR-RK-01.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-RK-01.1",
+        "FR-RK-01.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-16",
+      "required_branch_ids": [
+        "FR-RK-02.1",
+        "FR-RK-02.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-RK-02.1",
+        "FR-RK-02.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-17",
+      "required_branch_ids": [
+        "FR-RK-02.3",
+        "FR-RK-02.4"
+      ],
+      "reviewed_branch_ids": [
+        "FR-RK-02.3",
+        "FR-RK-02.4"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-18",
+      "required_branch_ids": [
+        "FR-WF-01.1",
+        "FR-WF-01.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-WF-01.1",
+        "FR-WF-01.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-19",
+      "required_branch_ids": [
+        "FR-WF-02.1",
+        "FR-WF-02.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-WF-02.1",
+        "FR-WF-02.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-20",
+      "required_branch_ids": [
+        "FR-WF-02.3",
+        "FR-WF-02.4"
+      ],
+      "reviewed_branch_ids": [
+        "FR-WF-02.3",
+        "FR-WF-02.4"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-21",
+      "required_branch_ids": [
+        "FR-AP-02.1",
+        "FR-AP-02.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-AP-02.1",
+        "FR-AP-02.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-22",
+      "required_branch_ids": [
+        "FR-WF-02.5",
+        "FR-WF-02.6"
+      ],
+      "reviewed_branch_ids": [
+        "FR-WF-02.5",
+        "FR-WF-02.6"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-23",
+      "required_branch_ids": [
+        "FR-PR-01.1",
+        "FR-PR-01.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-PR-01.1",
+        "FR-PR-01.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-24",
+      "required_branch_ids": [
+        "FR-AP-01.1",
+        "FR-AP-01.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-AP-01.1",
+        "FR-AP-01.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-25",
+      "required_branch_ids": [
+        "FR-AP-01.3",
+        "FR-AP-02.3"
+      ],
+      "reviewed_branch_ids": [
+        "FR-AP-01.3",
+        "FR-AP-02.3"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-26",
+      "required_branch_ids": [
+        "FR-QT-01.1",
+        "FR-QT-01.2",
+        "FR-QT-01.3"
+      ],
+      "reviewed_branch_ids": [
+        "FR-QT-01.1",
+        "FR-QT-01.2",
+        "FR-QT-01.3"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-27",
+      "required_branch_ids": [
+        "FR-QT-02.1",
+        "FR-QT-02.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-QT-02.1",
+        "FR-QT-02.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-28",
+      "required_branch_ids": [
+        "FR-QT-03.1",
+        "FR-QT-03.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-QT-03.1",
+        "FR-QT-03.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-29",
+      "required_branch_ids": [
+        "FR-UM-01.1",
+        "FR-UM-01.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-UM-01.1",
+        "FR-UM-01.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-30",
+      "required_branch_ids": [
+        "FR-MD-01.1",
+        "FR-MD-01.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-MD-01.1",
+        "FR-MD-01.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-31",
+      "required_branch_ids": [
+        "FR-MD-02.1",
+        "FR-MD-02.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-MD-02.1",
+        "FR-MD-02.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-32",
+      "required_branch_ids": [
+        "FR-MD-03.1",
+        "FR-MD-03.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-MD-03.1",
+        "FR-MD-03.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-33",
+      "required_branch_ids": [
+        "NFR-02.1",
+        "NFR-02.2",
+        "NFR-01.1",
+        "NFR-01.2",
+        "NFR-08.1",
+        "NFR-08.2",
+        "NFR-03.1",
+        "NFR-03.2",
+        "NFR-04.1",
+        "NFR-04.2",
+        "NFR-06.1",
+        "NFR-06.2",
+        "NFR-05.1",
+        "NFR-05.2",
+        "NFR-07.1",
+        "NFR-07.2",
+        "NFR-05.3",
+        "NFR-07.3"
+      ],
+      "reviewed_branch_ids": [
+        "NFR-02.1",
+        "NFR-02.2",
+        "NFR-01.1",
+        "NFR-01.2",
+        "NFR-08.1",
+        "NFR-08.2",
+        "NFR-03.1",
+        "NFR-03.2",
+        "NFR-04.1",
+        "NFR-04.2",
+        "NFR-06.1",
+        "NFR-06.2",
+        "NFR-05.1",
+        "NFR-05.2",
+        "NFR-07.1",
+        "NFR-07.2",
+        "NFR-05.3",
+        "NFR-07.3"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-34",
+      "required_branch_ids": [
+        "FR-P2-01.1",
+        "FR-P2-01.2",
+        "FR-P2-02.1",
+        "FR-P2-02.2",
+        "FR-P2-03.1",
+        "FR-P2-03.2",
+        "FR-P2-01.3",
+        "FR-P2-03.3",
+        "FR-P2-03.4"
+      ],
+      "reviewed_branch_ids": [
+        "FR-P2-01.1",
+        "FR-P2-01.2",
+        "FR-P2-02.1",
+        "FR-P2-02.2",
+        "FR-P2-03.1",
+        "FR-P2-03.2",
+        "FR-P2-01.3",
+        "FR-P2-03.3",
+        "FR-P2-03.4"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-35",
+      "required_branch_ids": [
+        "FR-P3-01.1",
+        "FR-P3-01.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-P3-01.1",
+        "FR-P3-01.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-36",
+      "required_branch_ids": [
+        "FR-P3-02.1",
+        "FR-P3-02.2"
+      ],
+      "reviewed_branch_ids": [
+        "FR-P3-02.1",
+        "FR-P3-02.2"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    },
+    {
+      "id": "SC-37",
+      "required_branch_ids": [
+        "FR-P3-03.1",
+        "FR-P3-03.2",
+        "FR-P3-03.3",
+        "FR-P3-03.4",
+        "FR-P3-03.5",
+        "FR-P3-03.6",
+        "FR-P3-03.7",
+        "FR-P3-03.8",
+        "FR-P3-03.9",
+        "FR-P3-03.10",
+        "FR-P3-03.11",
+        "FR-P3-03.12",
+        "FR-P3-03.13",
+        "FR-P3-03.14",
+        "FR-P3-03.15",
+        "FR-P3-03.16"
+      ],
+      "reviewed_branch_ids": [
+        "FR-P3-03.1",
+        "FR-P3-03.2",
+        "FR-P3-03.3",
+        "FR-P3-03.4",
+        "FR-P3-03.5",
+        "FR-P3-03.6",
+        "FR-P3-03.7",
+        "FR-P3-03.8",
+        "FR-P3-03.9",
+        "FR-P3-03.10",
+        "FR-P3-03.11",
+        "FR-P3-03.12",
+        "FR-P3-03.13",
+        "FR-P3-03.14",
+        "FR-P3-03.15",
+        "FR-P3-03.16"
+      ],
+      "verdict": "PASS",
+      "note": "独立审查prd_source_review明确确认37组全部定义合格；不表示场景运行通过"
+    }
+  ],
+  "review_receipt": "review-gate-2.md"
+}

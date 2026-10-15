@@ -1,0 +1,176 @@
+[
+  {
+    "id": "S01",
+    "path": "/Users/1ovepingu/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/ppooiut_5abc/msg/file/2026-09/技术开发合同--红光金具智能报价系统开发-260819(2)(2)(1)_副本.docx",
+    "bytes": 41622,
+    "modified_at": "2026-09-05T15:43:09.660597+08:00",
+    "sha256": "ec3470868c4d5a814fc81ab2bc5281d14c0088a139c705a4986800b48e96922f",
+    "level": "L2",
+    "reviewed_at": "2026-09-08T11:43:26.136527+08:00",
+    "read_scope": "原文条款及附件"
+  },
+  {
+    "id": "S02",
+    "path": "/Users/1ovepingu/Downloads/红光金具_国网项目检索思路与当前理解_客户确认稿_2026-09-04.pdf",
+    "bytes": 200287,
+    "modified_at": "2026-09-04T18:00:07.237157+08:00",
+    "sha256": "7890deef1ea828ba17fbcbcb57a5ae2d4676f0ed2576bea8299c67ebd22b1d2d",
+    "level": "L2",
+    "reviewed_at": "2026-09-08T11:43:26.137156+08:00",
+    "read_scope": "全3页（独立审查）"
+  },
+  {
+    "id": "S03",
+    "path": "/Users/1ovepingu/Downloads/红光电力金具线下会议调研md.md",
+    "bytes": 12606,
+    "modified_at": "2026-09-04T11:07:13.992711+08:00",
+    "sha256": "b15cdbd160dd87976a09753b97e9ca773859dc4a40ae893aab6aa038addbee79",
+    "level": "L2",
+    "reviewed_at": "2026-09-08T11:43:26.137408+08:00",
+    "read_scope": "全文"
+  },
+  {
+    "id": "S04",
+    "path": "/Users/1ovepingu/Downloads/红光电力金具知识库.md",
+    "bytes": 27553,
+    "modified_at": "2026-09-03T18:11:59.484648+08:00",
+    "sha256": "48e377deaa92969184476f8501d2cca7bbb786ce7123b8dad7fa4e8fbcbda356",
+    "level": "L2",
+    "reviewed_at": "2026-09-08T11:43:26.137634+08:00",
+    "read_scope": "全文"
+  },
+  {
+    "id": "S05",
+    "path": "/Users/1ovepingu/Desktop/Projects/quotation_agent/src/parsing_core/demo_api.py",
+    "bytes": 29183,
+    "modified_at": "2026-09-06T13:06:19.704775+08:00",
+    "sha256": "0408a8de59e55e646fc047856158233b49120db653bfeaa5aea76d84d3fe7c45",
+    "level": "L2",
+    "reviewed_at": "2026-09-08T11:43:26.137865+08:00",
+    "read_scope": "流程相关章节"
+  },
+  {
+    "id": "S06",
+    "path": "/Users/1ovepingu/Desktop/Projects/quotation_agent/projects/hogn_power_fittings_corpus/field_schema.json",
+    "bytes": 6553,
+    "modified_at": "2026-08-26T16:22:56.461648+08:00",
+    "sha256": "64df923ab1fc95b866aef61dc32988a6ba0eb01d3d073d66e695a101e25d1715",
+    "level": "L2",
+    "reviewed_at": "2026-09-08T11:43:26.138066+08:00",
+    "read_scope": "全文"
+  },
+  {
+    "id": "S07",
+    "path": "/Users/1ovepingu/Desktop/Projects/quotation_agent/demo/src/adapters/industry_plugin.ts",
+    "bytes": 1831,
+    "modified_at": "2026-08-31T11:23:21.877131+08:00",
+    "sha256": "787e6a1f44851a2453060d8a4af43fdcf2d713f72b2be486d25dcf4fd58f0d1c",
+    "level": "L2",
+    "reviewed_at": "2026-09-08T11:43:26.138407+08:00",
+    "read_scope": "全文"
+  },
+  {
+    "id": "S08",
+    "path": "/Users/1ovepingu/Desktop/Projects/quotation_agent/demo/src/components/RiskActionPanel.vue",
+    "bytes": 9727,
+    "modified_at": "2026-09-07T20:50:16.421366+08:00",
+    "sha256": "1e0a0d3cde944c3bf9311cc6df6a4b54c0db07a7a6143c7b1a34e08d863c419e",
+    "level": "L2",
+    "reviewed_at": "2026-09-08T11:43:26.138765+08:00",
+    "read_scope": "全文"
+  },
+  {
+    "id": "S09",
+    "path": "/Users/1ovepingu/Downloads/红光金具/国网南网主网与配网线路子件U9料号匹配汇总20260805.xlsx",
+    "bytes": 29797271,
+    "modified_at": "2026-08-14T10:23:23.206846+08:00",
+    "sha256": "4d2c26b11e0265b7319c92ec17f72a6a2558724f90bc98eeba3f0c286ec36f7d",
+    "level": "L2",
+    "reviewed_at": "2026-09-08T11:43:26.165402+08:00",
+    "read_scope": "原型节选关联行及C21/C22抽样，不代表全量数据验收"
+  },
+  {
+    "id": "S10",
+    "path": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/docs/红光金具智能报价系统_PRD_2026-09-08.md",
+    "bytes": 37890,
+    "modified_at": "2026-09-08T11:09:56.540124+08:00",
+    "sha256": "c31a7c702d4daec26f95bba1583c4bd272f778d61665bf0847b44a005005b07d",
+    "level": "L3",
+    "reviewed_at": "2026-09-08T11:43:26.166140+08:00",
+    "read_scope": "全文"
+  },
+  {
+    "id": "S11",
+    "path": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/src/domain/store.ts",
+    "bytes": 11215,
+    "modified_at": "2026-09-08T11:11:18.630699+08:00",
+    "sha256": "8503d645bba384271381527241a38f1321e551c04f469a6ffe6b3a2d4f128708",
+    "level": "L2",
+    "reviewed_at": "2026-09-08T11:43:26.166716+08:00",
+    "read_scope": "全文"
+  },
+  {
+    "id": "S12",
+    "path": "/Users/1ovepingu/Desktop/Projects/hogn_quotation_agent_prototype/src/domain/model.ts",
+    "bytes": 5574,
+    "modified_at": "2026-09-08T10:51:10.311618+08:00",
+    "sha256": "1cc4de84315ff07fbcdcc4c6351e4e1bff16adff079ab4922c2bce6895986593",
+    "level": "L2",
+    "reviewed_at": "2026-09-08T11:43:26.167219+08:00",
+    "read_scope": "全文"
+  },
+  {
+    "id": "S13",
+    "path": "/Users/1ovepingu/Desktop/Projects/hongg/requirement/红光金具智能报价系统_解决方案说明_2026-09-03.md",
+    "bytes": 24098,
+    "modified_at": "2026-09-07T18:28:23.332179+08:00",
+    "sha256": "30d18d1fae1017904402a353fdee223f1fbd6c686a1a6d615c705dd88c68322b",
+    "level": "L2",
+    "reviewed_at": "2026-09-08T11:43:26.167689+08:00",
+    "read_scope": "流程相关章节"
+  },
+  {
+    "id": "S14",
+    "path": "/Users/1ovepingu/Desktop/Projects/quotation_agent/src/parsing_core/markdown_pipeline.py",
+    "bytes": 12477,
+    "modified_at": "2026-09-07T22:25:39.312102+08:00",
+    "sha256": "fe8b731594744d74417b60d646e6d5089a0ccdb5e304303bb7ce0ab879017f3c",
+    "level": "L2",
+    "reviewed_at": "2026-09-08T11:43:26.168025+08:00",
+    "read_scope": "流程相关章节"
+  },
+  {
+    "id": "S15",
+    "path": "/Users/1ovepingu/Desktop/Projects/quotation_agent/demo/src/adapters/hogn.ts",
+    "bytes": 1976,
+    "modified_at": "2026-09-02T17:52:21.889855+08:00",
+    "sha256": "e99b0c1a6f845c4537343584f4ba9f54c65d7a224286eba65e9846d190a452b2",
+    "level": "L2",
+    "reviewed_at": "2026-09-08T11:43:26.168423+08:00",
+    "read_scope": "全文"
+  },
+  {
+    "id": "S16",
+    "path": "/Users/1ovepingu/Downloads/红光金具/1.750产品目录及手册/金具图册/国家电网有限公司输变电工程通用设计 220kV输电线路绝缘子及金具分册（2024年版）.pdf",
+    "bytes": 77144620,
+    "modified_at": "2026-08-22T16:12:30.652648+08:00",
+    "level": "L2",
+    "read_scope": "打开文件、读取页树与首页；未全书核对图号，未计算全文件哈希"
+  },
+  {
+    "id": "S17",
+    "path": "/Users/1ovepingu/Downloads/红光金具/1.750产品目录及手册/金具图册/国家电网有限公司输变电工程通用设计 330~750kV输电线路绝缘子及金具分册（2024年版）.pdf",
+    "bytes": 115994458,
+    "modified_at": "2026-08-22T16:12:38.602789+08:00",
+    "level": "L2",
+    "read_scope": "打开文件、读取页树与首页；未全书核对图号，未计算全文件哈希"
+  },
+  {
+    "id": "S18",
+    "path": "/Users/1ovepingu/Downloads/红光金具/1.750产品目录及手册/金具图册/国家电网有限公司输变电工程通用设计 35~110kV输电线路绝缘子及金具分册（2024年版）.pdf",
+    "bytes": 100725063,
+    "modified_at": "2026-08-22T16:12:25.751351+08:00",
+    "level": "L2",
+    "read_scope": "打开文件、读取页树与首页；未全书核对图号，未计算全文件哈希"
+  }
+]

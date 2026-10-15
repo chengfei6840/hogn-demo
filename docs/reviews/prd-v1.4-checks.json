@@ -1,0 +1,10 @@
+{
+  "result": "PASS",
+  "requirements": 42,
+  "acceptance_definitions": 42,
+  "scenario_groups": 39,
+  "branches": 124,
+  "open_items": 17,
+  "errors": [],
+  "scope": "章节、唯一ID、FR/AC双向映射、正文/JSON逐分支一致性、旧分支保留；不判断生产执行结果"
+}
