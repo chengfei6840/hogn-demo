@@ -232,3 +232,5 @@ table td input{text-align:center}
 .sidebar-progress .skipped{color:#b0b8c2}
 .sidebar-progress .skipped>span{text-decoration:line-through}
 @media(max-width:800px){.sidebar-progress{display:none}}
+
+.workflow-context{padding-top:12px;padding-bottom:12px}.workflow-context .project-context-heading{min-height:42px}

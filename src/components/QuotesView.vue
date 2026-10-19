@@ -10,10 +10,13 @@ import StatusBadge from './StatusBadge.vue'
 import FormDialog from './FormDialog.vue'
 import { Textarea } from '@/components/ui/textarea'
 import { downloadQuoteWorkbook } from '@/lib/quote-export'
+import { packageCategory } from '@/domain/batch-packages'
 
 const { package: p, project, role, person, act, toast } = useWorkspace()
 const index = shallowRef(0)
 const snap = computed(() => p.snapshots[index.value])
+const sourcePackageName = computed(() => snap.value?.provenance?.packageName || p.packageName)
+const sourceCategoryName = computed(() => snap.value?.provenance?.categoryName || packageCategory(p as Package, project.materialWorksheets || []))
 const excludedItems = computed(() => snap.value?.excluded ?? [])
 const expanded = reactive<Record<string, boolean>>({})
 const showAllParts = reactive<Record<string, boolean>>({})
@@ -124,23 +127,23 @@ async function download() {
       <p class="quote-caption">报价明细 · 点击串行展开子件 · 金额单位：元</p>
       <div class="quote-table-scroll">
         <table class="quote-table">
-          <colgroup><col class="disclosure-column"/><col class="sequence-column"/><col class="name-column"/><col class="quantity-column"/><col class="unit-column"/><col class="price-column"/><col class="amount-column"/></colgroup>
-          <thead><tr><th aria-label="展开子件"></th><th>序号</th><th>串名称 / 型号</th><th>数量</th><th>单位</th><th class="numeric">未税报价单价</th><th class="numeric">未税报价金额</th></tr></thead>
+          <colgroup><col class="disclosure-column"/><col class="sequence-column"/><col style="width:12%"/><col style="width:10%"/><col class="name-column"/><col class="quantity-column"/><col class="unit-column"/><col class="price-column"/><col class="amount-column"/></colgroup>
+          <thead><tr><th aria-label="展开子件"></th><th>序号</th><th>包名称</th><th>类别</th><th>串名称 / 型号</th><th>数量</th><th>单位</th><th class="numeric">未税报价单价</th><th class="numeric">未税报价金额</th></tr></thead>
           <tbody>
             <template v-for="item in snap.items" :key="item.id">
               <tr class="quote-parent-row" :class="{ 'is-expanded': expanded[item.id], 'has-parts': partRows(item.id).length }" :tabindex="partRows(item.id).length ? 0 : undefined" :aria-expanded="partRows(item.id).length ? !!expanded[item.id] : undefined" @click="toggleItem(item.id)" @keydown.enter.prevent="toggleItem(item.id)" @keydown.space.prevent="toggleItem(item.id)">
                 <td class="disclosure-cell"><button v-if="partRows(item.id).length" type="button" :aria-label="(expanded[item.id] ? '收起' : '展开') + '货物项' + item.id + '子件'" :aria-expanded="!!expanded[item.id]" @click.stop="toggleItem(item.id)"><span class="disclosure-triangle" :class="{ open: expanded[item.id] }" aria-hidden="true"></span></button></td>
-                <td class="center">{{ item.id }}</td><td class="quote-item-name">{{ item.name }}<small v-if="item.kind === '独立物资'">独立物资</small></td>
+                <td class="center">{{ item.id }}</td><td>{{ sourcePackageName }}</td><td>{{ sourceCategoryName }}</td><td class="quote-item-name">{{ item.name }}<small v-if="item.kind === '独立物资'">独立物资</small></td>
                 <td class="center">{{ item.quantity }}</td><td class="center">{{ item.unit }}</td>
                 <td class="numeric"><Input v-if="editing" type="number" min="0" step="0.0001" :model-value="unitPrice(item.id, item.price)" :aria-label="`调整货物项 ${item.id} 未税单价`" @click.stop @keydown.stop @change="setParentPrice(item.id, $event)"/><span v-else>{{ money(item.price) }}</span></td>
                 <td class="numeric">{{ money(unitPrice(item.id, item.price) * item.quantity) }}</td>
               </tr>
               <tr v-if="expanded[item.id] && partRows(item.id).length" class="quote-child-container">
-                <td colspan="7"><div class="quote-child-box">
+                <td colspan="9"><div class="quote-child-box">
                   <p class="quote-child-heading">子件明细 · 每套分配</p>
-                  <table class="quote-child-table"><colgroup><col style="width:20%"/><col style="width:25%"/><col style="width:12%"/><col style="width:9%"/><col style="width:17%"/><col style="width:17%"/></colgroup>
-                    <thead><tr><th>子件名称</th><th>型号规格</th><th>每套用量</th><th>单位</th><th class="numeric">未税报价单价</th><th class="numeric">每套报价小计</th></tr></thead>
-                    <tbody><tr v-for="part in visibleParts(item.id)" :key="part.row"><td>{{ part.name }}</td><td>{{ part.model || '—' }}</td><td class="center">{{ part.qty ?? '—' }}</td><td class="center">{{ part.unit }}</td>
+                  <table class="quote-child-table"><colgroup><col style="width:12%"/><col style="width:10%"/><col style="width:17%"/><col style="width:17%"/><col style="width:10%"/><col style="width:8%"/><col style="width:13%"/><col style="width:13%"/></colgroup>
+                    <thead><tr><th>包名称</th><th>类别</th><th>子件名称</th><th>型号规格</th><th>每套用量</th><th>单位</th><th class="numeric">未税报价单价</th><th class="numeric">每套报价小计</th></tr></thead>
+                    <tbody><tr v-for="part in visibleParts(item.id)" :key="part.row"><td>{{ sourcePackageName }}</td><td>{{ sourceCategoryName }}</td><td>{{ part.name }}</td><td>{{ part.model || '—' }}</td><td class="center">{{ part.qty ?? '—' }}</td><td class="center">{{ part.unit }}</td>
                       <td class="numeric"><Input v-if="editing" type="number" min="0" step="0.0001" :model-value="partPrice(item.id, part.row, part.price)" :aria-label="`调整子件 ${part.name} 未税单价`" @change="setPartPrice(item.id, part.row, $event)"/><span v-else>{{ money(part.price) }}</span></td>
                       <td class="numeric">{{ money((part.qty ?? 0) * partPrice(item.id, part.row, part.price)) }}</td>
                     </tr></tbody>
@@ -152,7 +155,7 @@ async function download() {
                 </div></td>
               </tr>
             </template>
-            <tr v-if="!snap.items.length"><td colspan="7" class="empty">当前报价版本没有明细。</td></tr>
+            <tr v-if="!snap.items.length"><td colspan="9" class="empty">当前报价版本没有明细。</td></tr>
           </tbody>
         </table>
       </div>

@@ -3,17 +3,17 @@ import { goodsColumns } from '@/data/goodsList'
 
 const exportedGoodsColumns = goodsColumns.filter(column => !['包名称', '分包编号'].includes(column))
 const parentHeaders = [
-  '序号', '货物名称', '串型号', '数量', '单位', '适用导线', '电压等级', ...exportedGoodsColumns, '技术结果'
+  '序号', '包名称', '类别', '包编号', '货物名称', '串型号', '数量', '单位', '适用导线', '电压等级', ...exportedGoodsColumns, '技术结果'
 ]
 const partHeaders = ['子件名称', '子件型号', '子件用量', '子件单位', '子件材质', '子件U9料号', '子件图号']
 
 export async function downloadCollaborationItems(options: {
-  pkg: Package
+  rows: { pkg: Package; categoryName: string; item: Item; status: string }[]
+  fileName: string
   role: '销售' | '技术'
-  items: Item[]
   catalog: Candidate[]
-  statusFor: (item: Item) => string
 }) {
+  const rows: typeof options.rows = JSON.parse(JSON.stringify(options.rows))
   const { default: ExcelJS } = await import('exceljs')
   const workbook = new ExcelJS.Workbook()
   const sheet = workbook.addWorksheet(options.role === '销售' ? '销售确认' : '技术确认', {
@@ -22,11 +22,11 @@ export async function downloadCollaborationItems(options: {
   const headers = options.role === '技术' ? [...parentHeaders, ...partHeaders] : parentHeaders
   sheet.addRow(headers)
 
-  for (const item of options.items) {
+  for (const { pkg, categoryName, item, status } of rows) {
     const parentValues: (string | number | null)[] = [
-      String(item.id), item.name, item.model || item.spec || (item.kind === '独立物资' ? '独立物资' : ''),
+      String(item.id), pkg.packageName, categoryName, pkg.id, item.name, item.model || item.spec || (item.kind === '独立物资' ? '独立物资' : ''),
       item.quantity, item.unit, item.conductor, item.voltage,
-      ...exportedGoodsColumns.map(column => item.goodsList?.[column] || ''), options.statusFor(item),
+      ...exportedGoodsColumns.map(column => item.goodsList?.[column] || ''), status,
     ]
     if (options.role === '销售') {
       sheet.addRow(parentValues)
@@ -41,7 +41,7 @@ export async function downloadCollaborationItems(options: {
     }
     parts.forEach((part, index) => {
       const partValues = [part.name, part.model, part.qty, part.unit, part.material, part.u9, part.drawing]
-      sheet.addRow([...(index === 0 ? parentValues : parentValues.map(() => '')), ...partValues])
+      sheet.addRow([...(index === 0 ? parentValues : parentValues.map((value, parentIndex) => parentIndex <= 3 ? value : '')), ...partValues])
     })
   }
 
@@ -57,7 +57,7 @@ export async function downloadCollaborationItems(options: {
   const url = URL.createObjectURL(new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
   const anchor = document.createElement('a')
   anchor.href = url
-  anchor.download = `${options.pkg.packageName}-${options.role}确认清单.xlsx`
+  anchor.download = options.fileName
   anchor.click()
   setTimeout(() => URL.revokeObjectURL(url), 10_000)
 }

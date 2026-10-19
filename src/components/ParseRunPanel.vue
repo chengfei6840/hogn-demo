@@ -3,8 +3,10 @@ import { computed, onUnmounted, ref, watch } from 'vue'
 import {Button} from '@/components/ui/button'
 import AppIcon from './AppIcon.vue'
 import FormDialog from './FormDialog.vue'
+import PackageScopePopover from './workflow/PackageScopePopover.vue'
+import type { Package, MaterialWorksheetMeta } from '@/domain/model'
 type FileItem={name:string;type:string;status:string}
-const props=defineProps<{files:FileItem[];parsed:boolean;packageLabel:string}>()
+const props=defineProps<{files:FileItem[];parsed:boolean;packageLabel:string;packages:Package[];sheets:MaterialWorksheetMeta[]}>()
 const emit=defineEmits<{done:[]}>()
 // runIndex 回传解析进度：-1 未运行，0..n-1 正在解析第 n 份，n 表示全部完成。
 const runIndex=defineModel<number>('runIndex',{default:-1})
@@ -81,7 +83,7 @@ function cancel(){stop();clearHandoff();running.value=false;elapsed.value=0;runI
 watch(total,n=>{if(!n)cancel()})
 watch(()=>props.parsed,v=>{if(v){stop();clearHandoff();running.value=false;runIndex.value=-1;confirming.value=false}})
 // 页面把 runIndex 置 0 表示发起解析，确认弹窗由本组件承担。
-watch(runIndex,v=>{if(v===0&&!running.value)confirming.value=true})
+watch(runIndex,v=>{if(v<0&&running.value)cancel();else if(v===0&&!running.value)confirming.value=true})
 onUnmounted(()=>{stop();clearHandoff()})
 </script>
 <template><aside class="panel parse-side">
@@ -97,10 +99,10 @@ onUnmounted(()=>{stop();clearHandoff()})
   <div v-if="card.live" class="parse-bar"><i :style="{width:card.progress+'%'}"/></div>
   <div class="parse-stages"><div v-for="(s,i) in card.stages" :key="s.name" class="parse-stage" :class="s.status"><span class="parse-stage-dot"><AppIcon v-if="s.status!=='waiting'" :name="s.status==='completed'?'check':'spinner-gap'" :size="12"/><template v-else>{{i+1}}</template></span><div class="grow"><div class="parse-stage-row"><b>{{s.name}}</b><i>{{STATUS_TEXT[s.status]}}</i></div><p>{{s.status==='completed'?s.done:s.status==='in_progress'?s.running:s.wait}}</p></div></div></div>
  </div></div>
- <FormDialog v-model="confirming" :title="parsed?'确认重新解析':'确认保存资料并开始解析'" :description="`即将为报价包 ${packageLabel} 登记 ${total} 份资料并启动解析。`">
+ <FormDialog v-model="confirming" :title="parsed?'确认重新解析':'确认保存资料并开始解析'" :description="`将使用本次上传的 ${total} 份资料，为所选 ${packages.length} 个报价包启动解析。`">
   <p>您即将对当前资料启动结构化参数解析，解析过程约需 {{Math.ceil(elapsedAll/1000)}} 秒。</p>
   <p v-if="parsed">重新解析会重建演示货物项，覆盖本轮货物项修改，并清除当前版本的销售、技术确认和技术指派结果。原始资料清单及历史记录会保留。</p>
-  <div class="parse-confirm-info"><div><span>输入资料数量</span><b>{{total}} 份文件</b></div><div><span>解析目标报价包</span><b class="parse-confirm-target">{{packageLabel}}</b></div></div>
+  <div class="parse-confirm-info"><div><span>输入资料数量</span><b>{{total}} 份文件</b></div><div><span>解析目标范围</span><div class="parse-scope-summary"><b>{{packageLabel}}</b><PackageScopePopover :packages="packages" :sheets="sheets" label="查看范围" :show-count="false" /></div></div></div>
   <div class="parse-confirm-actions"><Button variant="outline" @click="confirming=false">取消返回</Button><Button @click="start"><AppIcon name="play"/>确认开始解析</Button></div>
  </FormDialog>
 </aside></template>
@@ -148,4 +150,7 @@ onUnmounted(()=>{stop();clearHandoff()})
 .parse-confirm-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
 @keyframes parse-spin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.parse-card-tile.live :deep(svg),.parse-stage.in_progress .parse-stage-dot :deep(svg){animation:none}}
+.parse-scope-summary{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap}.parse-scope-summary b{font-size:12px}
 </style>
+
+<style scoped>.parse-confirm-target{white-space:normal;overflow-wrap:anywhere;max-width:290px;text-align:right;line-height:1.6}</style>

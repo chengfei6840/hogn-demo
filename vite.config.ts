@@ -14,6 +14,7 @@ export default defineConfig({
     host: true,
     port: 5174
   },
-  // GitHub Pages 部署在 /<repo>/ 子路径下，由 CI 注入 VITE_BASE；本地开发默认 '/'
+  // GitHub Pages 部署在 /<repo>/ 子路径下，由 CI 注入 VITE_BASE；本地开发默认 '/'。
+  // 勿改回 './'：public/ 下绝对路径资源在子路径部署时会 404。
   base: process.env.VITE_BASE ?? '/'
 })

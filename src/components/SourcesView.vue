@@ -1,38 +1,56 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onUnmounted, ref, watch } from 'vue'
 import {useWorkspace} from '@/domain/store'
 import {demoMaterialsForPackage} from '@/domain/demo-materials'
 import {Button} from '@/components/ui/button'
 import AppIcon from './AppIcon.vue'
 import ParseRunPanel from './ParseRunPanel.vue'
+import { packageCategory } from '@/domain/batch-packages'
 import StatusBadge from './StatusBadge.vue'
 import { canHandlePackageProcess, packageProcessParticipant, type Package } from '@/domain/model'
-const {package:p,project,role,person,act,page}=useWorkspace()
-const accessDenied = computed(() => role.value === '销售' && !canHandlePackageProcess(p as Package, 'dataParsing', person.value))
-const parsingOwner = computed(() => packageProcessParticipant(p as Package, 'dataParsing'))
-// runIndex 由解析动画回传：-1 未运行，0..n-1 正在解析第 n 份，n 表示全部完成。
-const runIndex=ref(-1)
-// 清单行可点选，选中行在右栏查看该文件的解析过程记录。
-const selected=ref(-1)
-// 左栏「开始解析」点击后弹出确认框，确认由右栏面板承接。
-const startOpen=ref(false)
-const canEdit=computed(()=>role.value==='销售'&&!accessDenied.value&&['资料整理','并行协作'].includes(p.stage))
-const parsed=computed(()=>p.items.length>0)
-const demoBundle=computed(()=>demoMaterialsForPackage(p as Package))
-const demoLoaded=computed(()=>!!demoBundle.value.length&&demoBundle.value.every(file=>p.files.some(existing=>existing.name===file.name)))
-const running=computed(()=>runIndex.value>=0&&runIndex.value<p.files.length)
+const {package:p,project,packages,batchPackageIds,batchFiles,batchSession,parseBatch,loadBatchDemo,addBatchFiles,role,person,act,page,workflowBusy}=useWorkspace()
+const isBatch=computed(()=>batchPackageIds.value.length>0)
+const targets=computed(()=>isBatch.value?batchPackageIds.value.map(id=>packages.value.find(pkg=>pkg.id===id)).filter((pkg):pkg is Package=>!!pkg):[p as Package])
+const inputFiles=computed(()=>isBatch.value?batchFiles.value:p.files)
+const accessDenied=computed(()=>role.value!=='销售'||targets.value.some(pkg=>!canHandlePackageProcess(pkg,'dataParsing',person.value)))
+const parsingOwner=computed(()=>packageProcessParticipant(p as Package,'dataParsing'))
+const runIndex=ref(-1),selected=ref(-1),startOpen=ref(false)
+const canEdit=computed(()=>!accessDenied.value&&targets.value.every(pkg=>!pkg.archivedAt&&['资料整理','并行协作'].includes(pkg.stage)))
+const parsed=computed(()=>targets.value.length>0&&targets.value.every(pkg=>pkg.items.length>0))
+const demoBundle=computed(()=>targets.value.flatMap(pkg=>demoMaterialsForPackage(pkg)))
+const demoLoaded=computed(()=>!!demoBundle.value.length&&demoBundle.value.every(file=>inputFiles.value.some(existing=>existing.name===file.name)))
+const running=computed(()=>runIndex.value>=0&&runIndex.value<=inputFiles.value.length)
+const packageLabel=computed(()=>`${targets.value.length} 个报价包 · ${new Set(targets.value.map(pkg=>packageCategory(pkg,project.materialWorksheets||[]))).size} 个类别`)
 const fileState=computed(()=>{
- const n=p.files.length
- return (i:number)=>runIndex.value<0||runIndex.value>n?'' : runIndex.value===n||i<runIndex.value?'已完成' : i===runIndex.value?'解析中' : '等待'
+ const n=inputFiles.value.length
+ return (i:number)=>runIndex.value<0||runIndex.value>n?'':runIndex.value===n||i<runIndex.value?'已完成':i===runIndex.value?'解析中':'等待'
 })
-function files(e:Event){const list=Array.from((e.target as HTMLInputElement).files||[]);act('files',list.map(f=>({name:f.name})));(e.target as HTMLInputElement).value=''}
-// 文件减少或清空时收敛选中行；解析完成后默认展示最后一份文件的记录。
-watch(()=>[runIndex.value,p.files.length] as const,([r,n])=>{if(!n)selected.value=-1;else if(r>=n||selected.value>=n)selected.value=n-1})
+let runContext:{ids:string[];session:number;files:Package['files']}|undefined
+watch(startOpen,open=>{if(open)runContext={ids:[...batchPackageIds.value],session:batchSession.value,files:JSON.parse(JSON.stringify(inputFiles.value))}})
+function completeParsing(){
+ if(isBatch.value&&runContext)parseBatch(runContext.ids,runContext.session,runContext.files)
+ else if(!runContext?.ids.length)act('start')
+ runIndex.value=-1
+}
+function files(event:Event){
+ const input=event.target as HTMLInputElement
+ if(canEdit.value&&!running.value){
+  const list=Array.from(input.files||[])
+  if(isBatch.value)addBatchFiles(list.map(file=>({name:file.name,type:file.name.split('.').pop()?.toUpperCase()||'文件',status:'待解析 · 统一上传资料'})))
+  else act('files',list.map(file=>({name:file.name})))
+ }
+ input.value=''
+}
+function loadDemo(){if(isBatch.value)loadBatchDemo();else act('demoFiles')}
+watch(()=>[runIndex.value,inputFiles.value.length] as const,([r,n])=>{if(!n)selected.value=-1;else if(r>=n||selected.value>=n)selected.value=n-1})
+watch(runIndex,value=>{workflowBusy.value=value>=0&&value<=inputFiles.value.length},{immediate:true})
+watch(batchSession,()=>{runIndex.value=-1;startOpen.value=false;runContext=undefined})
+onUnmounted(()=>{workflowBusy.value=false;runContext=undefined})
 </script>
-<template><section v-if="accessDenied" class="panel parse-access-denied" aria-live="polite"><AppIcon name="lock-key" :size="40"/><h2>你无权访问该页面</h2><p>本包“资料解析”已指定由 {{ parsingOwner }} 处理。</p><p>当前人员：{{ person }}</p></section><section class="panel parse-block">
-  <div class="parse-intake"><h2>需求资料输入</h2><p class="muted">通过文件上传添加资料，保存后统一进入下方资料清单</p><p v-if="project.materialListFile" class="material-inherited">项目物料清单已自动带入：{{project.materialListFile.name}}</p><div class="parse-intake-actions"><label class="upload-label"><AppIcon name="folder-simple-plus" :size="17"/>文件上传<input type="file" multiple :disabled="!canEdit||running" @change="files" aria-label="选择询价资料"/></label><Button variant="outline" :disabled="!canEdit||running||!demoBundle.length||demoLoaded" @click="act('demoFiles')"><AppIcon name="folder-simple-plus"/>{{demoLoaded?'已载入演示资料':'载入演示资料'}}</Button><Button :disabled="!canEdit||running||!p.files.length" @click="startOpen=true"><AppIcon name="play"/>{{parsed?'重新解析':'开始解析'}}</Button></div><p v-if="!demoBundle.length" class="muted">当前包暂无对应的演示技术资料。可返回报价包列表选择包1等已有资料的包进行体验。</p><p v-if="parsed &amp;&amp; canEdit" class="muted">重新解析将重建演示货物项并清除当前版本的销售、技术确认，请在弹窗中确认后继续。</p></div>
-  <ParseRunPanel v-model:run-index="runIndex" v-model:selected="selected" v-model:confirming="startOpen" :files="p.files" :parsed="parsed" :package-label="`${p.packageName}（${p.packageNo}）`" @done="act('start')"/>
-  <div class="parse-list"><div class="panel-heading"><h2>资料清单 <span class="count">{{p.files.length}}</span></h2><StatusBadge v-if="p.files.length" :text="running?'解析中':parsed?'已解析':'待解析'"/></div><div v-if="!p.files.length" class="parse-dropzone"><AppIcon name="folder-open" :size="22"/><p>点击上方「文件上传」或「载入演示资料」添加资料</p></div><template v-else><button v-for="(f,n) in p.files" :key="n" type="button" class="file-row parse-file-row" :class="{active:selected===n}" :aria-pressed="selected===n" @click="selected=n"><span class="parse-file-tile"><AppIcon :name="f.type==='ZIP'?'file-zip':'file-text'" :size="17"/></span><div class="grow"><b>{{f.name}}</b><small>{{f.type}} · 资料批次 B01</small></div><StatusBadge :text="fileState(n)||f.status"/></button><small class="parse-local-note">仅在本机演示；文件不会发送到外部服务</small></template></div>
+<template><section v-if="accessDenied" class="panel parse-access-denied" aria-live="polite"><AppIcon name="lock-key" :size="40"/><h2>你无权访问该页面</h2><p>本包“资料解析”已指定由 {{ parsingOwner }} 处理。</p><p>当前人员：{{ person }}</p></section><section v-else class="panel parse-block">
+  <div class="parse-intake"><h2>需求资料输入</h2><p class="muted">统一上传本次处理所需资料，系统按所选包的信息匹配解析范围</p><p v-if="project.materialListFile" class="material-inherited">项目物料清单已自动带入：{{project.materialListFile.name}}</p><div class="parse-intake-actions"><label class="upload-label"><AppIcon name="folder-simple-plus" :size="17"/>文件上传<input type="file" multiple :disabled="!canEdit||running" @change="files" aria-label="选择询价资料"/></label><Button variant="outline" :disabled="!canEdit||running||!demoBundle.length||demoLoaded" @click="loadDemo"><AppIcon name="folder-simple-plus"/>{{demoLoaded?'已载入演示资料':'载入演示资料'}}</Button><Button :disabled="!canEdit||running||!inputFiles.length" @click="startOpen=true"><AppIcon name="play"/>{{parsed?'重新解析':'开始解析'}}</Button></div><p v-if="!demoBundle.length" class="muted">所选范围暂无额外演示技术资料，可统一上传文件后解析。</p><p v-if="parsed &amp;&amp; canEdit" class="muted">重新解析将重建本次所选包的演示货物项，并清除对应版本确认；仅首包保留待确认项，其余包预填完整。</p></div>
+  <ParseRunPanel v-model:run-index="runIndex" v-model:selected="selected" v-model:confirming="startOpen" :files="inputFiles" :parsed="parsed" :package-label="packageLabel" :packages="targets" :sheets="project.materialWorksheets||[]" @done="completeParsing"/>
+  <div class="parse-list"><div class="panel-heading"><h2>资料清单 <span class="count">{{inputFiles.length}}</span></h2><StatusBadge v-if="inputFiles.length" :text="running?'解析中':parsed?'已解析':'待解析'"/></div><div v-if="!inputFiles.length" class="parse-dropzone"><AppIcon name="folder-open" :size="22"/><p>点击上方「文件上传」或「载入演示资料」添加资料</p></div><template v-else><button v-for="(f,n) in inputFiles" :key="n" type="button" class="file-row parse-file-row" :class="{active:selected===n}" :aria-pressed="selected===n" @click="selected=n"><span class="parse-file-tile"><AppIcon :name="f.type==='ZIP'?'file-zip':'file-text'" :size="17"/></span><div class="grow"><b>{{f.name}}</b><small>{{f.type}} · 资料批次 B01</small></div><StatusBadge :text="fileState(n)||f.status"/></button><small class="parse-local-note">仅在本机演示；文件不会发送到外部服务</small></template></div>
   </section>
   <div class="parse-foot"><Button :disabled="!parsed" @click="page='collaboration'">进入需求确认<AppIcon name="arrow-right"/></Button></div>
  </template>

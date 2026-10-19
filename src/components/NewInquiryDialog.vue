@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { computed, shallowRef, watch, onBeforeUnmount } from 'vue'
+import { computed, shallowRef, watch, onBeforeUnmount, nextTick } from 'vue'
 import { useWorkspace } from '@/domain/store'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import AppIcon from './AppIcon.vue'
+import MaterialWorksheetPicker from './MaterialWorksheetPicker.vue'
 import AppSelect from './AppSelect.vue'
 import FormDialog from './FormDialog.vue'
 import { defaultStageOperators, useWorkflowStore, type StageOperatorKey } from '@/stores/workflow'
 import { orderedTasks } from '@/domain/workflow-design'
 import { defaultPackageProcessParticipants, rolePeople, technicalDirectors, type MaterialPackageSummary, type PackageProcessParticipants } from '@/domain/model'
-import { readMaterialList } from '@/domain/material-list'
+import { loadMaterialWorkbook, discoverMaterialWorksheets, summarizeMaterialWorksheets, type MaterialWorksheetInfo } from '@/domain/material-list'
+import { runMaterialWorksheetQueue } from '@/domain/material-worksheet-queue'
 import { useUsersStore } from '@/stores/users'
-const { package: pkg, project, role, person, act, intakeOpen, intakeMode } = useWorkspace()
+const { package: pkg, project, role, person, act, intakeOpen, intakeMode, packageListWorksheetByProject } = useWorkspace()
 const workflowStore=useWorkflowStore()
 const usersStore=useUsersStore()
 const isProjectMode = computed(() => intakeMode.value === 'project')
@@ -24,6 +26,17 @@ const createdPackageCount = shallowRef(0)
 const materialListFile = shallowRef<{name:string;size:number}|null>(null)
 const materialListPackages = shallowRef<MaterialPackageSummary[]>([])
 const materialListLoading = shallowRef(false)
+const materialWorkbook = shallowRef<any>(null)
+const materialWorksheets = shallowRef<MaterialWorksheetInfo[]>([])
+const selectedWorksheetIds = shallowRef<string[]>([])
+const worksheetParseResults = shallowRef<ReturnType<typeof summarizeMaterialWorksheets>>([])
+const worksheetParsedSelection = shallowRef('')
+const worksheetSelectionChanged = shallowRef(false)
+const worksheetParsing = shallowRef(false)
+const worksheetAbortController = shallowRef<AbortController | null>(null)
+const activeWorksheetId = shallowRef('')
+const worksheetRunProgress = shallowRef({ index: 0, total: 0 })
+let materialRequestId = 0
 const materialListError = shallowRef('')
 const materialInput = shallowRef<HTMLInputElement|null>(null)
 const name = shallowRef('')
@@ -33,6 +46,7 @@ const gridType = shallowRef<'国网'|'南网'>('国网')
 const voltageLevel = shallowRef('')
 const packageName = shallowRef('')
 const packageNo = shallowRef('')
+const packageWorksheetId=shallowRef('')
 const salesOwner=shallowRef('')
 const techOwner=shallowRef('')
 const financeOwner=shallowRef('')
@@ -75,19 +89,83 @@ async function loadDemoMaterial(){
 }
 async function loadMaterialFile(getFile:()=>Promise<File>){
  if(materialListLoading.value)return
+ const requestId=++materialRequestId
  materialListLoading.value=true
  materialListError.value=''
+ resetWorksheetState()
  try{
   const file=await getFile()
-  const summaries=await readMaterialList(file)
+  const workbook=await loadMaterialWorkbook(file)
+  if(requestId!==materialRequestId)return
+  const sheets=discoverMaterialWorksheets(workbook)
+  const selectable=sheets.filter(sheet=>sheet.state==='visible')
   materialListFile.value={name:file.name,size:file.size}
-  materialListPackages.value=summaries
+  materialWorkbook.value=workbook
+  materialWorksheets.value=sheets
+  selectedWorksheetIds.value=selectable.map(sheet=>sheet.id)
  }catch(error){
+  if(requestId!==materialRequestId)return
   materialListFile.value=null
-  materialListPackages.value=[]
   materialListError.value=error instanceof Error?error.message:'物料清单读取失败，请检查文件后重试'
- }finally{materialListLoading.value=false}
+ }finally{if(requestId===materialRequestId)materialListLoading.value=false}
 }
+function resetWorksheetState(){materialWorkbook.value=null;materialWorksheets.value=[];selectedWorksheetIds.value=[];worksheetParseResults.value=[];worksheetParsedSelection.value='';worksheetSelectionChanged.value=false;materialListPackages.value=[];activeWorksheetId.value='';worksheetRunProgress.value={index:0,total:0}}
+function selectAllWorksheets(){selectedWorksheetIds.value=materialWorksheets.value.map(sheet=>sheet.id);invalidateWorksheetParse()}
+function clearWorksheetSelection(){selectedWorksheetIds.value=[];invalidateWorksheetParse()}
+function toggleWorksheet(id:string,event:Event){const checked=(event.target as HTMLInputElement).checked;selectedWorksheetIds.value=checked?[...selectedWorksheetIds.value,id]:selectedWorksheetIds.value.filter(value=>value!==id);invalidateWorksheetParse()}
+function invalidateWorksheetParse(){if(worksheetParsedSelection.value)worksheetSelectionChanged.value=true;worksheetParseResults.value=[];worksheetParsedSelection.value='';materialListPackages.value=[]}
+async function parseSelectedWorksheets(){
+ if(worksheetParsing.value||!materialWorkbook.value||!selectedWorksheetIds.value.length)return
+ const requestId=materialRequestId
+ const workbook=materialWorkbook.value
+ const selection=[...selectedWorksheetIds.value]
+ const controller=new AbortController()
+ worksheetAbortController.value?.abort()
+ worksheetAbortController.value=controller
+ worksheetParsing.value=true
+ worksheetParseResults.value=[]
+ worksheetParsedSelection.value=''
+ worksheetSelectionChanged.value=false
+ materialListPackages.value=[]
+ materialListError.value=''
+ try{
+  await nextTick()
+  if(requestId!==materialRequestId||controller.signal.aborted)return
+  const completed=await runMaterialWorksheetQueue({
+   worksheets:materialWorksheets.value,
+   selectedIds:selection,
+   signal:controller.signal,
+   parse:worksheet=>{
+    const result=summarizeMaterialWorksheets(workbook,[worksheet.id])[0]
+    if(!result)throw new Error('未找到该工作表的解析结果')
+    return result
+   },
+   onError:(worksheet,error)=>({worksheet,summaries:[],error:error instanceof Error?error.message:'工作表解析失败，请检查后重试'}),
+   onStart:(worksheet,index,total)=>{
+    if(requestId!==materialRequestId||controller.signal.aborted)return
+    activeWorksheetId.value=worksheet.id
+    worksheetRunProgress.value={index:index+1,total}
+   },
+   onResult:(result,worksheet)=>{
+    if(requestId!==materialRequestId||controller.signal.aborted)return
+    worksheetParseResults.value=[...worksheetParseResults.value,result]
+   },
+  })
+  if(!completed||requestId!==materialRequestId||controller.signal.aborted)return
+  materialListPackages.value=worksheetParseResults.value.flatMap(result=>result.summaries)
+  worksheetParsedSelection.value=[...selection].sort().join('|')
+  worksheetSelectionChanged.value=false
+ }catch(error){if(requestId===materialRequestId&&!controller.signal.aborted)materialListError.value=error instanceof Error?error.message:'工作表解析失败，请检查文件后重试'}
+ finally{
+  if(requestId===materialRequestId&&worksheetAbortController.value===controller){
+   worksheetAbortController.value=null
+   worksheetParsing.value=false
+   activeWorksheetId.value=''
+   worksheetRunProgress.value={index:0,total:0}
+  }
+ }
+}
+function removeMaterialList(){materialRequestId++;worksheetAbortController.value?.abort();worksheetAbortController.value=null;materialListLoading.value=false;worksheetParsing.value=false;materialListFile.value=null;materialListError.value='';resetWorksheetState()}
 const fileInput = shallowRef<HTMLInputElement | null>(null)
 const dragging = shallowRef(false)
 function addFiles(list: File[]) { files.value = [...files.value, ...list.map(file => ({ name: file.name, size: file.size }))] }
@@ -99,6 +177,7 @@ const inPackageEditMode = computed(() => isPackageMode.value && pkg.id && ['资�
 watch(intakeOpen, open => {
   if (open) {
     if (isProjectForm.value) {
+      if(isProjectMode.value){materialRequestId++;materialListLoading.value=false;worksheetParsing.value=false;removeMaterialList()}
       name.value = isProjectMode.value ? '' : project.name
       customer.value = isProjectMode.value ? '' : project.customer
       region.value = isProjectMode.value ? '' : project.region || ''
@@ -113,6 +192,7 @@ watch(intakeOpen, open => {
       packageName.value = isPackageMode.value ? '' : pkg.packageName
       packageNo.value = isPackageMode.value ? '' : pkg.packageNo || ''
       voltageLevel.value = isPackageMode.value ? '' : pkg.voltageLevel || ''
+      packageWorksheetId.value = isPackageMode.value ? (packageListWorksheetByProject.value[project.id]||project.materialWorksheets?.[0]?.id||'') : (pkg.materialWorksheetId||'')
       files.value = []
       const signer = approvalTasks.value.find(task => task.properties.action === 'issue')
       processParticipants.value = { ...defaultPackageProcessParticipants, ...defaultStageOperators, ...workflowStore.stageOperators, dataParsing:project.salesOwner||person.value, salesConfirmation:project.salesOwner||person.value, technicalConfirmation:project.techOwner||technicalDirector, costCalculation:project.financeOwner||workflowStore.stageOperators.costCalculation, approvalIssuance:project.financeOwner||signer?.properties.assignee||workflowStore.stageOperators.approvalIssuance, salesExternal:project.salesOwner||person.value, dealTracking:project.salesOwner||person.value, ...(isPackageMode.value ? {} : pkg.processParticipants) }
@@ -128,6 +208,7 @@ watch(intakeOpen, open => {
       files.value = []
     }
   }
+  else if(isProjectMode.value){materialRequestId++;materialListLoading.value=false;worksheetParsing.value=false;removeMaterialList()}
 })
 function choose(event: Event) {
  const input = event.target as HTMLInputElement
@@ -140,7 +221,7 @@ const steps = ['登记询价资料', '模拟提取文件内容', '整理货物�
 const progress = computed(() => Math.min(100, Math.round((processingStep.value + 1) / (steps.length + 1) * 100)))
 const dialogOpen = computed({ get: () => intakeOpen.value, set: value => { if (!processing.value) intakeOpen.value = value } })
 let progressTimer: ReturnType<typeof setTimeout> | undefined
-onBeforeUnmount(() => clearTimeout(progressTimer))
+onBeforeUnmount(() => {clearTimeout(progressTimer);removeMaterialList()})
 function advanceProcessing() {
  processingStep.value += 1
  if (processingStep.value < steps.length) {
@@ -158,7 +239,7 @@ function submit(parse: boolean) {
 
  if (isProjectMode.value) {
   createdPackageCount.value = materialListPackages.value.length
-  if (!act('new', { name: name.value, customer: customer.value, region: region.value, gridType: gridType.value, salesOwner:salesOwner.value, techOwner:techOwner.value, financeOwner:financeOwner.value, materialListFile: materialListFile.value, materialPackages: materialListPackages.value })) return
+  if (!act('new', { name: name.value, customer: customer.value, region: region.value, gridType: gridType.value, salesOwner:salesOwner.value, techOwner:techOwner.value, financeOwner:financeOwner.value, materialListFile: materialListFile.value, materialPackages: materialListPackages.value, materialWorksheets: worksheetParseResults.value.filter(result=>result.summaries.length).map(result=>result.worksheet) })) return
   intakeOpen.value = false
   createdOpen.value = true
   return
@@ -170,7 +251,8 @@ function submit(parse: boolean) {
 
  if (isPackageMode.value) {
   // 创建包模式：需要包名称
-  if (!act('newPackage', { packageName: packageName.value, packageNo: packageNo.value, voltageLevel: voltageLevel.value, processParticipants: { dataParsing: person.value, salesConfirmation: person.value, ...processParticipants.value }, approvalParticipants: approvalParticipants.value })) return
+  if (!act('newPackage', { packageName: packageName.value, packageNo: packageNo.value, voltageLevel: voltageLevel.value, materialWorksheetId:packageWorksheetId.value, processParticipants: { dataParsing: person.value, salesConfirmation: person.value, ...processParticipants.value }, approvalParticipants: approvalParticipants.value })) return
+  packageListWorksheetByProject.value={...packageListWorksheetByProject.value,[project.id]:packageWorksheetId.value}
   intakeOpen.value = false
   return
  }
@@ -191,11 +273,12 @@ function submit(parse: boolean) {
 }
 const canSubmit = computed(() => {
   if (!editable.value) return false
-  if (isProjectMode.value) return !!name.value.trim() && !!salesOwner.value && !!techOwner.value && !!financeOwner.value && !!materialListFile.value && materialListPackages.value.length > 0 && !materialListLoading.value
+  if (isProjectMode.value) return !!name.value.trim() && !!salesOwner.value && !!techOwner.value && !!financeOwner.value && !!materialListFile.value && materialListPackages.value.length > 0 && worksheetParsedSelection.value===[...selectedWorksheetIds.value].sort().join('|') && !materialListLoading.value && !worksheetParsing.value
   if (intakeMode.value==='editProject') return !!name.value.trim()
   if (isPackageForm.value) return !!packageName.value.trim()
   return files.value.length > 0 || (inPackageEditMode.value && pkg.files.length > 0)
 })
+function chooseMaterialList(file:File){void loadMaterialFile(async()=>file)}
 </script>
 <template>
  <Dialog v-model:open="dialogOpen"><DialogContent class="inquiry-dialog" :class="{'is-processing':processing,'is-package-mode':isPackageForm}" @escape-key-down="processing && $event.preventDefault()" @interact-outside="processing && $event.preventDefault()">
@@ -210,9 +293,9 @@ const canSubmit = computed(() => {
   </section>
   <div v-else class="inquiry-content">
    <!-- 创建项目模式：项目基础信息 -->
-   <section v-if="isProjectForm" class="inquiry-basics"><div class="inquiry-section-heading"><span>01</span><h3>项目信息</h3></div><label for="inquiry-name">项目名称 <span class="required-label">必填</span><Input id="inquiry-name" v-model="name" placeholder="例如：新疆750千伏"/></label><label for="inquiry-customer">客户单位<Input id="inquiry-customer" v-model="customer" placeholder="填写客户或需求单位"/></label><label>项目地区<Input v-model="region" placeholder="例如：新疆"/></label><label>电网类型<AppSelect v-model="gridType" label="电网类型" :options="['国网','南网']"/></label><div v-if="isProjectMode" class="project-owners"><div class="inquiry-section-heading"><span>02</span><div><h3>项目负责人</h3><p>创建后，项目及新建报价包会按这里选择的人员进入待办。</p></div></div><div class="project-owner-grid"><label>销售负责人<AppSelect v-model="salesOwner" label="选择销售负责人" :options="usersStore.peopleForRole('销售')"/></label><label>技术负责人（总监）<AppSelect v-model="techOwner" label="选择技术负责人" :options="technicalDirectors.filter(owner=>usersStore.peopleForRole('技术').includes(owner))"/></label><label>财务负责人<AppSelect v-model="financeOwner" label="选择财务负责人" :options="usersStore.peopleForRole('财务')"/></label></div></div><div class="material-upload"><div class="inquiry-section-heading"><span>02</span><h3>物料清单 Excel</h3><small v-if="isProjectMode">必传 · 读取报价包汇总</small></div><input ref="materialInput" class="sr-only" type="file" accept=".xlsx" aria-label="选择物料清单 Excel" @change="chooseMaterial"/><div v-if="isProjectMode" class="material-upload-actions"><Button type="button" variant="outline" :disabled="materialListLoading" @click="materialInput?.click()"><AppIcon :name="materialListLoading?'spinner-gap':'folder-simple-plus'" :class="{'parse-spinner':materialListLoading}"/>{{materialListLoading?'正在读取清单':'选择物料清单'}}</Button><Button type="button" variant="outline" :disabled="materialListLoading" @click="loadDemoMaterial"><AppIcon name="file-text"/>载入演示文档</Button></div><p v-if="materialListFile"><AppIcon name="file-text"/>{{materialListFile.name}}<span>已识别 {{materialListPackages.length}} 个报价包</span><Button v-if="isProjectMode" variant="ghost" size="sm" @click="materialListFile=null;materialListPackages=[];materialListError=''">移除</Button></p><p v-if="materialListError" class="material-list-error" role="alert">{{materialListError}}</p><p v-else-if="!materialListFile" class="muted">上传后识别清单中的报价包，并汇总技术编码、数量、工程和交货地点。</p><ul v-if="materialListPackages.length" class="material-sheet-preview"><li v-for="summary in materialListPackages.slice(0,5)" :key="summary.sheetName"><b>{{summary.packageName}}<template v-if="summary.packageNo"> · {{summary.packageNo}}</template></b><span>{{summary.voltageLevels.join('、')||'电压待确认'}} · {{summary.itemCount}} 项 · {{summary.locations.length}} 个交货点</span></li><li v-if="materialListPackages.length>5" class="muted">还有 {{materialListPackages.length-5}} 个包</li></ul></div></section>
+   <section v-if="isProjectForm" class="inquiry-basics"><div class="inquiry-section-heading"><span>01</span><h3>项目信息</h3></div><label for="inquiry-name">项目名称 <span class="required-label">必填</span><Input id="inquiry-name" v-model="name" placeholder="例如：新疆750千伏"/></label><label for="inquiry-customer">客户单位<Input id="inquiry-customer" v-model="customer" placeholder="填写客户或需求单位"/></label><label>项目地区<Input v-model="region" placeholder="例如：新疆"/></label><label>电网类型<AppSelect v-model="gridType" label="电网类型" :options="['国网','南网']"/></label><div v-if="isProjectMode" class="project-owners"><div class="inquiry-section-heading"><span>02</span><div><h3>项目负责人</h3><p>创建后，项目及新建报价包会按这里选择的人员进入待办。</p></div></div><div class="project-owner-grid"><label>销售负责人<AppSelect v-model="salesOwner" label="选择销售负责人" :options="usersStore.peopleForRole('销售')"/></label><label>技术负责人（总监）<AppSelect v-model="techOwner" label="选择技术负责人" :options="technicalDirectors.filter(owner=>usersStore.peopleForRole('技术').includes(owner))"/></label><label>财务负责人<AppSelect v-model="financeOwner" label="选择财务负责人" :options="usersStore.peopleForRole('财务')"/></label></div></div><MaterialWorksheetPicker v-if="isProjectMode" :file-name="materialListFile?.name||''" :file-size="materialListFile?.size||0" :worksheets="materialWorksheets" :selected-ids="selectedWorksheetIds" :results="worksheetParseResults" :summaries="materialListPackages" :loading="materialListLoading" :parsing="worksheetParsing" :selection-changed="worksheetSelectionChanged" :error="materialListError" :active-worksheet-id="activeWorksheetId" :active-worksheet-index="worksheetRunProgress.index" :parse-total="worksheetRunProgress.total" @file-selected="chooseMaterialList" @choose-demo="loadDemoMaterial" @remove-file="removeMaterialList" @toggle-worksheet="toggleWorksheet" @select-all="selectAllWorksheets" @clear-selection="clearWorksheetSelection" @parse="parseSelectedWorksheets"/><div v-if="!isProjectMode" class="material-upload"><div class="inquiry-section-heading"><span>02</span><h3>物料清单 Excel</h3><small v-if="isProjectMode">必传 · 读取报价包汇总</small></div><input ref="materialInput" class="sr-only" type="file" accept=".xlsx" aria-label="选择物料清单 Excel" @change="chooseMaterial"/><div v-if="isProjectMode" class="material-upload-actions"><Button type="button" variant="outline" :disabled="materialListLoading" @click="materialInput?.click()"><AppIcon :name="materialListLoading?'spinner-gap':'folder-simple-plus'" :class="{'parse-spinner':materialListLoading}"/>{{materialListLoading?'正在读取清单':'选择物料清单'}}</Button><Button type="button" variant="outline" :disabled="materialListLoading" @click="loadDemoMaterial"><AppIcon name="file-text"/>载入演示文档</Button></div><p v-if="materialListFile"><AppIcon name="file-text"/>{{materialListFile.name}}<span>已识别 {{materialListPackages.length}} 个报价包</span><Button v-if="isProjectMode" variant="ghost" size="sm" @click="materialListFile=null;materialListPackages=[];materialListError=''">移除</Button></p><p v-if="materialListError" class="material-list-error" role="alert">{{materialListError}}</p><p v-else-if="!materialListFile" class="muted">上传后识别清单中的报价包，并汇总技术编码、数量、工程和交货地点。</p><ul v-if="materialListPackages.length" class="material-sheet-preview"><li v-for="summary in materialListPackages.slice(0,5)" :key="summary.sheetName"><b>{{summary.packageName}}<template v-if="summary.packageNo"> · {{summary.packageNo}}</template></b><span>{{summary.voltageLevels.join('、')||'电压待确认'}} · {{summary.itemCount}} 项 · {{summary.locations.length}} 个交货点</span></li><li v-if="materialListPackages.length>5" class="muted">还有 {{materialListPackages.length-5}} 个包</li></ul></div></section>
    <!-- 创建包模式：简化表单 -->
-   <section v-else-if="isPackageForm" class="inquiry-package-simple"><div class="inquiry-section-heading"><span>01</span><h3>报价包信息</h3></div><label class="package-name-field">报价包名称 <span class="required-label">必填</span><Input v-model="packageName" placeholder="例如：包11 · GW100"/></label><label>分包编号<Input v-model="packageNo" placeholder="例如：GW100"/></label><label>电压等级<Input v-model="voltageLevel" placeholder="例如：750千伏"/></label><div class="package-process-section"><div class="inquiry-section-heading"><span>02</span><div><h3>本包流程负责人</h3><p>修改负责人后，报价包会从原负责人的工作列表移至新负责人。</p></div></div><div class="process-card-grid"><article v-for="(card,index) in processCards" :key="card.key" class="process-card"><div class="process-card-heading"><span class="process-card-index">{{index+1}}</span><b>{{card.label}}</b></div><AppSelect v-model="processParticipants[card.key]" :label="'选择 '+card.label+' 负责人'" :options="processPeopleFor(card)"/><small>{{card.hint}}</small></article></div></div><div class="approval-participant-section"><div class="inquiry-section-heading"><span>03</span><div><h3>本包审批参与人</h3><p>默认使用当前启用流程，也可修改本包各节点处理人。</p></div></div><div v-if="!approvalTasks.length" class="participant-empty">当前没有启用的审批流程，请先到“审批与流程配置”启用流程。</div><div v-else class="participant-list"><article v-for="(task,index) in approvalTasks" :key="task.id" class="participant-row"><span class="participant-index">{{index+1}}</span><span class="participant-meta"><b>{{task.text}}</b><small>{{task.properties.action==='issue'?'最终签发':task.properties.condition==='chairman'?'按条件进入':'审批节点'}} · 默认 {{task.properties.assignee||'待配置'}}</small></span><AppSelect v-model="approvalParticipants[task.id]" :label="'选择 '+task.text+' 处理人'" :options="peopleForTask(task)"/></article></div></div></section>
+   <section v-else-if="isPackageForm" class="inquiry-package-simple"><div class="inquiry-section-heading"><span>01</span><h3>报价包信息</h3></div><label class="package-name-field">报价包名称 <span class="required-label">必填</span><Input v-model="packageName" placeholder="例如：包11 · GW100"/></label><label>分包编号<Input v-model="packageNo" placeholder="例如：GW100"/></label><label>电压等级<Input v-model="voltageLevel" placeholder="例如：750千伏"/></label><label>所属工作表<AppSelect v-model="packageWorksheetId" label="选择所属工作表" :options="(project.materialWorksheets||[]).map(sheet=>({value:sheet.id,label:sheet.name}))" :disabled="!isPackageMode"/></label><div class="package-process-section"><div class="inquiry-section-heading"><span>02</span><div><h3>本包流程负责人</h3><p>修改负责人后，报价包会从原负责人的工作列表移至新负责人。</p></div></div><div class="process-card-grid"><article v-for="(card,index) in processCards" :key="card.key" class="process-card"><div class="process-card-heading"><span class="process-card-index">{{index+1}}</span><b>{{card.label}}</b></div><AppSelect v-model="processParticipants[card.key]" :label="'选择 '+card.label+' 负责人'" :options="processPeopleFor(card)"/><small>{{card.hint}}</small></article></div></div><div class="approval-participant-section"><div class="inquiry-section-heading"><span>03</span><div><h3>本包审批参与人</h3><p>默认使用当前启用流程，也可修改本包各节点处理人。</p></div></div><div v-if="!approvalTasks.length" class="participant-empty">当前没有启用的审批流程，请先到“审批与流程配置”启用流程。</div><div v-else class="participant-list"><article v-for="(task,index) in approvalTasks" :key="task.id" class="participant-row"><span class="participant-index">{{index+1}}</span><span class="participant-meta"><b>{{task.text}}</b><small>{{task.properties.action==='issue'?'最终签发':task.properties.condition==='chairman'?'按条件进入':'审批节点'}} · 默认 {{task.properties.assignee||'待配置'}}</small></span><AppSelect v-model="approvalParticipants[task.id]" :label="'选择 '+task.text+' 处理人'" :options="peopleForTask(task)"/></article></div></div></section>
    <!-- 包编辑模式：完整表单 -->
    <section v-else class="inquiry-upload" :class="{'has-files':files.length || pkg.files.length}"><div class="inquiry-section-heading"><span>01</span><h3>询价资料</h3><small>{{files.length+pkg.files.length}} 份文件</small></div>
     <input ref="fileInput" class="sr-only" tabindex="-1" type="file" multiple aria-label="选择询价资料" :disabled="!editable" @change="choose"/>

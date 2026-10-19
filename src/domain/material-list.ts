@@ -1,4 +1,7 @@
-import type { MaterialDeliverySummary, MaterialPackageSummary, MaterialQuantitySummary } from './model'
+import type { MaterialDeliverySummary, MaterialPackageSummary, MaterialQuantitySummary, MaterialWorksheetMeta } from './model'
+
+export interface MaterialWorksheetInfo extends MaterialWorksheetMeta { state: 'visible' | 'hidden' | 'veryHidden' }
+export interface MaterialWorksheetParseResult { worksheet: MaterialWorksheetInfo; summaries: MaterialPackageSummary[]; error?: string }
 
 type ColumnKey = 'packageName' | 'packageNo' | 'voltage' | 'quantity' | 'unit' | 'technicalCode' | 'project' | 'deliveryPoint' | 'itemName'
 
@@ -84,7 +87,7 @@ function quantityRows(values: Map<string, number>): MaterialQuantitySummary[] {
   return [...values].map(([unit, quantity]) => ({ unit, quantity: Math.round(quantity * 10000) / 10000 }))
 }
 
-function summarizeSheet(sheet: any): MaterialPackageSummary[] {
+function summarizeSheet(sheet: any, worksheetId = `sheet-${sheet.id}`): MaterialPackageSummary[] {
   const header = findHeader(sheet)
   if (!header) return []
 
@@ -150,6 +153,8 @@ function summarizeSheet(sheet: any): MaterialPackageSummary[] {
     }))
     return {
       sheetName: `${sheet.name} · ${summary.packageName}${summary.packageNo ? ` · ${summary.packageNo}` : ''}`,
+      sourceWorksheetId: worksheetId,
+      sourceWorksheetName: sheet.name,
       packageName: summary.packageName,
       packageNo: summary.packageNo,
       voltageLevels: [...summary.voltages],
@@ -161,12 +166,39 @@ function summarizeSheet(sheet: any): MaterialPackageSummary[] {
   })
 }
 
-export async function readMaterialList(file: File): Promise<MaterialPackageSummary[]> {
+export async function loadMaterialWorkbook(file: File): Promise<any> {
   if (!/\.xlsx$/i.test(file.name)) throw new Error('物料清单请使用 .xlsx 格式，暂不支持旧版 .xls 文件')
   const { default: ExcelJS } = await import('exceljs')
   const workbook = new ExcelJS.Workbook()
-  await workbook.xlsx.load(await file.arrayBuffer())
-  const summaries = workbook.worksheets.flatMap(summarizeSheet)
+  try { await workbook.xlsx.load(await file.arrayBuffer()) }
+  catch { throw new Error('Excel 文件无法读取，请确认文件未损坏且为有效的 .xlsx 文件') }
+  if (!workbook.worksheets.length) throw new Error('Excel 文件中没有可读取的工作表')
+  return workbook
+}
+
+export function discoverMaterialWorksheets(workbook: any): MaterialWorksheetInfo[] {
+  return workbook.worksheets.map((sheet: any, index: number) => ({
+    id: `sheet-${sheet.id}`,
+    name: String(sheet.name),
+    order: index,
+    state: sheet.state === 'veryHidden' ? 'veryHidden' : sheet.state === 'hidden' ? 'hidden' : 'visible',
+  }))
+}
+
+export function summarizeMaterialWorksheets(workbook: any, selectedIds: string[]): MaterialWorksheetParseResult[] {
+  const selected = new Set(selectedIds)
+  return discoverMaterialWorksheets(workbook)
+    .filter(worksheet => selected.has(worksheet.id))
+    .map(worksheet => {
+      const sheet = workbook.worksheets.find((candidate: any) => `sheet-${candidate.id}` === worksheet.id)
+      const summaries = summarizeSheet(sheet, worksheet.id)
+      return { worksheet, summaries, error: summaries.length ? undefined : '未识别到包含有效报价包的清单数据，请检查表头及数据行' }
+    })
+}
+
+export async function readMaterialList(file: File): Promise<MaterialPackageSummary[]> {
+  const workbook = await loadMaterialWorkbook(file)
+  const summaries = workbook.worksheets.flatMap((sheet: any) => summarizeSheet(sheet))
   if (!summaries.length) throw new Error('没有找到包含“数量”和“单位”列的包清单工作表，请检查 Excel 表头')
   return summaries
 }

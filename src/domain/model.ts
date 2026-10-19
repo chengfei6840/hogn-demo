@@ -12,11 +12,13 @@ export interface Item { goodsList?:Record<string,string>; goodsRow?:number; id:s
 export interface Part {name:string;model:string;qty:number|null;unit:string;material:string;weight:number|null;u9:string;drawing:string;row:number;processRoute?:string;selection?:PartSelection;reference?:PartReference;technicalChanges?:TechnicalChange[]}
 export interface MaterialQuantitySummary {unit:string;quantity:number}
 export interface MaterialDeliverySummary {region:string;project:string;deliveryPoint:string;itemCount:number;quantities:MaterialQuantitySummary[]}
-export interface MaterialPackageSummary {sheetName:string;packageName:string;packageNo:string;voltageLevels:string[];itemCount:number;technicalCodeCount:number;quantities:MaterialQuantitySummary[];locations:MaterialDeliverySummary[]}
+export interface MaterialWorksheetMeta {id:string;name:string;order:number}
+export interface MaterialPackageSummary {sheetName:string;sourceWorksheetId?:string;sourceWorksheetName?:string;packageName:string;packageNo:string;voltageLevels:string[];itemCount:number;technicalCodeCount:number;quantities:MaterialQuantitySummary[];locations:MaterialDeliverySummary[]}
 export interface Candidate {id:string;name:string;description:string;spec:string;model:string;atlas:string;drawing:string;drawing2:string;source:string;sheet:string;row:number;parts:Part[]}
-export interface Audit {at:string;role:Role;action:string;detail:string;version:number}
+export interface AuditContext {kind:'item'|'part'|'finance';itemId:string;itemSnapshot?:Item;partRow?:number;partSnapshot?:Part;partPricesSnapshot?:Record<string,number>;changes?:TechnicalChange['changes'];priceSnapshot?:{price:number;cost:number;margin:number;tax:number}}
+export interface Audit {at:string;role:Role;action:string;detail:string;version:number;context?:AuditContext}
 export interface QuotePartLine {itemId:string;row:number;name:string;model:string;qty:number|null;unit:string;material:string;u9:string;price:number}
-export interface Snapshot {approval?:ApprovalRun;issuedBy?:string; id:string;version:number;at:string;items:Item[];quoteParts?:QuotePartLine[];total:number;cost:number;tax:number;notes:string;audit:Audit[];excluded:Item[]}
+export interface Snapshot {approval?:ApprovalRun;issuedBy?:string;provenance?:{packageId:string;packageName:string;categoryName:string;worksheetId?:string}; id:string;version:number;at:string;items:Item[];quoteParts?:QuotePartLine[];total:number;cost:number;tax:number;notes:string;audit:Audit[];excluded:Item[]}
 export interface PricingScheme {id:string;name:string;margin:number;total:number;taxed:number;saved:boolean}
 export type PackageProcessParticipantKey='dataParsing'|'salesConfirmation'|'technicalConfirmation'|'costCalculation'|'approvalIssuance'|'salesExternal'|'dealTracking'
 export type PackageProcessParticipants=Record<PackageProcessParticipantKey,string>
@@ -38,6 +40,7 @@ export function canHandlePackageProcess(p:Package,key:PackageProcessParticipantK
 export function canHandleTechnicalWork(p:Package,person:string){return canHandlePackageProcess(p,'technicalConfirmation',person)||(p.technicalExecution?.mode==='employee'&&p.technicalExecution.assignee===person)}
 export function isPackageVisibleToPerson(p:Package,person:string,role?:Role){
  if(role==='董事长')return true
+ if(role==='技术'&&person!==technicalDirector&&!canHandleTechnicalWork(p,person))return false
  if(!p.processParticipants)return true
  if(p.stage==='资料整理')return packageProcessParticipant(p,'dataParsing')===person
  if(p.stage==='并行协作')return packageProcessParticipant(p,'salesConfirmation')===person||canHandleTechnicalWork(p,person)
@@ -56,8 +59,8 @@ export function previousStage(s:RejectStage):RejectStage|undefined {
 }
 // 阶段级驳回留痕：from 是发起驳回的流程，to 是被驳回的上一个流程，两者都取自 rejectStageOrder。
 export interface Rejection {from:RejectStage;to:RejectStage;by:string;role:Role;at:string;reason:string}
-export interface Package {materialSummary?:MaterialPackageSummary;rejection?:Rejection;technicalExecution?:TechnicalExecution;archivedAt?:string;financeReachedAt?:string;approvalFlowSnapshot?:ApprovalFlowSnapshot;processParticipants?:PackageProcessParticipants;approvalRun?:ApprovalRun;approvalHistory?:ApprovalRun[];bossAdjustment?:{basis:string;version:number};u9SyncedAt?:string;voltageLevel?:string;u9Data?:Record<string,{price:number;processRoute:string;source?:PriceSource}>;historicalU9Data?:Record<string,{price:number;processRoute:string;source:'archive'}>;technicalReviewRequired?:boolean;packageNo?:string;externalSentAt?:string;dealStatus?:'客户议价中'|DealResult;dealNote?:string;pricingSchemes?:PricingScheme[];selectedSchemeId?:PricingScheme['id']; id:string;projectId:string;packageName:string;stage:Stage;version:number;salesConfirmed:number|null;techConfirmed:number|null;items:Item[];files:{name:string;type:string;status:string;sourceUrl?:string}[];audit:Audit[];snapshots:Snapshot[];pricingNote:string;tax:number;manualBoss:boolean;settings:{amountThreshold:number|null;marginFloor:number|null};createdAt:string}
-export interface Project {id:string;name:string;customer:string;region?:string;gridType?:'国网'|'南网';materialListFile?:{name:string;size:number};climateStandard?:'耐寒标准品'|'非耐寒标准品'|'待客户确认';salesOwner:string;techOwner:string;financeOwner:string;createdAt:string;packages:Package[];partSelectionHistory?:PartSelectionHistory[]}
+export interface Package {demoPrefilled?:boolean;materialWorksheetId?:string;materialSummary?:MaterialPackageSummary;rejection?:Rejection;technicalExecution?:TechnicalExecution;archivedAt?:string;financeReachedAt?:string;approvalFlowSnapshot?:ApprovalFlowSnapshot;processParticipants?:PackageProcessParticipants;approvalRun?:ApprovalRun;approvalHistory?:ApprovalRun[];bossAdjustment?:{basis:string;version:number};u9SyncedAt?:string;voltageLevel?:string;u9Data?:Record<string,{price:number;processRoute:string;source?:PriceSource}>;historicalU9Data?:Record<string,{price:number;processRoute:string;source:'archive'}>;technicalReviewRequired?:boolean;packageNo?:string;externalSentAt?:string;dealStatus?:'客户议价中'|DealResult;dealNote?:string;pricingSchemes?:PricingScheme[];selectedSchemeId?:PricingScheme['id']; id:string;projectId:string;packageName:string;stage:Stage;version:number;salesConfirmed:number|null;techConfirmed:number|null;items:Item[];files:{name:string;type:string;status:string;sourceUrl?:string}[];audit:Audit[];snapshots:Snapshot[];pricingNote:string;tax:number;manualBoss:boolean;settings:{amountThreshold:number|null;marginFloor:number|null};createdAt:string}
+export interface Project {id:string;name:string;customer:string;region?:string;gridType?:'国网'|'南网';materialListFile?:{name:string;size:number};materialWorksheets?:MaterialWorksheetMeta[];climateStandard?:'耐寒标准品'|'非耐寒标准品'|'待客户确认';salesOwner:string;techOwner:string;financeOwner:string;createdAt:string;packages:Package[];partSelectionHistory?:PartSelectionHistory[]}
 export const stages:Stage[]=['资料整理','并行协作','财务核价','审批签发','可出具报价','已出具','客户议价中','已成交','未成交','已取消']
 // 终态即归档：成交/未成交/取消都从在办列表移入历史库，archivedAt 是入库时间，stage 保留原始成交结论；
 // 阶段判断已挡住全部可写动作，所以已归档的包天然只读，不需要额外加锁。

@@ -10,10 +10,11 @@ import PartSelectionEditor from './PartSelectionEditor.vue'
 import PartReferencePicker from './PartReferencePicker.vue'
 import { catalog, useWorkspace } from '@/domain/store'
 import { evidenceSources, type EvidenceSourceId } from '@/data/evidenceSources'
-import { missingPartFields, technicalDirector, type Part } from '@/domain/model'
+import { missingPartFields, technicalDirector, type Package, type Part } from '@/domain/model'
 import { applyPartOption, eligiblePartOptions, findPartRecommendation, partSelectionIssues, type PartEditDraft } from '@/domain/part-selection'
 import { jc1Options } from '@/data/demoPartSelections'
 import { referencePartCatalog, type PartReference } from '@/domain/part-reference'
+import { packageCategory } from '@/domain/batch-packages'
 
 const props = defineProps<{ itemId: string }>()
 const emit = defineEmits<{ close: [] }>()
@@ -29,8 +30,9 @@ const referenceDraft = shallowRef<PartReference | undefined>(undefined)
 const reason = shallowRef('')
 const editDraft = reactive({ model: '', qty: '', material: '', u9: '', drawing: '' })
 const sourceId = shallowRef<EvidenceSourceId>('requirements')
-// public/ 下的静态资源在子路径部署时必须带 base 前缀。
-const asset=(file:string)=>`${import.meta.env.BASE_URL}${file}`
+// public/ 静态资源必须拼 base 前缀；Vue 模板里访问不到 import.meta.env，故经 script 暴露。
+const asset = (file: string) => `${import.meta.env.BASE_URL}${file}`
+const wrapSourceImage = computed(() => asset('parts-source-wrap.png'))
 
 const item = computed(() => pkg.items.find(entry => entry.id === props.itemId))
 const candidate = computed(() => item.value?.selected ? catalog.find(entry => entry.id === item.value?.selected) || null : null)
@@ -140,7 +142,7 @@ function savePart() {
   <section v-if="item" class="parts-panel" aria-label="子件与来源">
     <header class="parts-panel-head">
       <div>
-        <h2>子件与来源 · 货物项 {{ item.id }}</h2>
+        <h2>子件与来源 · {{ pkg.packageName }} · {{ packageCategory(pkg as Package, project.materialWorksheets || []) }} · {{ pkg.packageNo || pkg.id }} · 货物项 {{ item.id }}</h2>
         <p>{{ item.name }} · {{ candidate?.name || item.model || item.spec || '尚无串型结果' }} · 子件 {{ parts.length }} 条</p>
       </div>
       <Button variant="outline" size="sm" @click="emit('close')">关闭<AppIcon name="x" :size="15"/></Button>
@@ -173,7 +175,7 @@ function savePart() {
     <Teleport to="body">
       <div v-if="zoomOpen" class="parts-zoom" aria-label="来源图片放大预览" @wheel.stop @touchmove.stop>
         <div class="parts-zoom-tools"><Button variant="outline" size="sm" @click="zoomScale = Math.max(.5, zoomScale - .25)">−</Button><Button variant="outline" size="sm" @click="zoomScale = 1">还原</Button><Button variant="outline" size="sm" @click="zoomScale = Math.min(3, zoomScale + .25)">＋</Button><Button variant="outline" size="sm" @click="zoomOpen = false">关闭<AppIcon name="x" :size="15"/></Button></div>
-        <div class="evidence-image" :style="{ width: `${zoomScale * 100}%`, maxWidth: 'none' }"><img :src="isWrapSource?asset('parts-source-wrap.png'):selectedSource.image" :alt="isWrapSource?'包缠物选型附表（放大）':selectedSource.label + '（放大）'"/><template v-if="isWrapSource"><span class="evidence-highlight wrap-material-highlight" aria-hidden="true"/><span class="wrap-option-highlight" :class="selectedOption?.kind==='护'?'guard-row':selectedOption?.kind==='铝'?'aluminum-row':''" aria-hidden="true"/></template><span v-else class="evidence-highlight" :class="'evidence-highlight-' + selectedSource.highlightClass" aria-hidden="true"/></div>
+        <div class="evidence-image" :style="{ width: `${zoomScale * 100}%`, maxWidth: 'none' }"><img :src="isWrapSource?wrapSourceImage:selectedSource.image" :alt="isWrapSource?'包缠物选型附表（放大）':selectedSource.label + '（放大）'"/><template v-if="isWrapSource"><span class="evidence-highlight wrap-material-highlight" aria-hidden="true"/><span class="wrap-option-highlight" :class="selectedOption?.kind==='护'?'guard-row':selectedOption?.kind==='铝'?'aluminum-row':''" aria-hidden="true"/></template><span v-else class="evidence-highlight" :class="'evidence-highlight-' + selectedSource.highlightClass" aria-hidden="true"/></div>
       </div>
     </Teleport>
   </section>
@@ -186,7 +188,7 @@ function savePart() {
           <label class="evidence-source-select">来源{{ isWrapSource ? '图纸' : '档案' }}<select aria-label="选择子件候选来源"><option>{{ isWrapSource ? '悬垂串组装图 · 导线包缠物' : '料品档案信息 · 参考标准品库 · JC-1' }}</option></select></label>
           <figure v-if="isWrapSource" class="panel-shot choice-source-shot">
             <div class="panel-shot-frame" role="button" tabindex="0" aria-label="放大查看包缠物图纸" @click="zoomOpen=true" @keydown.enter="zoomOpen=true">
-              <div class="evidence-image wrap-evidence"><img :src="asset('parts-source-wrap.png')" alt="悬垂串组装零件表及导线包缠物选型附表"/><span class="evidence-highlight wrap-material-highlight" aria-hidden="true"/><span class="wrap-option-highlight" :class="selectedOption?.kind==='护'?'guard-row':selectedOption?.kind==='铝'?'aluminum-row':''" aria-hidden="true"/></div>
+              <div class="evidence-image wrap-evidence"><img :src="wrapSourceImage" alt="悬垂串组装零件表及导线包缠物选型附表"/><span class="evidence-highlight wrap-material-highlight" aria-hidden="true"/><span class="wrap-option-highlight" :class="selectedOption?.kind==='护'?'guard-row':selectedOption?.kind==='铝'?'aluminum-row':''" aria-hidden="true"/></div>
             </div>
             <figcaption>220kV 图册组装表第⑦项及附表。高亮当前导线 {{ item?.conductor }} 的可选配置，点击图片可放大。</figcaption>
           </figure>

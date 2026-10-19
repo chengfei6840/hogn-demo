@@ -1,0 +1,70 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { catalog } from '@/domain/store'
+import { partCostRows, type Item, type Package, type Part } from '@/domain/model'
+import { groupedOperationRecords, type OperationEntry } from '@/domain/operation-records'
+import AppIcon from './AppIcon.vue'
+
+const props = defineProps<{ pkg: Package; category: string }>()
+const open = defineModel<boolean>('open', { required: true })
+const roles = ['销售','技术','财务'] as const
+const icons = { 销售: 'briefcase', 技术: 'gear', 财务: 'coins' }
+const expandedCosts = ref<string[]>([])
+function toggleCosts(id:string) { expandedCosts.value = expandedCosts.value.includes(id) ? expandedCosts.value.filter(value=>value!==id) : [...expandedCosts.value,id] }
+const groups = computed(() => groupedOperationRecords(props.pkg, catalog))
+function serialName(item?:Item) { return catalog.find(candidate=>candidate.id===item?.selected)?.name || item?.model || item?.name || '未关联串型' }
+function partsFor(item?:Item) { return item ? (item.partOverrides || catalog.find(candidate=>candidate.id===item.selected)?.parts || []) : [] }
+function partPricing(item:Item|undefined,part:Part) { return item ? partCostRows(item,props.pkg,catalog).find(row=>row.part.row===part.row) : undefined }
+function changedParts(entry:OperationEntry) { return entry.part ? [entry.part] : [] }
+function partCostAt(entry:OperationEntry,part:Part) { return entry.audit.context?.partPricesSnapshot?.[String(part.row)] ?? partPricing(entry.item,part)?.unit }
+function money(value?:number) { return value === undefined ? '—' : `¥${value.toLocaleString('zh-CN',{minimumFractionDigits:4,maximumFractionDigits:4})}` }
+
+</script>
+
+<template>
+  <Dialog v-model:open="open">
+    <DialogContent class="operation-summary-dialog !max-w-none !p-0 !gap-0">
+      <DialogHeader class="operation-summary-header">
+        <div><DialogTitle>操作记录 · {{ pkg.packageName }}</DialogTitle><p class="operation-subtitle">{{ category }} · 包号 {{ pkg.packageNo || '—' }}</p><DialogDescription>按角色汇总本包改动，点击记录可展开对应信息。</DialogDescription></div>
+      </DialogHeader>
+      <div class="operation-summary-body">
+        <section v-for="role in roles" :key="role" :class="['operation-role-card',`operation-role-${role}`]">
+          <header class="operation-role-heading"><AppIcon :name="icons[role]" :size="23"/><h3>{{ role }} <span>· {{ groups[role].length }}项改动</span></h3></header><div v-if="groups[role].length" class="operation-columns"><span>修改对象</span><span>修改内容</span><span>修改人 / 最近修改</span></div>
+          <div v-if="groups[role].length" class="operation-entry-list">
+            <details v-for="entry in groups[role]" :key="entry.id" class="operation-entry">
+              <summary><span class="entry-object">{{ entry.object }} · {{ entry.label }}</span><span class="entry-values"><span class="entry-before">{{ entry.before }}</span><span class="entry-arrow">→</span><strong>{{ entry.after }}</strong></span><span class="entry-person-time" :title="entry.audit.at">{{ entry.actor }} · {{ entry.time }}</span><AppIcon class="entry-caret" name="caret-right" :size="16"/></summary>
+              <div class="entry-expanded">
+                <p v-if="entry.legacy" class="snapshot-note">该条是旧版操作记录，未保存当时快照；以下展示当前包内信息。</p>
+                <template v-if="entry.kind==='part'">
+                  <div class="serial-context"><span>所属串名称</span><b>{{ serialName(entry.item) }}</b><span>货物项</span><b>{{ entry.item?.name || entry.audit.context?.itemId || '—' }}</b></div>
+                  <div v-for="part in changedParts(entry)" :key="part.row" class="part-detail-block"><strong>{{entry.object}}</strong><div class="detail-grid"><div v-for="field in [ ['子件名称',part.name],['型号',part.model],['用量',part.qty],['单位',part.unit],['材质',part.material],['重量',part.weight],['U9编码',part.u9],['图号',part.drawing],['工艺路线',part.processRoute] ]" :key="field[0] as string"><small>{{ field[0] }}</small><b>{{ field[1] ?? '—' }}</b></div></div></div>
+                </template>
+                <template v-else-if="entry.kind==='finance'"><div class="snapshot-heading"><h4>货物项价格复核信息</h4><span>{{entry.legacy?'当前信息':'只读快照'}}</span></div>
+                  <div class="finance-detail-table-wrap"><table class="finance-detail-table"><thead><tr><th>包名称</th><th>类别</th><th>货物项</th><th>数量</th><th>单项毛利率</th><th>未税单价</th><th>单位成本<br/>（子件汇总）</th><th>成本明细</th></tr></thead><tbody><tr><td>{{ pkg.packageName }}</td><td>{{ category }}</td><td>{{ entry.item?.name || entry.audit.context?.itemId || '—' }}</td><td>{{ entry.item?.quantity ?? '—' }} {{ entry.item?.unit || '' }}</td><td>{{ entry.audit.context?.priceSnapshot?.margin ?? entry.item?.margin ?? '—' }}%</td><td>{{ money(entry.audit.context?.priceSnapshot?.price ?? entry.item?.price) }}</td><td><strong :class="{'finance-changed-value':entry.changes[0]?.field==='cost'}">{{ money(entry.audit.context?.priceSnapshot?.cost ?? entry.item?.cost) }}</strong></td><td><button v-if="partsFor(entry.item).length" type="button" class="finance-cost-toggle" :aria-expanded="expandedCosts.includes(entry.id)" @click="toggleCosts(entry.id)">{{expandedCosts.includes(entry.id)?'收起子件':'展开子件'}}（{{partsFor(entry.item).length}}）</button><span v-else>独立物资</span></td></tr></tbody></table></div>
+                  <div v-if="entry.item && partsFor(entry.item).length && expandedCosts.includes(entry.id)" class="finance-parts"><h4 class="finance-parts-heading">子件成本明细</h4><p class="serial-context compact"><span>所属串名称</span><b>{{ serialName(entry.item) }}</b></p><div class="finance-detail-table-wrap"><table class="finance-detail-table parts-table"><thead><tr><th>子件名称</th><th>型号</th><th>材质</th><th>每串用量</th><th>单位</th><th>未税单价</th><th>每串成本</th><th>U9编码</th></tr></thead><tbody><tr v-for="part in partsFor(entry.item)" :key="part.row" :class="{'changed-part':entry.audit.context?.partRow===part.row}"><td>{{ part.name || '—' }}</td><td>{{ part.model || '—' }}</td><td>{{ part.material || '—' }}</td><td>{{ part.qty ?? '—' }}</td><td>{{ part.unit || '—' }}</td><td>{{ money(partCostAt(entry,part)) }}</td><td>{{ part.qty===null?'—':money((partCostAt(entry,part)||0)*part.qty) }}</td><td>{{ part.u9 || '—' }}</td></tr></tbody></table></div></div>
+                </template>
+                <template v-else>
+                  <div class="detail-grid"><div v-for="field in [ ['货物项',entry.item?.name],['货物项编号',entry.item?.id],['数量',entry.item?.quantity],['单位',entry.item?.unit],['串名称',serialName(entry.item)],['串型号',entry.item?.model],['适用导线',entry.item?.conductor],['电压等级',entry.item?.voltage],['技术规范编码',entry.item?.spec],...Object.entries(entry.item?.goodsList||{}) ]" :key="field[0] as string"><small>{{ field[0] }}</small><b>{{ field[1] ?? '—' }}</b></div></div>
+                </template>
+                <p class="snapshot-expanded-foot">当前展开：{{entry.object}} · {{entry.label}} · 点击记录可收起。</p>
+              </div>
+            </details>
+          </div>
+          <p v-else class="role-empty">暂无{{ role }}的数据改动记录</p>
+        </section>
+      </div>
+      <div class="operation-summary-footer"><span>展开信息对应记录发生时保存的数据；旧记录无快照时将明确提示。</span><Button @click="open=false">关闭</Button></div>
+    </DialogContent>
+  </Dialog>
+</template>
+
+<style scoped>
+:global(.operation-summary-dialog){width:min(1160px,calc(100vw - 48px))!important;max-width:none!important;max-height:92dvh;overflow:hidden;display:flex!important;flex-direction:column;padding:0!important;gap:0!important;transition-property:opacity,transform!important;border:1px solid #d4e1ed;border-radius:10px;background:#fff;color:#142e49;box-shadow:0 24px 70px #102b3d35}
+.operation-summary-header{padding:24px 28px 18px;flex-shrink:0;background:#fff;text-align:left}.operation-summary-header :deep(h2){margin:0;font-size:25px;line-height:1.3;color:#102d49}.operation-subtitle{margin:8px 0 4px;font-size:15px;color:#173b5c}.operation-summary-header :deep(p[id]){margin:4px 0 0;color:#71869c;font-size:13px}
+.operation-summary-body{overflow:auto;min-height:0;padding:0 28px 18px;display:flex;flex-direction:column;gap:16px}.operation-role-card{flex-shrink:0;overflow:hidden;border:1px solid #d6e4f0;border-radius:8px;background:#fff}.operation-role-heading{display:flex;align-items:center;gap:12px;padding:10px 18px;background:#eef7ff;color:#0875ce;border-bottom:1px solid #d6e4f0}.operation-role-heading h3{margin:0;color:#153958;font-size:19px;font-weight:700}.operation-role-heading h3 span{font-size:15px;font-weight:600}.operation-role-技术{border-color:#cce8df}.operation-role-技术 .operation-role-heading{background:#edf9f5;border-color:#cce8df;color:#099c8c}.operation-role-财务{border-color:#f0dfc2}.operation-role-财务 .operation-role-heading{background:#fff8ed;border-color:#f0dfc2;color:#ce8a13}.operation-columns{display:grid;grid-template-columns:33% 37% 30%;background:#f5f8fb;color:#758aa0;border-bottom:1px solid #e1eaf2;font-size:12px}.operation-columns span{padding:7px 20px;border-right:1px solid #e2eaf2}.operation-columns span:last-child{border-right:0}.operation-entry{border-bottom:1px solid #e3ecf4}.operation-entry:last-child{border-bottom:0}.operation-entry>summary{position:relative;display:grid;grid-template-columns:33% 37% 30%;align-items:stretch;min-height:42px;cursor:pointer;list-style:none}.operation-entry>summary::-webkit-details-marker,.finance-parts>summary::-webkit-details-marker{display:none}.operation-entry>summary:hover,.operation-entry[open]>summary{background:#edf5ff}.entry-object,.entry-values,.entry-person-time{padding:8px 20px;min-width:0;font-size:13px;line-height:1.5;display:flex;align-items:center;border-right:1px solid #e2eaf2}.entry-person-time{padding-right:40px;border-right:0;color:#304d6c;white-space:nowrap}.entry-values{gap:14px;flex-wrap:wrap}.entry-before{color:#7c8da2;overflow-wrap:anywhere}.entry-arrow{color:#7c8da2}.entry-values strong{background:#e8f3ff;color:#0066ce;padding:2px 10px;border-radius:5px;font-weight:650;overflow-wrap:anywhere}.entry-caret{position:absolute;right:18px;top:50%;transform:translateY(-50%);color:#526f8d}.operation-entry[open] .entry-caret{transform:translateY(-50%) rotate(90deg)}.entry-expanded{padding:14px 12px;background:#fff;border-top:1px solid #e2eaf2}.snapshot-note{margin:0 0 10px;color:#9a6416;font-size:12px}.serial-context{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:12px;padding:10px 12px;border:1px solid #dce7ed;border-radius:7px;background:#f6f9fc}.serial-context span{color:#748797;font-size:11px}.serial-context b{margin-right:12px;color:#174767;font-size:12px}.detail-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:#e6edf1;border:1px solid #e6edf1;border-radius:7px;overflow:hidden}.detail-grid>div{padding:9px 11px;background:#fff;min-width:0}.detail-grid small,.detail-grid b{display:block}.detail-grid small{margin-bottom:4px;color:#7c8f9d;font-size:11px}.detail-grid b{font-size:12px;overflow-wrap:anywhere}.change-list{margin-top:12px}.change-list h4{margin:0 0 6px;font-size:12px}.change-list>div{display:flex;gap:10px;padding:5px 0;border-bottom:1px dashed #e4eaee;font-size:12px}.change-list>div span{width:130px;color:#607688}.change-list del{color:#8b99a4}.change-list strong{color:#12663c}.snapshot-heading{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1px solid #dde6ef;border-bottom:0;border-radius:7px 7px 0 0}.snapshot-heading h4{margin:0;font-size:14px}.snapshot-heading>span{padding:3px 8px;background:#eef5fd;color:#617c98;border-radius:4px;font-size:10px}.snapshot-heading+.finance-detail-table-wrap{border-radius:0 0 7px 7px}.finance-detail-table-wrap{overflow:auto;border:1px solid #e1e8ed;border-radius:7px}.finance-detail-table{width:100%;min-width:740px;border-collapse:collapse;font-size:12px}.finance-detail-table th,.finance-detail-table td{padding:12px 10px;border-right:1px solid #e5ecf3;border-bottom:1px solid #e9eef2;text-align:center}.finance-detail-table th{background:#f4f7fb;color:#73879c;font-weight:500;font-size:11px}.finance-detail-table td:nth-child(3){max-width:260px}.finance-parts{margin-top:10px;border:1px solid #e3eaf0;border-radius:7px}.finance-parts>summary{padding:9px 11px;cursor:pointer;color:#17608c;font-size:12px;font-weight:600}.finance-parts[open]>summary{border-bottom:1px solid #e6edf1}.serial-context.compact{margin:10px}.parts-table{min-width:600px}.changed-part td{background:#fff9e9}.role-empty{margin:0;padding:18px;color:#8192a0;font-size:12px;text-align:center}.operation-summary-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 28px;border-top:1px solid #e3eaf0;background:#fff;flex-shrink:0}.operation-summary-footer>span{color:#718595;font-size:11px}.part-detail-block>strong{display:block;margin:0 0 6px;color:#365a70;font-size:12px}
+@media(max-width:700px){:global(.operation-summary-dialog){width:calc(100vw - 20px)!important;max-height:94dvh}.operation-summary-header{padding:18px}.operation-summary-body{padding:0 10px 12px}.operation-columns,.operation-entry>summary{grid-template-columns:31% 40% 29%}.operation-columns span,.entry-object,.entry-values,.entry-person-time{padding:8px;font-size:11px}.entry-person-time{white-space:normal;padding-right:22px}.entry-caret{right:6px}.entry-values{gap:5px}.entry-values strong{padding:2px 5px}.detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.operation-summary-footer{padding:12px}.operation-summary-footer>span{max-width:70%}}
+.finance-cost-toggle{padding:5px 9px;border:1px solid #d4e1ed;border-radius:6px;background:white;color:#204668;font-size:11px;white-space:nowrap;box-shadow:0 1px 3px #16395712}.finance-changed-value{display:inline-block;padding:3px 7px;border-radius:4px;background:#e8f3ff;color:#0066ce}.finance-parts-heading{padding:10px 12px;margin:0;font-size:13px;border-bottom:1px solid #e6edf1}
+.snapshot-expanded-foot{margin:10px 0 0;padding-top:7px;border-top:1px solid #edf1f6;color:#71879b;font-size:11px}
+</style>

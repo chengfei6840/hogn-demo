@@ -2,12 +2,13 @@ import {computed} from 'vue'
 import {useWorkspace} from './store'
 import {useWorkflowStore} from '@/stores/workflow'
 import {currentApprovalStep} from './approval-workflow'
-import {endedStages} from './model'
+import {endedStages,type Package} from './model'
 export interface PackageStep{id:string;label:string;status:string}
 // 顶部流程条与侧边栏流程速览共用这一份计算，避免两处判断逻辑漂移。
 export function usePackageProgress(){
- const {package:p,role,page}=useWorkspace();const definitions=useWorkflowStore()
+ const {workflowPackages,role,page}=useWorkspace();const definitions=useWorkflowStore()
  return computed<PackageStep[]>(()=>{
+  const stepsFor=(p:Package):PackageStep[]=>{
   const early=['资料整理','并行协作'].includes(p.stage)
   const parsingView=page.value==='parse'
   // 技术确认只能在销售确认之后完成；旧数据偶尔只留有 techConfirmed，展示上仍应把销售节点标为已完成。
@@ -35,5 +36,14 @@ export function usePackageProgress(){
    })
   }
   return result
+  }
+  const targets=workflowPackages.value
+  const lists=targets.map(stepsFor)
+  if(lists.length<2)return lists[0]||[]
+  return lists[0].map(step=>{
+   const matches=lists.map(list=>list.find(item=>item.id===step.id))
+   const done=matches.filter(item=>item?.status==='done'||item?.status==='skipped').length
+   return {...step,label:`${step.label}（${done}/${targets.length}）`,status:done===targets.length?'done':matches.some(item=>item?.status==='current')?'current':'pending'}
+  })
  })
 }

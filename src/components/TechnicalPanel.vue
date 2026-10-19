@@ -8,13 +8,14 @@ import AppSelect from '@/components/AppSelect.vue'
 import FormDialog from './FormDialog.vue'
 import { catalog, useWorkspace } from '@/domain/store'
 import { goodsSourceSheet } from '@/data/sourceSheets'
-import { technicalDirector, technicalDirectors, type Role } from '@/domain/model'
+import { technicalDirector, technicalDirectors, type Package, type Role } from '@/domain/model'
 import { goodsColumns } from '@/data/goodsList'
 import { useUsersStore } from '@/stores/users'
+import { packageCategory } from '@/domain/batch-packages'
 
 const props = defineProps<{ itemId: string }>()
 const emit = defineEmits<{ close: [] }>()
-const { package: pkg, role, person, act, toast } = useWorkspace()
+const { package: pkg, project, role, person, act, toast } = useWorkspace()
 const usersStore=useUsersStore()
 
 // 串参数：这五项正是总库串型匹配用到的字段，保存时按新值重新匹配。
@@ -152,7 +153,7 @@ function saveAssign() {
   <section v-if="item" class="technical-panel" :aria-label="isSales ? '解析信息与来源' : isChain ? '串信息与来源' : '货物项信息与来源'">
     <header class="technical-panel-head">
       <div>
-        <h2>{{ isSales ? '解析信息与来源' : isChain ? '串信息与来源' : '货物项信息与来源' }} · 货物项 {{ item.id }}</h2>
+        <h2>{{ isSales ? '解析信息与来源' : isChain ? '串信息与来源' : '货物项信息与来源' }} · {{ pkg.packageName }} · {{ packageCategory(pkg as Package, project.materialWorksheets || []) }} · {{ pkg.packageNo || pkg.id }} · 货物项 {{ item.id }}</h2>
         <p>{{ item.name }} · {{ candidate?.name || item.model || item.spec || '尚无串型结果' }}</p>
       </div>
       <Button variant="outline" size="sm" @click="emit('close')">关闭<AppIcon name="x" :size="15"/></Button>
