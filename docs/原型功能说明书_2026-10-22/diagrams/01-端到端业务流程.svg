@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 720" width="1180" height="720" font-family="PingFang SC, Microsoft YaHei, Noto Sans CJK SC, sans-serif">
+  <rect width="1180" height="720" fill="#fbfdfe"/>
+
+  <text x="24" y="32" font-size="18" font-weight="700" fill="#1c3a52">图 1 · 端到端业务流程（报价包级，七阶段）</text>
+  <text x="24" y="52" font-size="12" fill="#6b8093">实线 = 业务主链；虚线 = 系统自动动作。角色泳道仅示意责任归属，实际操作由「流程负责人」精确到人。</text>
+
+  <!-- 泳道底 -->
+  <rect x="0" y="70" width="96" height="560" fill="#eef4f9"/>
+  <rect x="96" y="70" width="1064" height="140" fill="#ffffff"/>
+  <rect x="96" y="210" width="1064" height="140" fill="#fafcfe"/>
+  <rect x="96" y="350" width="1064" height="140" fill="#ffffff"/>
+  <rect x="96" y="490" width="1064" height="140" fill="#fafcfe"/>
+  <g stroke="#d9e5ee" stroke-width="1">
+    <line x1="0" y1="70" x2="1160" y2="70"/>
+    <line x1="0" y1="210" x2="1160" y2="210"/>
+    <line x1="0" y1="350" x2="1160" y2="350"/>
+    <line x1="0" y1="490" x2="1160" y2="490"/>
+    <line x1="0" y1="630" x2="1160" y2="630"/>
+    <line x1="96" y1="70" x2="96" y2="630"/>
+  </g>
+
+  <!-- 泳道标签 -->
+  <g font-size="14" font-weight="700" fill="#2c4f6b" text-anchor="middle">
+    <text x="48" y="145">销售</text>
+    <text x="48" y="285">技术</text>
+    <text x="48" y="425">财务</text>
+    <text x="48" y="565">系统</text>
+  </g>
+  <g font-size="10" fill="#7f93a4" text-anchor="middle">
+    <text x="48" y="163">建单·确认·外发</text>
+    <text x="48" y="303">选型·子件·终审</text>
+    <text x="48" y="443">核价·审批·签发</text>
+    <text x="48" y="583">自动带出·冻结</text>
+  </g>
+
+  <!-- 连线：主链 -->
+  <g stroke="#4a7392" stroke-width="1.6" fill="none" marker-end="url(#arrow)">
+    <line x1="210" y1="140" x2="221" y2="140"/>
+    <line x1="342" y1="140" x2="353" y2="140"/>
+    <path d="M474 140 L546 140 L546 251"/>
+    <path d="M606 280 L678 280 L678 391"/>
+    <line x1="738" y1="420" x2="749" y2="420"/>
+    <path d="M870 420 L942 420 L942 169"/>
+    <line x1="1002" y1="140" x2="1013" y2="140"/>
+  </g>
+
+  <!-- 连线：系统自动动作 -->
+  <g stroke="#8b9a6b" stroke-width="1.4" stroke-dasharray="5 4" fill="none" marker-end="url(#arrowSys)">
+    <line x1="150" y1="531" x2="150" y2="169"/>
+    <line x1="546" y1="531" x2="546" y2="309"/>
+    <line x1="810" y1="531" x2="810" y2="449"/>
+    <line x1="1074" y1="531" x2="1074" y2="169"/>
+  </g>
+
+  <!-- 驳回 -->
+  <g stroke="#c0803f" stroke-width="1.4" stroke-dasharray="6 3" fill="none" marker-end="url(#arrowBack)">
+    <path d="M486 280 L450 280 L450 170"/>
+    <path d="M618 420 L582 420 L582 308"/>
+  </g>
+  <text x="330" y="252" font-size="11" fill="#a3682c">驳回：技术 → 销售</text>
+  <text x="588" y="466" font-size="11" fill="#a3682c">驳回：财务 → 技术</text>
+
+  <!-- 销售节点 -->
+  <g>
+    <rect x="90" y="112" width="120" height="56" rx="8" fill="#e8f1f8" stroke="#7fa8c4" stroke-width="1.4"/>
+    <text x="150" y="136" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1c3a52">新建项目</text>
+    <text x="150" y="154" text-anchor="middle" font-size="10.5" fill="#5c7d95">上传物料清单</text>
+
+    <rect x="222" y="112" width="120" height="56" rx="8" fill="#e8f1f8" stroke="#7fa8c4" stroke-width="1.4"/>
+    <text x="282" y="136" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1c3a52">资料解析</text>
+    <text x="282" y="154" text-anchor="middle" font-size="10.5" fill="#5c7d95">生成货物项</text>
+
+    <rect x="354" y="112" width="120" height="56" rx="8" fill="#e8f1f8" stroke="#7fa8c4" stroke-width="1.4"/>
+    <text x="414" y="136" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1c3a52">销售需求确认</text>
+    <text x="414" y="154" text-anchor="middle" font-size="10.5" fill="#5c7d95">核对清单与范围</text>
+
+    <rect x="882" y="112" width="120" height="56" rx="8" fill="#e8f1f8" stroke="#7fa8c4" stroke-width="1.4"/>
+    <text x="942" y="136" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1c3a52">销售外发</text>
+    <text x="942" y="154" text-anchor="middle" font-size="10.5" fill="#5c7d95">登记客户与时间</text>
+
+    <rect x="1014" y="112" width="120" height="56" rx="8" fill="#e8f1f8" stroke="#7fa8c4" stroke-width="1.4"/>
+    <text x="1074" y="136" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1c3a52">成交追踪</text>
+    <text x="1074" y="154" text-anchor="middle" font-size="10.5" fill="#5c7d95">成交/未成交/取消</text>
+  </g>
+
+  <!-- 技术节点 -->
+  <g>
+    <rect x="486" y="252" width="120" height="56" rx="8" fill="#f1ecf8" stroke="#9b8ab8" stroke-width="1.4"/>
+    <text x="546" y="276" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3c2c52">技术选项确认</text>
+    <text x="546" y="294" text-anchor="middle" font-size="10.5" fill="#6b5885">串型·子件·总监终审</text>
+    <rect x="486" y="322" width="120" height="30" rx="6" fill="#ffffff" stroke="#c9bcdd" stroke-width="1"/>
+    <text x="546" y="342" text-anchor="middle" font-size="10" fill="#6b5885">可指派技术员工</text>
+    <line x1="546" y1="308" x2="546" y2="320" stroke="#9b8ab8" stroke-width="1.2"/>
+  </g>
+
+  <!-- 财务节点 -->
+  <g>
+    <rect x="618" y="392" width="120" height="56" rx="8" fill="#e9f5ec" stroke="#8fb89a" stroke-width="1.4"/>
+    <text x="678" y="416" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e4629">成本核算与方案</text>
+    <text x="678" y="434" text-anchor="middle" font-size="10.5" fill="#4f7a5c">U9价·毛利·税率</text>
+
+    <rect x="750" y="392" width="120" height="56" rx="8" fill="#e9f5ec" stroke="#8fb89a" stroke-width="1.4"/>
+    <text x="810" y="416" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e4629">审批签发</text>
+    <text x="810" y="434" text-anchor="middle" font-size="10.5" fill="#4f7a5c">按节点顺序流转</text>
+  </g>
+
+  <!-- 系统节点 -->
+  <g>
+    <rect x="90" y="532" width="120" height="56" rx="8" fill="#f6f6f0" stroke="#b5b59a" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="150" y="556" text-anchor="middle" font-size="11.5" fill="#4d4d38">按包名+包号</text>
+    <text x="150" y="573" text-anchor="middle" font-size="11.5" fill="#4d4d38">拆分 N 个报价包</text>
+
+    <rect x="486" y="532" width="120" height="56" rx="8" fill="#f6f6f0" stroke="#b5b59a" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="546" y="556" text-anchor="middle" font-size="11.5" fill="#4d4d38">带出 BOM 与</text>
+    <text x="546" y="573" text-anchor="middle" font-size="11.5" fill="#4d4d38">U9 子件成本</text>
+
+    <rect x="750" y="532" width="120" height="56" rx="8" fill="#f6f6f0" stroke="#b5b59a" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="810" y="556" text-anchor="middle" font-size="11.5" fill="#4d4d38">签发冻结快照</text>
+    <text x="810" y="573" text-anchor="middle" font-size="11.5" fill="#4d4d38">版本·审批·审计</text>
+
+    <rect x="1014" y="532" width="120" height="56" rx="8" fill="#f6f6f0" stroke="#b5b59a" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="1074" y="556" text-anchor="middle" font-size="11.5" fill="#4d4d38">自动归档</text>
+    <text x="1074" y="573" text-anchor="middle" font-size="11.5" fill="#4d4d38">移入历史库只读</text>
+  </g>
+
+  <!-- 阶段序号 -->
+  <g font-size="10" font-weight="700" fill="#ffffff">
+    <circle cx="90" cy="112" r="9" fill="#5b8aa8"/><text x="90" y="116" text-anchor="middle">1</text>
+    <circle cx="222" cy="112" r="9" fill="#5b8aa8"/><text x="222" y="116" text-anchor="middle">2</text>
+    <circle cx="354" cy="112" r="9" fill="#5b8aa8"/><text x="354" y="116" text-anchor="middle">3</text>
+    <circle cx="486" cy="252" r="9" fill="#7f6c9e"/><text x="486" y="256" text-anchor="middle">4</text>
+    <circle cx="618" cy="392" r="9" fill="#5f8f6d"/><text x="618" y="396" text-anchor="middle">5</text>
+    <circle cx="750" cy="392" r="9" fill="#5f8f6d"/><text x="750" y="396" text-anchor="middle">6</text>
+    <circle cx="882" cy="112" r="9" fill="#5b8aa8"/><text x="882" y="116" text-anchor="middle">7</text>
+  </g>
+
+  <!-- 图例 -->
+  <g transform="translate(24, 652)">
+    <rect x="0" y="0" width="1130" height="48" rx="6" fill="#f4f8fb" stroke="#dde8f0"/>
+    <line x1="16" y1="20" x2="52" y2="20" stroke="#4a7392" stroke-width="1.8" marker-end="url(#arrow)"/>
+    <text x="60" y="24" font-size="11.5" fill="#41586b">业务主链</text>
+    <line x1="140" y1="20" x2="176" y2="20" stroke="#8b9a6b" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrowSys)"/>
+    <text x="184" y="24" font-size="11.5" fill="#41586b">系统自动带出</text>
+    <line x1="284" y1="20" x2="320" y2="20" stroke="#c0803f" stroke-width="1.6" stroke-dasharray="6 3" marker-end="url(#arrowBack)"/>
+    <text x="328" y="24" font-size="11.5" fill="#41586b">驳回（版本 +1，双确认清空）</text>
+    <text x="560" y="24" font-size="11.5" fill="#41586b">终态：已成交 / 未成交 / 已取消 —— 归档只读，仅「取消归档」可退回「客户议价中」</text>
+  </g>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#4a7392"/>
+    </marker>
+    <marker id="arrowSys" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8b9a6b"/>
+    </marker>
+    <marker id="arrowBack" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#c0803f"/>
+    </marker>
+  </defs>
+</svg>

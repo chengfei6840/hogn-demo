@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" width="1000" height="640" font-family="PingFang SC, Microsoft YaHei, Noto Sans CJK SC, sans-serif">
+  <rect width="1000" height="640" fill="#fbfdfe"/>
+
+  <text x="24" y="32" font-size="18" font-weight="700" fill="#1c3a52">图 4 · 审批签发流程（单链顺序，仅财务节点）</text>
+  <text x="24" y="52" font-size="12" fill="#6b8093">流程来自「审批与流程配置」中已启用的版本，创建报价包时快照存包；之后改模板不影响已创建的包。</text>
+
+  <!-- 前置校验 -->
+  <g>
+    <rect x="24" y="76" width="300" height="70" rx="8" fill="#fdf3e3" stroke="#d3a86a" stroke-width="1.4"/>
+    <text x="40" y="98" font-size="11.5" font-weight="700" fill="#5c3d12">提交前：核价完整性校验</text>
+    <text x="40" y="117" font-size="10.4" fill="#8a6428">子件单价齐 · 每项报价 &gt; 0 · 成本 &gt; 0</text>
+    <text x="40" y="134" font-size="10.4" fill="#8a6428">税率 0–100 · 计价与商务口径已填</text>
+  </g>
+  <line x1="176" y1="146" x2="176" y2="176" stroke="#4a7392" stroke-width="1.6" marker-end="url(#c1)"/>
+
+  <!-- 主链 -->
+  <g stroke="#4a7392" stroke-width="1.7" fill="none" marker-end="url(#c1)">
+    <line x1="60" y1="212" x2="86" y2="212"/>
+    <line x1="210" y1="212" x2="266" y2="212"/>
+    <line x1="390" y1="212" x2="446" y2="212"/>
+    <line x1="570" y1="212" x2="626" y2="212"/>
+    <line x1="750" y1="212" x2="806" y2="212"/>
+  </g>
+
+  <!-- 状态节点 -->
+  <circle cx="48" cy="212" r="11" fill="#4a7392"/>
+
+  <g>
+    <rect x="90" y="180" width="120" height="64" rx="8" fill="#e8f1f8" stroke="#7fa8c4" stroke-width="1.5"/>
+    <text x="150" y="206" text-anchor="middle" font-size="12" font-weight="700" fill="#1c3a52">提交审批</text>
+    <text x="150" y="224" text-anchor="middle" font-size="10" fill="#5c7d95">财务 · 核价人</text>
+
+    <rect x="270" y="180" width="120" height="64" rx="8" fill="#e9f5ec" stroke="#8fb89a" stroke-width="1.5"/>
+    <text x="330" y="202" text-anchor="middle" font-size="12" font-weight="700" fill="#1e4629">核价复核</text>
+    <text x="330" y="219" text-anchor="middle" font-size="10" fill="#4f7a5c">审批节点</text>
+    <text x="330" y="235" text-anchor="middle" font-size="9.5" fill="#4f7a5c">财务 · 张会计</text>
+
+    <rect x="450" y="180" width="120" height="64" rx="8" fill="#e9f5ec" stroke="#8fb89a" stroke-width="1.5"/>
+    <text x="510" y="202" text-anchor="middle" font-size="12" font-weight="700" fill="#1e4629">财务审批</text>
+    <text x="510" y="219" text-anchor="middle" font-size="10" fill="#4f7a5c">审批节点</text>
+    <text x="510" y="235" text-anchor="middle" font-size="9.5" fill="#4f7a5c">财务 · 李经理</text>
+
+    <rect x="630" y="180" width="120" height="64" rx="8" fill="#fdf3e3" stroke="#d3a86a" stroke-width="1.5"/>
+    <text x="690" y="202" text-anchor="middle" font-size="12" font-weight="700" fill="#5c3d12">报价签发</text>
+    <text x="690" y="219" text-anchor="middle" font-size="10" fill="#8a6428">签发节点（唯一）</text>
+    <text x="690" y="235" text-anchor="middle" font-size="9.5" fill="#8a6428">财务 · 王总监</text>
+
+    <rect x="810" y="180" width="120" height="64" rx="8" fill="#eef0ee" stroke="#9aa79c" stroke-width="1.5"/>
+    <text x="870" y="206" text-anchor="middle" font-size="12" font-weight="700" fill="#2f3d33">已出具</text>
+    <text x="870" y="224" text-anchor="middle" font-size="10" fill="#5f6f63">冻结快照</text>
+  </g>
+
+  <!-- 中间态 -->
+  <g font-size="9.5" fill="#6b8093" text-anchor="middle">
+    <text x="690" y="166">→ 可出具报价 →</text>
+  </g>
+
+  <!-- 退回路径 -->
+  <g stroke="#c0803f" stroke-width="1.5" stroke-dasharray="6 4" fill="none" marker-end="url(#c2)">
+    <path d="M330 244 L330 310 L150 310 L150 246"/>
+    <path d="M510 244 L510 330 L150 330 L150 310"/>
+  </g>
+  <text x="352" y="302" font-size="10.5" fill="#a3682c">退回（填原因）</text>
+  <text x="530" y="348" font-size="10.5" fill="#a3682c">退回</text>
+  <text x="166" y="352" font-size="10.5" fill="#a3682c">回到「财务核价」，审批链所有已完成节点重置为待处理</text>
+
+  <!-- 依据失效 -->
+  <g>
+    <rect x="812" y="86" width="164" height="56" rx="7" fill="#fdeaea" stroke="#c98b8b" stroke-width="1.3"/>
+    <text x="826" y="106" font-size="10.5" font-weight="700" fill="#8f3535">核价被修改</text>
+    <text x="826" y="122" font-size="10" fill="#8f3535">→ 审批依据失效</text>
+    <text x="826" y="136" font-size="10" fill="#8f3535">必须重新提交</text>
+  </g>
+  <path d="M812 114 L790 114 L790 176" stroke="#c98b8b" stroke-width="1.3" stroke-dasharray="5 3" fill="none" marker-end="url(#c3)"/>
+
+  <!-- 节点配置约束 -->
+  <g transform="translate(24, 388)">
+    <rect x="0" y="0" width="952" height="110" rx="8" fill="#f4f8fb" stroke="#dde8f0"/>
+    <text x="16" y="24" font-size="12" font-weight="700" fill="#2c4f6b">流程配置的硬约束（validateGraph 直接拒绝保存）</text>
+    <text x="16" y="48" font-size="10.8" fill="#41586b">① 必须有且仅有一个「审批开始」和一个「签发完成」节点；节点必须连成一条有序链，不允许分支、循环、悬空连线。</text>
+    <text x="16" y="68" font-size="10.8" fill="#41586b">② 处理节点只能是财务角色，处理人必须写成「财务 · 姓名」且与角色一致；条件只能是「每次均执行」。</text>
+    <text x="16" y="88" font-size="10.8" fill="#41586b">③ 至少一位审批人；签发节点有且仅有一个，且必须是最后一个节点；董事长节点已被禁止。</text>
+  </g>
+
+  <!-- 图例 -->
+  <g transform="translate(24, 520)">
+    <rect x="0" y="0" width="952" height="96" rx="8" fill="#fbfdfe" stroke="#e3edf4"/>
+    <text x="16" y="24" font-size="11.5" font-weight="700" fill="#2c4f6b">运行时规则</text>
+    <text x="16" y="46" font-size="10.8" fill="#41586b">· 只能由当前节点的指定人操作，不能跳节点；他人点击会提示「请由当前节点指定处理人执行，不能跳过前序节点」。</text>
+    <text x="16" y="66" font-size="10.8" fill="#41586b">· 审批依据 basis = 版本号 + 每项报价/成本 + 税率 + 计价口径；任一变化，提交与节点操作都会被拒绝。</text>
+    <text x="16" y="86" font-size="10.8" fill="#41586b">· 签发后快照冻结：货物项、子件对外报价、审批记录、审计日志一并写入，报价单只能基于该快照生成。</text>
+  </g>
+
+  <defs>
+    <marker id="c1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#4a7392"/>
+    </marker>
+    <marker id="c2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#c0803f"/>
+    </marker>
+    <marker id="c3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#c98b8b"/>
+    </marker>
+  </defs>
+</svg>

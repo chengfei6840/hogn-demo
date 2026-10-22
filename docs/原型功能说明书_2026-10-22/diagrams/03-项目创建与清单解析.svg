@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1000" width="900" height="1000" font-family="PingFang SC, Microsoft YaHei, Noto Sans CJK SC, sans-serif">
+  <rect width="900" height="1000" fill="#fbfdfe"/>
+
+  <text x="24" y="32" font-size="18" font-weight="700" fill="#1c3a52">图 3 · 项目创建与物料清单解析</text>
+  <text x="24" y="52" font-size="12" fill="#6b8093">输入一份 .xlsx，系统按「包名称 + 包号」自动拆成 N 个报价包；创建前有 5 道硬校验，任一不过即阻断。</text>
+
+  <!-- 主链 -->
+  <g stroke="#4a7392" stroke-width="1.7" fill="none" marker-end="url(#b1)">
+    <line x1="280" y1="88" x2="280" y2="112"/>
+    <line x1="280" y1="156" x2="280" y2="180"/>
+    <line x1="280" y1="236" x2="280" y2="270"/>
+    <line x1="280" y1="350" x2="280" y2="380"/>
+    <line x1="280" y1="436" x2="280" y2="470"/>
+    <line x1="280" y1="550" x2="280" y2="580"/>
+    <line x1="280" y1="636" x2="280" y2="666"/>
+    <line x1="280" y1="722" x2="280" y2="752"/>
+    <line x1="280" y1="832" x2="280" y2="858"/>
+  </g>
+
+  <!-- 否分支 -->
+  <g stroke="#b85450" stroke-width="1.5" fill="none" marker-end="url(#b2)">
+    <line x1="380" y1="310" x2="476" y2="310"/>
+    <line x1="380" y1="510" x2="476" y2="510"/>
+    <line x1="380" y1="792" x2="476" y2="792"/>
+  </g>
+  <g font-size="11" font-weight="700" fill="#b85450">
+    <text x="404" y="302">否</text>
+    <text x="404" y="502">否</text>
+    <text x="404" y="784">否</text>
+  </g>
+  <g font-size="11" font-weight="700" fill="#4a7392">
+    <text x="292" y="370">是</text>
+    <text x="292" y="570">是</text>
+    <text x="292" y="850">是</text>
+  </g>
+
+  <!-- 开始 -->
+  <circle cx="280" cy="78" r="11" fill="#4a7392"/>
+  <text x="300" y="83" font-size="12.5" font-weight="700" fill="#1c3a52">销售点「新建项目」</text>
+
+  <g>
+    <rect x="140" y="112" width="280" height="44" rx="8" fill="#e8f1f8" stroke="#7fa8c4" stroke-width="1.5"/>
+    <text x="158" y="133" font-size="12.5" font-weight="700" fill="#1c3a52">① 填写项目信息</text>
+    <text x="158" y="150" font-size="10.5" fill="#5c7d95">项目名称 / 客户单位 / 地区 / 电网类型</text>
+
+    <rect x="140" y="180" width="280" height="56" rx="8" fill="#e8f1f8" stroke="#7fa8c4" stroke-width="1.5"/>
+    <text x="158" y="204" font-size="12.5" font-weight="700" fill="#1c3a52">② 选择三位负责人</text>
+    <text x="158" y="223" font-size="10.5" fill="#5c7d95">销售 / 技术 / 财务，须为已启用用户</text>
+
+    <path d="M280 270 L380 310 L280 350 L180 310 Z" fill="#fdf3e3" stroke="#d3a86a" stroke-width="1.5"/>
+    <text x="280" y="306" text-anchor="middle" font-size="11.5" font-weight="700" fill="#5c3d12">技术负责人</text>
+    <text x="280" y="322" text-anchor="middle" font-size="11.5" font-weight="700" fill="#5c3d12">= 技术总监？</text>
+
+    <rect x="140" y="380" width="280" height="56" rx="8" fill="#e8f1f8" stroke="#7fa8c4" stroke-width="1.5"/>
+    <text x="158" y="404" font-size="12.5" font-weight="700" fill="#1c3a52">③ 上传物料清单</text>
+    <text x="158" y="423" font-size="10.5" fill="#5c7d95">仅接受 .xlsx，不支持旧版 .xls</text>
+
+    <path d="M280 470 L380 510 L280 550 L180 510 Z" fill="#fdf3e3" stroke="#d3a86a" stroke-width="1.5"/>
+    <text x="280" y="506" text-anchor="middle" font-size="11.5" font-weight="700" fill="#5c3d12">格式为 .xlsx</text>
+    <text x="280" y="522" text-anchor="middle" font-size="11.5" font-weight="700" fill="#5c3d12">且可读取？</text>
+
+    <rect x="140" y="580" width="280" height="56" rx="8" fill="#e8f1f8" stroke="#7fa8c4" stroke-width="1.5"/>
+    <text x="158" y="604" font-size="12.5" font-weight="700" fill="#1c3a52">④ 识别工作表并勾选</text>
+    <text x="158" y="623" font-size="10.5" fill="#5c7d95">逐表扫描前 40 行，定位表头行</text>
+
+    <rect x="140" y="666" width="280" height="56" rx="8" fill="#e8f1f8" stroke="#7fa8c4" stroke-width="1.5"/>
+    <text x="158" y="690" font-size="12.5" font-weight="700" fill="#1c3a52">⑤ 解析所选工作表</text>
+    <text x="158" y="709" font-size="10.5" fill="#5c7d95">必须点这一步，创建按钮才解锁</text>
+
+    <path d="M280 752 L380 792 L280 832 L180 792 Z" fill="#fdf3e3" stroke="#d3a86a" stroke-width="1.5"/>
+    <text x="280" y="788" text-anchor="middle" font-size="11.5" font-weight="700" fill="#5c3d12">识别到至少</text>
+    <text x="280" y="804" text-anchor="middle" font-size="11.5" font-weight="700" fill="#5c3d12">1 个报价包？</text>
+
+    <rect x="140" y="858" width="280" height="56" rx="8" fill="#e9f5ec" stroke="#8fb89a" stroke-width="1.5"/>
+    <text x="158" y="882" font-size="12.5" font-weight="700" fill="#1e4629">⑥ 创建项目</text>
+    <text x="158" y="901" font-size="10.5" fill="#4f7a5c">生成 N 个包，全部落在「资料整理」</text>
+  </g>
+
+  <!-- 失败提示 -->
+  <g>
+    <rect x="480" y="282" width="200" height="56" rx="7" fill="#fdeaea" stroke="#c98b8b" stroke-width="1.3"/>
+    <text x="496" y="304" font-size="11" font-weight="700" fill="#8f3535">阻断</text>
+    <text x="496" y="322" font-size="10.5" fill="#8f3535">技术负责人需由技术总监承担</text>
+
+    <rect x="480" y="482" width="200" height="56" rx="7" fill="#fdeaea" stroke="#c98b8b" stroke-width="1.3"/>
+    <text x="496" y="504" font-size="11" font-weight="700" fill="#8f3535">阻断</text>
+    <text x="496" y="522" font-size="10.5" fill="#8f3535">请上传 .xlsx 格式的物料清单</text>
+
+    <rect x="480" y="764" width="200" height="56" rx="7" fill="#fdeaea" stroke="#c98b8b" stroke-width="1.3"/>
+    <text x="496" y="786" font-size="11" font-weight="700" fill="#8f3535">阻断</text>
+    <text x="496" y="804" font-size="10.5" fill="#8f3535">未识别到含数量/单位列的清单</text>
+  </g>
+
+  <!-- 右侧：表头识别规则 -->
+  <g transform="translate(480, 100)">
+    <rect x="0" y="0" width="396" height="164" rx="8" fill="#f4f8fb" stroke="#dde8f0"/>
+    <text x="14" y="22" font-size="12" font-weight="700" fill="#2c4f6b">表头识别规则（material-list.ts）</text>
+    <text x="14" y="46" font-size="10.8" fill="#41586b">· 扫描前 40 行，取同时含「数量」「单位」的行</text>
+    <text x="14" y="66" font-size="10.8" fill="#41586b">· 包名称别名：包名称 / 报价包名称 / 标包名称</text>
+    <text x="14" y="86" font-size="10.8" fill="#41586b">· 电压别名：工程电压等级 / 电压等级</text>
+    <text x="14" y="106" font-size="10.8" fill="#41586b">· 跳过合计 / 总计 / 小计 / 说明 / 备注行</text>
+    <text x="14" y="126" font-size="10.8" fill="#41586b">· 无「数量 + 单位」的表 = 不可解析，不参与建包</text>
+    <text x="14" y="146" font-size="10.8" fill="#41586b">· 包名缺失时，用工作表名兜底</text>
+  </g>
+
+  <!-- 右侧：包摘要 -->
+  <g transform="translate(700, 580)">
+    <rect x="0" y="0" width="176" height="148" rx="8" fill="#f1ecf8" stroke="#c9bcdd" stroke-width="1.3"/>
+    <text x="12" y="22" font-size="11.5" font-weight="700" fill="#3c2c52">每个包自动汇总</text>
+    <text x="12" y="45" font-size="10.3" fill="#5a4a72">· 包名称 / 包号</text>
+    <text x="12" y="65" font-size="10.3" fill="#5a4a72">· 货物项数</text>
+    <text x="12" y="85" font-size="10.3" fill="#5a4a72">· 技术编码种类数</text>
+    <text x="12" y="105" font-size="10.3" fill="#5a4a72">· 电压等级集合</text>
+    <text x="12" y="125" font-size="10.3" fill="#5a4a72">· 地域 / 工程 / 交货点</text>
+    <text x="12" y="142" font-size="10.3" fill="#5a4a72">· 按单位汇总数量</text>
+  </g>
+  <line x1="420" y1="628" x2="696" y2="628" stroke="#9b8ab8" stroke-width="1.3" stroke-dasharray="5 3" marker-end="url(#b3)"/>
+
+  <!-- 创建后 -->
+  <g transform="translate(140, 934)">
+    <rect x="0" y="0" width="736" height="50" rx="7" fill="#eef7f1" stroke="#b7d3bf"/>
+    <text x="14" y="20" font-size="11.2" fill="#2b5537">创建时写入：包号、包名、电压等级、工作表归属、7 类流程负责人、审批流程快照（之后改模板不影响已创建的包）。</text>
+    <text x="14" y="38" font-size="11.2" fill="#2b5537">创建后：每个包独立流转、互不阻塞；从「资料整理」开始，进入资料解析 → 并行协作。</text>
+  </g>
+
+  <defs>
+    <marker id="b1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#4a7392"/>
+    </marker>
+    <marker id="b2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#b85450"/>
+    </marker>
+    <marker id="b3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#9b8ab8"/>
+    </marker>
+  </defs>
+</svg>
