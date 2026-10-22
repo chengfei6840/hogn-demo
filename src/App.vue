@@ -6,6 +6,7 @@ import {confirmEntries,rolePeople,technicalDirector,type Role,type Package} from
 import {Button} from '@/components/ui/button'
 import AppIcon from './components/AppIcon.vue'
 import BomView from './components/BomView.vue'
+import {asset} from '@/lib/asset'
 import OverviewView from './components/OverviewView.vue'
 import PackageListView from './components/PackageListView.vue'
 import DashboardView from './components/DashboardView.vue'
@@ -33,7 +34,7 @@ const {package:pkg,project:p,packages,batchPackageIds,hasBatchSelection,workflow
 const access=useRolePermissionsStore()
 const mainContent=shallowRef<HTMLElement|null>(null)
 // public/ 静态资源必须拼 base 前缀；Vue 模板里访问不到 import.meta.env，故经 script 暴露。
-const asset=(file:string)=>`${import.meta.env.BASE_URL}${file}`
+// 共享实现在 @/lib/asset，新增资源引用一律走它。
 watch(page,async()=>{await nextTick();mainContent.value?.scrollTo({top:0});mainContent.value?.focus({preventScroll:true})})
 const resetOpen=shallowRef(false)
 const historyOpen=shallowRef(false)

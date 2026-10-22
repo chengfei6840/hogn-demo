@@ -10,6 +10,7 @@ import { catalog, useWorkspace } from '@/domain/store'
 import { goodsSourceSheet } from '@/data/sourceSheets'
 import { technicalDirector, technicalDirectors, type Package, type Role } from '@/domain/model'
 import { goodsColumns } from '@/data/goodsList'
+import { asset } from '@/lib/asset'
 import { useUsersStore } from '@/stores/users'
 import { packageCategory } from '@/domain/batch-packages'
 
@@ -184,7 +185,7 @@ function saveAssign() {
         </section>
         <figure class="panel-shot">
           <div class="panel-shot-frame" role="button" tabindex="0" aria-label="放大查看串来源图片" @click="zoomOpen = true" @keydown.enter="zoomOpen = true">
-            <img :src="'/source-goods-' + item.id + '.png'" :alt="'货物清单第 ' + (item.goodsRow ?? '—') + ' 行原文截图'"/>
+            <img :src="asset('source-goods-' + item.id + '.png')" :alt="'货物清单第 ' + (item.goodsRow ?? '—') + ' 行原文截图'"/>
           </div>
           <figcaption>来源提示：高亮取自《{{ goodsSourceSheet.file }}》的“{{ goodsSourceSheet.sheet }}”工作表，第 {{ item.goodsRow ?? '—' }} 行；点击图片可放大查看。</figcaption>
         </figure>
@@ -285,7 +286,7 @@ function saveAssign() {
     <Teleport to="body">
       <div v-if="zoomOpen" class="technical-zoom" aria-label="来源图片放大预览" @wheel.stop @touchmove.stop>
         <div class="technical-zoom-tools"><Button variant="outline" size="sm" @click="zoomScale = Math.max(.5, zoomScale - .25)">−</Button><Button variant="outline" size="sm" @click="zoomScale = 1">还原</Button><Button variant="outline" size="sm" @click="zoomScale = Math.min(3, zoomScale + .25)">＋</Button><Button variant="outline" size="sm" @click="zoomOpen = false">关闭<AppIcon name="x" :size="15"/></Button></div>
-        <img :style="{ width: `${zoomScale * 100}%`, maxWidth: 'none' }" :src="'/source-goods-' + item.id + '.png'" :alt="'货物清单第 ' + (item.goodsRow ?? '—') + ' 行原文截图（放大）'"/>
+        <img :style="{ width: `${zoomScale * 100}%`, maxWidth: 'none' }" :src="asset('source-goods-' + item.id + '.png')" :alt="'货物清单第 ' + (item.goodsRow ?? '—') + ' 行原文截图（放大）'"/>
       </div>
     </Teleport>
 

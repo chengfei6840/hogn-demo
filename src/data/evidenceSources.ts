@@ -1,5 +1,5 @@
 // public/ 下静态资源必须拼 base 前缀，否则部署到 GitHub Pages 子路径时会 404。
-const asset = (file: string) => `${import.meta.env.BASE_URL}${file}`
+import { asset } from '@/lib/asset'
 
 export type EvidenceSourceId = 'requirements' | 'atlas'
 
