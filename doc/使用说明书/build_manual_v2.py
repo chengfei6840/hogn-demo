@@ -155,13 +155,24 @@ def build():
     doc.add_paragraph('')
     doc.add_paragraph('本版相较 V1.5 的主要变化：新增第3节工作表识别与解析、第5节跨包批量处理、第21节跨包技术指派；第4节调整了报价包列表的进入方式与分类筛选；第43节补充了四类新的按钮禁用原因。')
 
+    # 正文从新一页开始；其后每节前各分页一次（见循环内 first_section 判断）
+    doc.add_page_break()
+
     # 正文
     lines = text.split('\n')
     i = 0
     first_section = True
+    in_body = False   # 首个 ## 之前是 md 的标题与版本元信息，封面已另行生成，这里全部跳过
     while i < len(lines):
         raw = lines[i]
         line = raw.strip()
+
+        if not in_body:
+            if line.startswith('## '):
+                in_body = True
+            else:
+                i += 1
+                continue
 
         if not line or line == '---':
             i += 1
